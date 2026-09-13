@@ -59,14 +59,6 @@ def version() -> None:
     console.print(f"AEGIS {__version__}")
 
 
-# ------------------------------------------------------------------------------------------------
-# Phase-stub commands (implemented in later phases; present so the CLI surface is stable)
-# ------------------------------------------------------------------------------------------------
-def _not_yet(phase: str) -> None:
-    console.print(f"[yellow]Not implemented yet[/] - delivered in Phase {phase} (see SPEC.md §11).")
-    raise typer.Exit(code=2)
-
-
 @app.command()
 def investigate(
     source: str = typer.Option("offline", help="offline | elastic | splunk"),
@@ -137,9 +129,24 @@ def investigate(
 
 
 @app.command()
-def ingest(source: str = typer.Option("elastic"), path: Path | None = None) -> None:
-    """Normalise source alerts to OCSF (Phase 2)."""
-    _not_yet("2")
+def ingest(
+    path: Path = typer.Argument(..., help="JSON file: an Elastic alert or Splunk notable"),
+    source: str = typer.Option("elastic", help="elastic | splunk"),
+) -> None:
+    """Normalise a source alert file to OCSF and print the detection_finding (Phase 2)."""
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    if source == "elastic":
+        from aegis.schema.normalize.elastic import finding_from_elastic
+
+        finding = finding_from_elastic(doc)
+    elif source == "splunk":
+        from aegis.schema.normalize.splunk import finding_from_splunk
+
+        finding = finding_from_splunk(doc)
+    else:
+        console.print(f"[red]unknown source {source}[/]")
+        raise typer.Exit(2)
+    console.print_json(finding.model_dump_json())
 
 
 @app.command()
@@ -314,14 +321,36 @@ def serve(host: str = "127.0.0.1", port: int = 8000, reload: bool = False) -> No
 
 @app.command()
 def replay(investigation_id: str) -> None:
-    """Replay a checkpointed investigation (Phase 3)."""
-    _not_yet("3")
+    """Re-render a stored investigation's report and audit trail (Phase 3)."""
+    from aegis.api.store import Store
+
+    inv = Store().get_investigation(investigation_id)
+    if inv is None:
+        console.print(f"[red]investigation {investigation_id} not found[/]")
+        raise typer.Exit(1)
+    console.print(f"[bold]{inv['title']}[/] -> {inv['verdict']} ({inv['confidence']})")
+    console.print(f"nodes: {' -> '.join(inv['state'].get('node_log', []))}")
+    console.print(inv.get("report_md") or "[dim]no report[/]")
 
 
 @app.command()
-def label(investigation_id: str, verdict: str) -> None:
-    """Apply an analyst label/override (Phase 4)."""
-    _not_yet("4")
+def label(
+    investigation_id: str,
+    verdict: str = typer.Argument(..., help="true_positive | false_positive | escalate"),
+    analyst: str = typer.Option("analyst"),
+    annotation: str | None = typer.Option(None),
+) -> None:
+    """Apply an analyst override/label; overrides become training labels (Phase 4)."""
+    from aegis.api.store import Store
+
+    try:
+        rid = Store().add_review(
+            investigation_id, analyst, "override", override_verdict=verdict, annotation=annotation
+        )
+    except KeyError:
+        console.print(f"[red]investigation {investigation_id} not found[/]")
+        raise typer.Exit(1) from None
+    console.print(f"[green]recorded review {rid}[/] -> gold label {verdict}")
 
 
 # ------------------------------------------------------------------------------------------------
