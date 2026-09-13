@@ -29,6 +29,46 @@ Dialect = Literal["duckdb", "esql"]
 EntityType = Literal["host", "user", "ip", "hash", "process", "domain"]
 
 _HASH_RE = re.compile(r"^[a-fA-F0-9]{32}$|^[a-fA-F0-9]{40}$|^[a-fA-F0-9]{64}$")
+# Common TLDs used to tell a domain (evil.com) from a dotted username (dev.kumar).
+_COMMON_TLDS = {
+    "com",
+    "org",
+    "net",
+    "edu",
+    "gov",
+    "mil",
+    "int",
+    "io",
+    "co",
+    "ru",
+    "cn",
+    "uk",
+    "de",
+    "fr",
+    "info",
+    "biz",
+    "xyz",
+    "online",
+    "site",
+    "top",
+    "club",
+    "local",
+    "internal",
+    "lan",
+    "corp",
+    "duckdns",
+    "ddns",
+    "onion",
+    "app",
+    "dev",
+    "cloud",
+    "email",
+    "live",
+    "tk",
+    "ml",
+    "ga",
+    "cf",
+}
 
 # intent keyword -> (aspect, extra columns, predicate builder key)
 _ASPECTS: dict[str, list[str]] = {
@@ -153,23 +193,21 @@ class Entity:
             pass
         if _HASH_RE.match(v):
             return Entity(v.lower(), "hash")
-        if (
-            "." in v
-            and not v.replace(".", "").isdigit()
-            and "\\" not in v
-            and " " not in v
-            and v.count(".") >= 1
-            and any(c.isalpha() for c in v.rsplit(".", 1)[-1])
-        ):
-            # dotted, alpha TLD -> domain (unless it's a known host FQDN)
-            if known_hosts and v.split(".")[0].upper() in known_hosts:
-                return Entity(v.split(".")[0].upper(), "host")
-            return Entity(v.lower(), "domain")
-        if known_hosts and v.upper() in known_hosts:
-            return Entity(v.upper(), "host")
         if v.endswith(".exe") or "\\" in v:
             return Entity(v, "process")
-        # Heuristic: short all-caps token -> host; contains a dot/space or lowercase -> user
+        if known_hosts and v.upper() in known_hosts:
+            return Entity(v.upper(), "host")
+        if "." in v and not v.replace(".", "").isdigit() and " " not in v:
+            last = v.rsplit(".", 1)[-1].lower()
+            first = v.split(".")[0]
+            if known_hosts and first.upper() in known_hosts:
+                return Entity(first.upper(), "host")
+            # A real domain has a known TLD or is a multi-label FQDN; otherwise a dotted token like
+            # "first.last" is a username, not a domain.
+            if last in _COMMON_TLDS or (v.count(".") >= 2 and last.isalpha()):
+                return Entity(v.lower(), "domain")
+            return Entity(v, "user")
+        # Short all-caps token -> host; otherwise a username.
         if v.isupper() and " " not in v and len(v) <= 20:
             return Entity(v, "host")
         return Entity(v, "user")
@@ -244,20 +282,30 @@ class TemplateQueryBuilder:
         )
 
     def _entity_clause(self, entities: list[Entity], dialect: Dialect) -> str:
-        ors: list[str] = []
+        # Group by entity TYPE: OR within a type (and across that type's columns), AND across types.
+        # So "by {user} on {host}" -> (host_name=...) AND (user_name=... OR user_target_name=...),
+        # which matches the natural-language conjunction rather than widening to a union.
+        by_type: dict[EntityType, list[Entity]] = {}
         for e in entities:
-            for col in _ENTITY_COLUMNS[e.type]:
-                val = e.value.replace("'", "''")
-                column = col if dialect == "duckdb" else _to_ecs(col)
-                if e.type in ("process", "domain"):
-                    ors.append(
-                        f"{column} LIKE '%{val}%'"
-                        if dialect == "duckdb"
-                        else f'{column} LIKE "*{val}*"'
-                    )
-                else:
-                    ors.append(f"{column} = '{val}'")
-        return " OR ".join(ors)
+            by_type.setdefault(e.type, []).append(e)
+        type_clauses: list[str] = []
+        for etype, ents in by_type.items():
+            ors: list[str] = []
+            for e in ents:
+                for col in _ENTITY_COLUMNS[etype]:
+                    val = e.value.replace("'", "''")
+                    column = col if dialect == "duckdb" else _to_ecs(col)
+                    if etype in ("process", "domain"):
+                        ors.append(
+                            f"{column} LIKE '%{val}%'"
+                            if dialect == "duckdb"
+                            else f'{column} LIKE "*{val}*"'
+                        )
+                    else:
+                        ors.append(f"{column} = '{val}'")
+            if ors:
+                type_clauses.append("(" + " OR ".join(ors) + ")")
+        return " AND ".join(type_clauses)
 
     def _time_clause(self, window: TimeWindow, dialect: Dialect) -> str:
         start = _iso(window.start)

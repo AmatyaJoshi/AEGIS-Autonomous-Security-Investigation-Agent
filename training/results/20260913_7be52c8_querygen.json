@@ -1,0 +1,178 @@
+{
+ "backend": "template",
+ "n_cases": 10,
+ "exact_equivalence": 1.0,
+ "lenient_equivalence_j0.9": 1.0,
+ "syntactic_validity": 1.0,
+ "validator_pass_rate": 1.0,
+ "avg_latency_ms": 0.229,
+ "per_category": {
+  "file": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  },
+  "logon": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  },
+  "network": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  },
+  "powershell": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  },
+  "process": {
+   "n": 4,
+   "exact": 4,
+   "exact_rate": 1.0
+  },
+  "registry": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  },
+  "service": {
+   "n": 1,
+   "exact": 1,
+   "exact_rate": 1.0
+  }
+ },
+ "cases": [
+  {
+   "intent": "show all process creations by svc_backup on BACKUP01",
+   "category": "process",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, process_executable, process_command_line, process_parent_name, process_parent_command_line, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'BACKUP01') AND (user_name = 'svc_backup' OR user_target_name = 'svc_backup')) AND (event_action = 'process_created') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 0,
+   "gold_rows": 0,
+   "latency_ms": 0.462,
+   "error": null
+  },
+  {
+   "intent": "list process executions by svc_sccm on SCCM01",
+   "category": "process",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, process_executable, process_command_line, process_parent_name, process_parent_command_line, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'SCCM01') AND (user_name = 'svc_sccm' OR user_target_name = 'svc_sccm')) AND (event_action = 'process_created') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 0,
+   "gold_rows": 0,
+   "latency_ms": 0.32,
+   "error": null
+  },
+  {
+   "intent": "find network connections from BACKUP01",
+   "category": "network",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, source_ip, destination_ip, destination_port, network_transport FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'BACKUP01')) AND (event_action = 'network_connection') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 0,
+   "gold_rows": 0,
+   "latency_ms": 0.16,
+   "error": null
+  },
+  {
+   "intent": "show logons for svc_backup on FS01",
+   "category": "logon",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, event_code, user_name, user_target_name, logon_type, source_ip, event_outcome FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'FS01') AND (user_name = 'svc_backup' OR user_target_name = 'svc_backup')) AND (event_category = 'authentication') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 90,
+   "gold_rows": 90,
+   "latency_ms": 0.165,
+   "error": null
+  },
+  {
+   "intent": "show powershell script block activity on DC01",
+   "category": "powershell",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, script_block_text, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'DC01')) AND (event_action IN ('script_block_logged','module_logged')) ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 71,
+   "gold_rows": 71,
+   "latency_ms": 0.16,
+   "error": null
+  },
+  {
+   "intent": "find file writes on SCCM01",
+   "category": "file",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, file_path, file_name, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'SCCM01')) AND (event_category = 'file') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 0,
+   "gold_rows": 0,
+   "latency_ms": 0.161,
+   "error": null
+  },
+  {
+   "intent": "show services installed on FS01",
+   "category": "service",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, service_name, process_executable, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'FS01')) AND (event_action = 'service_installed') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 73,
+   "gold_rows": 73,
+   "latency_ms": 0.158,
+   "error": null
+  },
+  {
+   "intent": "list all process creations by dev.kumar on WS-DEV1",
+   "category": "process",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, process_executable, process_command_line, process_parent_name, process_parent_command_line, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'WS-DEV1') AND (user_name = 'dev.kumar' OR user_target_name = 'dev.kumar')) AND (event_action = 'process_created') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 330,
+   "gold_rows": 330,
+   "latency_ms": 0.193,
+   "error": null
+  },
+  {
+   "intent": "show process activity by adm.patel",
+   "category": "process",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, process_executable, process_command_line, process_parent_name, process_parent_command_line, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((user_name = 'adm.patel' OR user_target_name = 'adm.patel')) AND (event_action = 'process_created') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 352,
+   "gold_rows": 352,
+   "latency_ms": 0.322,
+   "error": null
+  },
+  {
+   "intent": "find registry modifications on SQL01",
+   "category": "registry",
+   "generated_query": "SELECT \"@timestamp\", event_id, host_name, event_action, process_name, registry_path, registry_data, user_name FROM events WHERE (\"@timestamp\" BETWEEN TIMESTAMP '2024-12-01 00:00:00' AND TIMESTAMP '2025-12-31 00:00:00') AND ((host_name = 'SQL01')) AND (event_category = 'registry') ORDER BY \"@timestamp\" LIMIT 500",
+   "valid": true,
+   "validator_ok": true,
+   "exact": true,
+   "jaccard": 1.0,
+   "gen_rows": 0,
+   "gold_rows": 0,
+   "latency_ms": 0.188,
+   "error": null
+  }
+ ]
+}

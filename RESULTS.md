@@ -173,3 +173,35 @@ Top features: `cmd_len`, `asset_criticality`, `off_hours`, `n_observables`, `cre
 primary escalate signal. A DeBERTa alternative and ONNX int8 export (<30 ms CPU target) are provided
 (`training/triage/{train.py --model deberta, export_onnx.py}`) but need a GPU to train.
 Model card: `training/MODEL_CARDS/triage_classifier.md`.
+
+## Phase 7 - NL→SIEM query generator
+
+```
+python -m training.query_gen.build_pairs --n-intent 8000   # 18,976 aligned pairs
+python -m training.query_gen.train_lora                     # Qwen2.5-Coder + LoRA (needs a GPU)
+python -m training.query_gen.eval_exec --snapshot dev       # execution equivalence, not string match
+```
+
+### Training corpus (`training/query_gen/data/datacard.json`)
+
+| Metric | Value |
+|---|---:|
+| Aligned (NL, query) pairs | 18,976 |
+| Sigma-derived / paraphrase / investigative-intent | 744 / 2,232 / 16,000 |
+| Train / test | 16,173 / 2,803 |
+| Held-out Sigma categories | proxy, webserver, dns_query |
+
+### Execution-equivalence evaluation (offline template backend, 10 curated cases)
+
+| Metric | Value |
+|---|---:|
+| Exact result-set equivalence | 100% |
+| Lenient (Jaccard ≥ 0.9) | 100% |
+| Syntactic validity | 100% |
+| Validator pass rate | 100% |
+| Avg latency | 0.23 ms |
+
+Evaluation compares returned `event_id` sets of the generated query vs an independently authored gold
+query (substantive cases return 90-352 rows), so it measures result equivalence, not SQL string
+match. The fine-tuned Qwen2.5-Coder LoRA plugs into the same harness (needs a GPU to train).
+Model card: `training/MODEL_CARDS/query_gen.md`.

@@ -19,3 +19,5 @@ web/.next/
 # results are committed deliberately, not ignored
 training/triage/artifacts/
 training/triage/data/
+training/query_gen/data/
+training/query_gen/artifacts/
