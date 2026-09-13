@@ -12,24 +12,17 @@ from typing import Any
 
 from aegis.graph.deps import Deps
 from aegis.graph.state import (
-    AssetInfo,
     Budget,
-    ContextBundle,
     EvidenceRef,
     Hypothesis,
-    IdentityInfo,
     InvestigationState,
-    TIHit,
     TimelineEvent,
     Verdict,
 )
-from aegis.schema.ocsf import DetectionFinding, ObservableTypeId
+from aegis.schema.ocsf import DetectionFinding
 from aegis.security.injection_guard import scan_fields
 from aegis.siem.base import TimeWindow
-from aegis.tools.asset_lookup import asset_lookup, identity_lookup
 from aegis.tools.attack_kb import validate_techniques
-from aegis.tools.sigma_match import sigma_match
-from aegis.tools.ti_lookup import ti_lookup
 
 
 def make_normalize(deps: Deps):  # type: ignore[no-untyped-def]
@@ -46,73 +39,10 @@ def make_normalize(deps: Deps):  # type: ignore[no-untyped-def]
 
 
 def make_context(deps: Deps):  # type: ignore[no-untyped-def]
+    from aegis.graph.context_build import build_context
+
     def context(state: InvestigationState) -> dict[str, Any]:
-        alert = state["alert"]
-        hosts = alert.hostnames()
-        users = alert.user_names()
-        host = hosts[0] if hosts else None
-        user = users[0] if users else None
-        tool_calls = 0
-        asset = AssetInfo()
-        if host:
-            a = asset_lookup(host, deps.org_path).data
-            asset = AssetInfo(
-                host=a.get("host"),
-                known=a.get("known", False),
-                criticality=a.get("criticality", "unknown"),
-                role=a.get("role"),
-                owner=a.get("owner"),
-                os=a.get("os"),
-            )
-            tool_calls += 1
-        identity = IdentityInfo()
-        if user:
-            i = identity_lookup(user, deps.org_path).data
-            identity = IdentityInfo(
-                user=i.get("user"),
-                known=i.get("known", False),
-                privileged=i.get("privileged", False),
-                service_account=i.get("service_account", False),
-                role=i.get("role"),
-                service=i.get("service"),
-            )
-            tool_calls += 1
-        ti_hits: list[TIHit] = []
-        for obs in alert.observables:
-            if (
-                obs.type_id
-                in (ObservableTypeId.IP_ADDRESS, ObservableTypeId.HOSTNAME, ObservableTypeId.HASH)
-                and obs.value
-            ):
-                if obs.type_id == ObservableTypeId.HOSTNAME and "." not in obs.value:
-                    continue  # bare internal hostname, not a domain
-                r = ti_lookup(obs.value, cache_dir=deps.intel_cache_dir, provider=deps.intel).data
-                tool_calls += 1
-                if r.get("verdict") not in (None, "unknown", "benign"):
-                    ti_hits.append(
-                        TIHit(
-                            observable=obs.value,
-                            type=r.get("type", "unknown"),
-                            verdict=r["verdict"],
-                            score=r.get("score", 0.0),
-                            categories=r.get("categories", []),
-                        )
-                    )
-        rematch: list[str] = []
-        raw_event = _triggering_event(alert)
-        if raw_event:
-            sm = sigma_match(raw_event, pack_path=deps.pack_path).data
-            rematch = [m["title"] for m in sm.get("matches", [])]
-            tool_calls += 1
-        off_hours = _off_hours(alert, deps.business_hours)
-        bundle = ContextBundle(
-            asset=asset,
-            identity=identity,
-            ti_hits=ti_hits,
-            sigma_rematch=rematch,
-            off_hours=off_hours,
-            recent_alert_count=0,
-        )
+        bundle, tool_calls = build_context(state["alert"], deps)
         return {"context": bundle, "node_log": ["context"], "spent": _bump(state, tool_calls)}
 
     return context

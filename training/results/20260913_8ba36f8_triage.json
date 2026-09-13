@@ -1,0 +1,182 @@
+{
+ "model": "training\\triage\\artifacts\\model.txt",
+ "n_test": 104,
+ "macro_f1": 0.6514,
+ "per_class": {
+  "false_positive": {
+   "precision": 0.9123,
+   "recall": 1.0,
+   "f1": 0.9541,
+   "support": 52
+  },
+  "true_positive": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1": 1.0,
+   "support": 47
+  },
+  "escalate": {
+   "precision": 0.0,
+   "recall": 0.0,
+   "f1": 0.0,
+   "support": 5
+  }
+ },
+ "confusion": {
+  "false_positive": {
+   "false_positive": 52,
+   "true_positive": 0,
+   "escalate": 0
+  },
+  "true_positive": {
+   "false_positive": 0,
+   "true_positive": 47,
+   "escalate": 0
+  },
+  "escalate": {
+   "false_positive": 5,
+   "true_positive": 0,
+   "escalate": 0
+  }
+ },
+ "auroc_tp_vs_rest": 1.0,
+ "ece": 0.002,
+ "reliability": [
+  {
+   "bin": 0.0,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 57
+  },
+  {
+   "bin": 0.1,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.2,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.3,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.4,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.5,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.6,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.7,
+   "conf": 0.0,
+   "acc": 0.0,
+   "n": 0
+  },
+  {
+   "bin": 0.8,
+   "conf": 0.8984,
+   "acc": 1.0,
+   "n": 2
+  },
+  {
+   "bin": 0.9,
+   "conf": 0.9999,
+   "acc": 1.0,
+   "n": 45
+  }
+ ],
+ "fast_path_threshold_pfp": 0.9,
+ "missed_tp_at_fast_path": 0.0,
+ "fast_path_rate": 1.0,
+ "per_fp_type": {
+  "admin_powershell": {
+   "n": 7,
+   "correct": 7,
+   "accuracy": 1.0
+  },
+  "backup_agent": {
+   "n": 3,
+   "correct": 3,
+   "accuracy": 1.0
+  },
+  "dev_procdump": {
+   "n": 5,
+   "correct": 5,
+   "accuracy": 1.0
+  },
+  "helpdesk_remote_support": {
+   "n": 7,
+   "correct": 7,
+   "accuracy": 1.0
+  },
+  "psexec_admin": {
+   "n": 8,
+   "correct": 8,
+   "accuracy": 1.0
+  },
+  "redteam_tool_name_benign": {
+   "n": 1,
+   "correct": 1,
+   "accuracy": 1.0
+  },
+  "scheduled_task_maintenance": {
+   "n": 5,
+   "correct": 5,
+   "accuracy": 1.0
+  },
+  "service_account_lockout": {
+   "n": 5,
+   "correct": 5,
+   "accuracy": 1.0
+  },
+  "software_deployment": {
+   "n": 4,
+   "correct": 4,
+   "accuracy": 1.0
+  },
+  "vuln_scanner": {
+   "n": 7,
+   "correct": 7,
+   "accuracy": 1.0
+  }
+ },
+ "features": [
+  "severity",
+  "asset_criticality",
+  "asset_known",
+  "identity_privileged",
+  "identity_service_account",
+  "identity_known",
+  "ti_max_score",
+  "ti_malicious",
+  "n_ti_hits",
+  "off_hours",
+  "recent_alert_count",
+  "n_observables",
+  "n_techniques",
+  "cred_access",
+  "destructive",
+  "cmd_len",
+  "cmd_has_encoded",
+  "cmd_has_lsass",
+  "n_sigma_rematch"
+ ]
+}

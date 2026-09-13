@@ -17,3 +17,5 @@ dist/
 web/node_modules/
 web/.next/
 # results are committed deliberately, not ignored
+training/triage/artifacts/
+training/triage/data/

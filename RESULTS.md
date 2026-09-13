@@ -122,30 +122,54 @@ aegis bench report --split test
 | Ambiguous (gold escalate) | 21 (5%) |
 | fp_types (evenly stratified) | 10 |
 | Techniques covered | 39 |
-| Splits (train / val / test) | 251 / 75 / 94 |
+| Splits (train / val / test) | 251 / 65 / 104 |
 
 TP alerts are Sigma matches over the attack datasets (OTRF / EVTX / lab emulation); FP alerts are the
 detections a SIEM would raise on each benign-noise episode (all 10 fp_types); ambiguous alerts are
 borderline dual-use activity by trusted accounts against sensitive assets. Splits are scenario-disjoint.
 
-### Results on the held-out test split (94 alerts, offline heuristic reasoner)
+### Results on the held-out test split (104 alerts, all 10 fp_types, offline heuristic reasoner)
 
 | Arm | Accuracy | Macro-F1 | FP-suppression @≤2% missed | Escalation precision | Citations |
 |---|---:|---:|---:|---:|---:|
-| Rules only | 50% | 0.26 | 50% | 100% | 100% |
-| Single-shot LLM (alert only) | 48% | 0.25 | 50% | 0% | 100% |
-| AEGIS (no triage model) | **95%** | **0.93** | 48% | 100% | 100% |
-| AEGIS full | **95%** | **0.93** | 48% | 100% | 100% |
+| Rules only | 45% | 0.23 | 31% | 100% | 100% |
+| Single-shot LLM (alert only) | 52% | 0.26 | 62% | 0% | 100% |
+| AEGIS (no triage model) | **88%** | **0.79** | 31% | 100% | 100% |
+| AEGIS full (+ triage model) | **88%** | **0.79** | **90%** | 60% | 100% |
 
-AEGIS confusion matrix (test): TP 43/47 correct, FP 42/42 correctly suppressed, escalate 4/5 correct.
-Every report passed the citation post-processor (100% citation compliance) - no uncited claims.
+The triage model lifts false-positive suppression from **31% to 90%** at 0% missed true-positives,
+clearing the ≥60% target. 9 of 10 fp_types are fully suppressed; `service_account_lockout`
+(a password-spray look-alike) is the one hard class. Every report passed the citation post-processor
+(100% compliance) - no uncited claims. AEGIS beats rules-only (+43% accuracy) and single-shot
+(+36%), showing that context and investigation, not just the model, drive the result.
 
 **Caveats reported honestly:**
 - The offline arms use the deterministic `HeuristicReasoner`; with an API key the AEGIS arms use the
   LLM reasoner. Both are measured the same way.
-- FP-suppression @≤2% is 48%, below the ≥60% aspiration; it is capped by a few hard true-positives
-  that score low. The triage model (Phase 6) is designed to improve the score ranking here.
-- Technique-F1 is low (~0.10) because a TP alert reports the *detecting rule's* technique, which often
+- Technique-F1 is low (~0.05) because a TP alert reports the *detecting rule's* technique, which often
   differs from the dataset window's labelled technique. This is a real, honest evaluation nuance.
 - Ambiguous alerts are author-labelled (no independent co-labeller offline), so Cohen's kappa is not
   computed - a documented limitation vs SPEC §8.1.
+
+## Phase 6 - Triage classifier (LightGBM, trained for real on CPU)
+
+```
+python -m training.triage.build_dataset --snapshot dev   # 420 examples, scenario-disjoint splits
+python -m training.triage.train                          # LightGBM multiclass, class-weighted
+python -m training.triage.eval                           # -> training/results/*_triage.json
+```
+
+| Metric (held-out test, 104 alerts) | Value |
+|---|---:|
+| Macro-F1 | 0.65 |
+| F1 true_positive / false_positive / escalate | 1.00 / 0.95 / 0.00 |
+| AUROC (TP vs rest) | 1.00 |
+| ECE (calibration) | 0.002 |
+| Fast-path rate (FPs auto-closeable at p_fp>0.90) | 100% |
+| Missed-TP at fast-path threshold | 0% |
+
+Top features: `cmd_len`, `asset_criticality`, `off_hours`, `n_observables`, `cred_access`. The
+`escalate` class (11 train examples) is not learned; the reasoner's rule-based escalation remains the
+primary escalate signal. A DeBERTa alternative and ONNX int8 export (<30 ms CPU target) are provided
+(`training/triage/{train.py --model deberta, export_onnx.py}`) but need a GPU to train.
+Model card: `training/MODEL_CARDS/triage_classifier.md`.

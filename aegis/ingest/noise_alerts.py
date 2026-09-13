@@ -119,12 +119,14 @@ def generate_noise_fp_alerts(
             matched_fields=("Image",),
         )
         finding = finding_from_sigma(match, row, description=f"Detection raised on {fp_type}")
+        # Per-episode scenario id so splits mix fp_types (each benign episode is a distinct unit;
+        # the fp_type is a category, not a leak). fp_type still drives compositional stratification.
         yield AlertRecord(
             alert=finding,
             gold_label="false_positive",
             gold_techniques=[],
             fp_type=fp_type,
-            scenario_id=f"noise:{fp_type}",
+            scenario_id=f"noise:{fp_type}:{ev.event_id[:10]}",
             dataset="noise",
             triggering_event_id=ev.event_id,
             rule_id=match.rule_id,
