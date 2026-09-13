@@ -18,10 +18,10 @@ def _p(gold: str, pred: str, score: float, fp_type: str | None = None) -> Predic
 
 
 def test_fp_suppression_at_2pct_missed() -> None:
-    # 10 TPs scoring high, 10 FPs scoring low -> at a threshold below the lowest TP, all FPs suppress.
+    # 10 TPs high, 10 FPs low -> threshold below the lowest TP suppresses all FPs.
     preds = [_p("true_positive", "true_positive", 0.9) for _ in range(10)]
     preds += [_p("false_positive", "false_positive", 0.1) for _ in range(10)]
-    supp, thr, missed, roc = _fp_suppression(preds)
+    supp, _thr, missed, roc = _fp_suppression(preds)
     assert supp == 1.0
     assert missed <= 0.02
     assert roc
@@ -33,7 +33,7 @@ def test_fp_suppression_penalised_by_low_scoring_tp() -> None:
     preds = [_p("true_positive", "true_positive", 0.9) for _ in range(48)]
     preds += [_p("true_positive", "false_positive", 0.05) for _ in range(2)]
     preds += [_p("false_positive", "false_positive", 0.1) for _ in range(50)]
-    supp, thr, missed, _ = _fp_suppression(preds)
+    supp, _thr, missed, _ = _fp_suppression(preds)
     assert missed <= 0.02
     assert supp < 1.0  # the one low TP caps suppression
 
