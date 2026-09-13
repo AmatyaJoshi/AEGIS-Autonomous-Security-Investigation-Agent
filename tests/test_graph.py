@@ -109,7 +109,7 @@ def test_malicious_alert_true_positive(snapshot: Path) -> None:
         "event_action": "process_created",
         "event_channel": "Microsoft-Windows-Sysmon/Operational",
         "host_name": "WS01",
-        "user_name": "adm.patel",
+        "user_name": "intruder",
         "process_name": "mk.exe",
         "process_command_line": "mk.exe sekurlsa::logonpasswords",
         "raw": "{}",

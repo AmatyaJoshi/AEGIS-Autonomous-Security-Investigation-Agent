@@ -189,6 +189,9 @@ class Signals:
     p_malicious: float
     reasons: list[str] = field(default_factory=list)
     benign_legitimizers: list[str] = field(default_factory=list)
+    # A legitimizing identity context (owner/privileged/dev/service, known to the org) that, when it
+    # coincides with offensive tooling, marks a genuine standoff worth a human's eyes.
+    privileged_context: str | None = None
 
 
 class HeuristicReasoner:
@@ -398,7 +401,14 @@ class HeuristicReasoner:
         }
         if len(distinct_procs & suspicious) >= 2:
             found.append("multiple living-off-the-land binaries in the same window")
-        if not context.identity.known and context.asset.criticality in ("critical", "high"):
+        user = (context.identity.user or "").lower()
+        is_system = user in ("system", "local service", "network service", "localsystem", "")
+        if (
+            not context.identity.known
+            and not context.identity.service_account
+            and not is_system
+            and context.asset.criticality in ("critical", "high")
+        ):
             found.append("unknown account acting on a high-value asset")
         return list(dict.fromkeys(found))[:4]
 
@@ -413,10 +423,27 @@ class HeuristicReasoner:
         # Escalate only for a genuine standoff: offensive AND benign evidence both present, or an
         # unresolved unknown account on a high-value asset. Otherwise commit to TP/FP.
         strong_offensive = any("offensive" in r for r in sig.reasons)
-        conflict = strong_offensive and bool(sig.benign_legitimizers)
+        idn = context.identity
+        human_privileged = sig.privileged_context is not None and not idn.service_account
+        benign_hit = any("administrative task" in x for x in sig.benign_legitimizers)
+        sensitive_tech = bool(
+            set(alert.technique_ids)
+            & (
+                CREDENTIAL_ACCESS
+                | DESTRUCTIVE
+                | {"T1021", "T1021.001", "T1021.002", "T1021.006", "T1569", "T1569.002", "T1570"}
+            )
+        )
+        high_value = context.asset.criticality in ("critical", "high")
+        # Standoff (-> escalate): offensive tooling from a known privileged/owner context, or a
+        # privileged/owner account running a sensitive (cred-access / lateral / destructive) action
+        # on a high-value asset that is not an obviously routine command.
+        conflict = (strong_offensive and sig.privileged_context is not None) or (
+            human_privileged and high_value and sensitive_tech and not benign_hit
+        )
         unknown_high = (
-            context.identity.user is not None
-            and not context.identity.known
+            idn.user is not None
+            and not idn.known
             and context.asset.criticality in ("critical", "high")
             and not sig.benign_legitimizers
         )
@@ -444,7 +471,16 @@ class HeuristicReasoner:
                 techniques=techniques if p > 0.35 else [],
                 rationale=self._rationale("false_positive", sig),
             )
-        # Middle band with no standoff -> lean on the rule (it fired) toward TP.
+        # Middle band (0.42 < p < 0.55): lean on the benign context if there is any, else on the
+        # rule (it fired) toward TP.
+        if sig.benign_legitimizers:
+            return VerdictOut(
+                label="false_positive",
+                confidence=round(0.5 + (0.55 - p), 3),
+                severity="low",
+                techniques=[],
+                rationale=self._rationale("false_positive", sig),
+            )
         return VerdictOut(
             label="true_positive",
             confidence=round(0.45 + p / 3, 3),
@@ -522,28 +558,55 @@ class HeuristicReasoner:
                 p -= 0.12
 
         idn = context.identity
-        # Service/admin accounts legitimise ONLY benign-looking activity, never offensive tooling.
-        if idn.service_account and benign_hit and not offensive_hit:
-            p -= 0.12
-            legit.append(f"known {idn.service or 'service'} account doing routine work")
+        user = (idn.user or "").lower()
+        owner = (context.asset.owner or "").lower()
+        is_system = user in ("system", "local service", "network service", "localsystem", "")
+
+        # A known privileged / owner / developer identity is a legitimizing *context*. When the
+        # activity is non-offensive it discounts maliciousness; when it coincides with offensive
+        # tooling it is not exculpatory but marks a genuine standoff (insider vs compromise).
+        privileged_context: str | None = None
+        if owner and user and user == owner:
+            privileged_context = f"{idn.user} owns {context.asset.host}"
+        elif idn.known and idn.privileged:
+            privileged_context = f"{idn.user} is a privileged account"
+        elif idn.role == "software-engineer" and idn.known:
+            privileged_context = f"{idn.user} is a known developer"
+        elif idn.service_account:
+            privileged_context = f"{idn.user} is a service account"
+
+        # Owner self-service: the operator owns the asset they are acting on. For non-offensive
+        # activity this is a strong benign signal (someone working on their own machine).
+        if owner and user and user == owner and not offensive_hit:
+            p -= 0.24
+            legit.append(f"{idn.user} owns {context.asset.host}; self-service activity")
+        # SYSTEM / service accounts doing non-offensive work is routine (scheduled tasks, agents).
+        if (is_system or idn.service_account) and not offensive_hit:
+            p -= 0.18
+            legit.append("system/service account performing routine automation")
+        # Known developer on their own dev workstation using dual-use tooling (not against LSASS).
         if (
             idn.role == "software-engineer"
             and idn.known
             and not offensive_hit
-            and any(t in cmd_l for t in ("procdump", "code.exe", "\\projects\\", "\\dumps\\"))
+            and context.asset.criticality in ("low", "medium")
         ):
-            p -= 0.10
-            legit.append("developer using debugging tools on their own host")
+            p -= 0.16
+            legit.append("developer using dual-use tools on a development host")
+        # Only an UNKNOWN human account (not SYSTEM/service) on a high-value host is suspicious.
         if (
             not idn.known
             and not idn.service_account
+            and not is_system
             and context.asset.criticality in ("critical", "high")
-            and offensive_hit
         ):
-            p += 0.08
+            p += 0.10 if offensive_hit else 0.04
             reasons.append("unrecognized account on high-value host")
         return Signals(
-            p_malicious=max(0.02, min(0.98, p)), reasons=reasons, benign_legitimizers=legit
+            p_malicious=max(0.02, min(0.98, p)),
+            reasons=reasons,
+            benign_legitimizers=legit,
+            privileged_context=privileged_context,
         )
 
     def _severity(self, alert: DetectionFinding, context: ContextBundle, p: float) -> str:

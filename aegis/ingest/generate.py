@@ -119,7 +119,7 @@ def generate_alerts(
     rng.shuffle(rows)
     try:
         for event in rows:
-            ev: dict[str, Any] = {str(k): (None if _is_nan(v) else v) for k, v in event.items()}
+            ev: dict[str, Any] = {str(k): _pyval(v) for k, v in event.items()}
             matches = rs.match_event(ev)
             if not matches:
                 continue
@@ -148,6 +148,22 @@ def _level_rank(level: str) -> int:
 
 def _is_nan(v: Any) -> bool:
     return isinstance(v, float) and v != v
+
+
+def _pyval(v: Any) -> Any:
+    """Coerce pandas/numpy values to native Python (arrays->list, np scalars->py, NaN->None)."""
+    if v is None:
+        return None
+    if hasattr(v, "tolist") and not isinstance(v, (str, bytes)):
+        try:
+            v = v.tolist()
+        except (ValueError, TypeError):
+            return v
+    if isinstance(v, float) and v != v:
+        return None
+    if isinstance(v, list):
+        return [x for x in v if not (isinstance(x, float) and x != x)]
+    return v
 
 
 def _ts(v: Any) -> datetime | None:

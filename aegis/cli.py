@@ -143,9 +143,106 @@ def ingest(source: str = typer.Option("elastic"), path: Path | None = None) -> N
 
 
 @app.command()
-def bench(action: str = typer.Argument(..., help="build | run | score | small")) -> None:
-    """Build, run and score the benchmark (Phase 5)."""
-    _not_yet("5")
+def bench(
+    action: str = typer.Argument(..., help="prepare | build | run | score | report | all | small"),
+    snapshot: str = typer.Option("dev"),
+    split: str = typer.Option("test", help="split to run/score (train|val|test|all)"),
+    total: int = typer.Option(420, help="benchmark size for build"),
+    triage: Path | None = typer.Option(None, help="triage model path for aegis_full arm"),
+) -> None:
+    """Build, run and score the benchmark (SPEC §8)."""
+    import datetime as _dt
+    import json as _json
+
+    from bench.build_benchmark import build_benchmark
+    from bench.report import render_report
+    from bench.run_bench import ARMS, run_benchmark
+    from bench.score import score_all
+
+    settings = get_settings()
+    snap = settings.data.snapshots / snapshot
+    bench_dir = settings.data.root / "benchmark"
+    results_dir = bench_dir / "results"
+    real_split = None if split == "all" else split
+
+    def _prepare() -> None:
+        from bench.prepare import prepare_bench_events
+
+        rep = prepare_bench_events(settings.data.root)
+        console.print_json(_json.dumps(rep))
+        console.print(
+            "[cyan]Now run `aegis lab snapshot --name "
+            f"{snapshot}` to fold these events into the snapshot.[/]"
+        )
+
+    def _build() -> None:
+        console.print_json(_json.dumps(build_benchmark(snap, bench_dir, total=total)))
+
+    def _run() -> None:
+        tri = None
+        if triage:
+            from aegis.models.triage import load_triage
+
+            tri = load_triage(triage)
+        console.print_json(
+            _json.dumps(
+                run_benchmark(snap, bench_dir, results_dir, split=real_split, triage_model=tri)
+            )
+        )
+
+    def _score_and_report() -> None:
+        scores = score_all(results_dir, ARMS)
+        (results_dir / "scores.json").write_text(_json.dumps(scores, indent=1), encoding="utf-8")
+        n = next((s["n"] for s in scores.values()), 0)
+        meta = {
+            "split": split,
+            "n": n,
+            "generated": _dt.datetime.now().isoformat(timespec="seconds"),
+        }
+        try:
+            frozen = _json.loads((Path("bench/manifests/benchmark_v1.frozen.json")).read_text())
+            meta["manifest_hash"] = frozen.get("manifest_hash")
+        except FileNotFoundError:
+            pass
+        out = render_report(scores, meta, results_dir / "report.html", roc_dir=results_dir)
+        console.print(f"[green]report -> {out}[/]")
+        table = Table(title=f"Benchmark ({split})")
+        for c in ("arm", "acc", "F1", "FPsupp@2%", "escP", "techF1", "cite"):
+            table.add_column(c)
+        for arm in ARMS:
+            if arm in scores:
+                s = scores[arm]
+                table.add_row(
+                    arm,
+                    f"{s['accuracy']:.2f}",
+                    f"{s['macro_f1']:.2f}",
+                    f"{s['fp_suppression_at_2pct_missed']:.2f}",
+                    f"{s['escalation_precision']:.2f}",
+                    f"{s['technique_f1']:.2f}",
+                    f"{s['citation_rate']:.2f}",
+                )
+        console.print(table)
+
+    if action == "prepare":
+        _prepare()
+    elif action == "build":
+        _build()
+    elif action == "run":
+        _run()
+    elif action in ("score", "report"):
+        _score_and_report()
+    elif action == "all":
+        _build()
+        _run()
+        _score_and_report()
+    elif action == "small":
+        global_total = 60
+        console.print_json(_json.dumps(build_benchmark(snap, bench_dir, total=global_total)))
+        run_benchmark(snap, bench_dir, results_dir, split="test")
+        _score_and_report()
+    else:
+        console.print(f"[red]unknown action {action}[/]")
+        raise typer.Exit(2)
 
 
 @app.command()

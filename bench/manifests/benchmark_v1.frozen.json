@@ -1,0 +1,3392 @@
+{
+ "version": "v1",
+ "created": "2026-09-13T21:40:47.526200+00:00",
+ "seed": 1337,
+ "total": 420,
+ "composition": {
+  "true_positive": 189,
+  "false_positive": 210,
+  "escalate": 21
+ },
+ "fp_types": {
+  "scheduled_task_maintenance": 21,
+  "backup_agent": 21,
+  "dev_procdump": 21,
+  "helpdesk_remote_support": 21,
+  "admin_powershell": 21,
+  "vuln_scanner": 21,
+  "redteam_tool_name_benign": 21,
+  "software_deployment": 21,
+  "service_account_lockout": 21,
+  "psexec_admin": 21
+ },
+ "splits": {
+  "train": 251,
+  "test": 94,
+  "val": 75
+ },
+ "tactics_covered": 39,
+ "manifest_hash": "afda49db3d3dc4b8565294e252e9ffa662e3485641d54c0b809164499dbf5797",
+ "entries": [
+  {
+   "alert_id": "al-e95d4cc42889b429abba",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8d52ef29ece90bb1",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-fe5d8cd7ebc7735ff571",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "3502604b13173d7d",
+   "scenario_id": "otrf:SDWIN-190319131123"
+  },
+  {
+   "alert_id": "al-f741c3f42eec751376b1",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "8c6e1553a1b29a44",
+   "scenario_id": "otrf:SDWIN-200914080546"
+  },
+  {
+   "alert_id": "al-81de5c83e781fdd1965d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "cc0f63521171e73f",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-dc20c8dd4b878d2823c4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "d9e62c4cdda90c8a",
+   "scenario_id": "otrf:SDWIN-190319020147"
+  },
+  {
+   "alert_id": "al-b400c7e94a05b10bc250",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "1ab4bfdfbc6604d9",
+   "scenario_id": "otrf:SDWIN-200806115603"
+  },
+  {
+   "alert_id": "al-345920ef5554fbd5330a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "356b200417931380",
+   "scenario_id": "evtx:Execution/susp_explorer_exec"
+  },
+  {
+   "alert_id": "al-5ef46b766a9729f943af",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a1685351d6eba63e",
+   "scenario_id": "otrf:SDWIN-190319145126"
+  },
+  {
+   "alert_id": "al-0161e0e2d24c3b354edc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "4b63b2a0dff71a43",
+   "scenario_id": "otrf:SDWIN-190518221344"
+  },
+  {
+   "alert_id": "al-ba8df762d2406ae1bab9",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "362cd639789b1c87",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-f808b0c50f2d83490992",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "eec1a065ddd15a49",
+   "scenario_id": "evtx:Credential Access/sysmon_10_11_outlfank_dumpert_and_andrewspecial_memdump"
+  },
+  {
+   "alert_id": "al-f0d158ea18962857e445",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "38972ab8f1fb4c68",
+   "scenario_id": "otrf:SDWIN-190625103712"
+  },
+  {
+   "alert_id": "al-4ec7bf320cb8b087188b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e9df72cd1fa4a78a",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-73bba3474c3cc594889c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "821a3f73e33459bb",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-0ffe5c0706c8cdb86ae4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "4de28261c518ccf6",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-a204ad782e5b00f1d747",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "9296ceabc88ab85a",
+   "scenario_id": "otrf:SDWIN-230720004300"
+  },
+  {
+   "alert_id": "al-3684a6d495833eea2939",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "c2616159308dcfd5",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-0abf2092a51aa33f3c36",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "d7216f4727d4c54a",
+   "scenario_id": "otrf:SDWIN-200914080546"
+  },
+  {
+   "alert_id": "al-bef7287d4f65b713b7e2",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "d10d24c931d0a2df",
+   "scenario_id": "otrf:SDWIN-201009173318"
+  },
+  {
+   "alert_id": "al-1f8e218e84aae96bd02d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "e5b71a2212d02a9c",
+   "scenario_id": "otrf:SDWIN-200806030120"
+  },
+  {
+   "alert_id": "al-10054b5e40c8cd5ab12c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "eec0d183e3faa37d",
+   "scenario_id": "otrf:SDWIN-190319020147"
+  },
+  {
+   "alert_id": "al-e33ba8b8c802c1d3ca9a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a0da6bd6bc0bc3df",
+   "scenario_id": "evtx:Privilege Escalation/samaccount_spoofing_CVE-2021-42287_CVE-2021-42278_DC_securitylogs"
+  },
+  {
+   "alert_id": "al-0b68810d288388353b5a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "f33c6714b5868fe6",
+   "scenario_id": "otrf:SDWIN-200805034820"
+  },
+  {
+   "alert_id": "al-81a4b2db0a8fedd32153",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "5f59afb6d53144ba",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-71a2b816a0866241b4ee",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "538691324c353942",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-fbab858d0b38ac4f288e",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8fb68fa6b7b1441c",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-cff7dda02e2e4810b272",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "cd25b203ee6071a1",
+   "scenario_id": "otrf:SDWIN-201009183000"
+  },
+  {
+   "alert_id": "al-b9dc356aaea90157497d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e4233cf33d24d889",
+   "scenario_id": "otrf:SDWIN-200806035621"
+  },
+  {
+   "alert_id": "al-419ec1a6b76257d32af4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "75f60ca217c30f55",
+   "scenario_id": "otrf:SDWIN-200921230246"
+  },
+  {
+   "alert_id": "al-0efe380974b62b8231ef",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "840d8f63e3695caf",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-67e9a0c3f28fc4c73f72",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "73ed8729bf3026b2",
+   "scenario_id": "otrf:SDWIN-230718151900"
+  },
+  {
+   "alert_id": "al-2868705caeef6b269d6d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "c1469453f85a10be",
+   "scenario_id": "otrf:SDWIN-190625103712"
+  },
+  {
+   "alert_id": "al-a39e7132d2f9d25c9f06",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "636e069188f1dccc",
+   "scenario_id": "otrf:SDWIN-200807103913"
+  },
+  {
+   "alert_id": "al-1c2dff60207a77a8ffdb",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "0ac23a3925cd8199",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-c003b0e6c1e32b15734c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "4eeb87b35dc522fa",
+   "scenario_id": "evtx:Credential Access/remote_pwd_reset_rpc_mimikatz_postzerologon_target_DC"
+  },
+  {
+   "alert_id": "al-1d6874c375aee5f57a95",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "32683c4f9b03c841",
+   "scenario_id": "evtx:Privilege Escalation/Sysmon_UACME_56"
+  },
+  {
+   "alert_id": "al-9308c3e9bcf42583e679",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "16afc5a513a1887a",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-4698cd6669d9ff97a2b9",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "021e98170501bacb",
+   "scenario_id": "otrf:SDWIN-190301125905"
+  },
+  {
+   "alert_id": "al-d0b05c321771ba81e62d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "43f5c670f8c1f7f0",
+   "scenario_id": "otrf:SDWIN-200724174200"
+  },
+  {
+   "alert_id": "al-f362fd34d89cc4f2cac7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "d76962a5ada857ac",
+   "scenario_id": "otrf:SDWIN-200806035621"
+  },
+  {
+   "alert_id": "al-e2b4a7a31d4ac5663e7f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "64ea1ec4ea6cdfcc",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-472b25d025cd0f8367c4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "263ce8a230b35f1d",
+   "scenario_id": "otrf:SDWIN-190301174830"
+  },
+  {
+   "alert_id": "al-119b5d24360c9571a746",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "43879970ba361b0e",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-9c16006b610dd334b004",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8400582522294b96",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-e1b921e4b32f82bb6893",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "25a9bc626b43bdbf",
+   "scenario_id": "otrf:SDWIN-201009183000"
+  },
+  {
+   "alert_id": "al-439942adc2ab5ee4b60d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "b450ce9d45f08482",
+   "scenario_id": "otrf:SDWIN-200921001437"
+  },
+  {
+   "alert_id": "al-bab66d51a9093a8513df",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "1e0a7ca899347ab3",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-ba20e73c8caa48bbe980",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "5c6de967f24d7574",
+   "scenario_id": "otrf:SDWIN-200917174542"
+  },
+  {
+   "alert_id": "al-4bc6fa42edb02ba7e0de",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "88c4cbc1a95618a7",
+   "scenario_id": "evtx:AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01"
+  },
+  {
+   "alert_id": "al-ea9c6cdaa8ef4bfb9972",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "da7c5277303a508f",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-6bfc8cdacf9f4d10c2d4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "c95473105f28f036",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-c05fc8e57826fb4680e6",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e46a660eafcfd549",
+   "scenario_id": "otrf:SDWIN-200721232741"
+  },
+  {
+   "alert_id": "al-5cc3089fd4c9343e7a2c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "9bdd2f32f7b483a7",
+   "scenario_id": "otrf:SDWIN-201026235835"
+  },
+  {
+   "alert_id": "al-8252fb5911c908e177d3",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "db19f1ab73f495e4",
+   "scenario_id": "otrf:SDWIN-201009183000"
+  },
+  {
+   "alert_id": "al-4b5b85c94e1dcb708e12",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "a79e91e5ae5c83b8",
+   "scenario_id": "evtx:AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01"
+  },
+  {
+   "alert_id": "al-c920410857ddeafd2af6",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "ce11530326b36d47",
+   "scenario_id": "otrf:SDWIN-190518221344"
+  },
+  {
+   "alert_id": "al-0c4a4952ea524c9d9cd3",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "cd8b50ef7ef11ef9",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-28df3176ab27e8a251d5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "feefd48238de8c3e",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-9c92485c6208c799acce",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "d7d93ad08b354d50",
+   "scenario_id": "otrf:SDWIN-210314014019"
+  },
+  {
+   "alert_id": "al-cc10277bf07f925f6425",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "1a4a856efda5bfb5",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-f55cde7459cc45175822",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "2f44365e15fee711",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-fde7940c32ece3733205",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "abbc38700846a8a7",
+   "scenario_id": "otrf:SDWIN-201012183248"
+  },
+  {
+   "alert_id": "al-c5a0f5349af0f4de8932",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "02bd7dee47e52424",
+   "scenario_id": "evtx:AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01"
+  },
+  {
+   "alert_id": "al-e4132b3206586aecc384",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8fde1ba96bab6f79",
+   "scenario_id": "evtx:Privilege Escalation/privesc_unquoted_svc_sysmon_1_11"
+  },
+  {
+   "alert_id": "al-fae8399e4a973047cf7b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "dc5328a42d161a16",
+   "scenario_id": "otrf:SDWIN-190518200432"
+  },
+  {
+   "alert_id": "al-3d7c7dd368d37ebb978a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "4570fd03c7565a11",
+   "scenario_id": "otrf:SDWIN-200806035621"
+  },
+  {
+   "alert_id": "al-b7ffc491bf8b95eed30a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8d6c5356e93324be",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-592974a445afdbad0c7f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "5ba63b89f8e40c7b",
+   "scenario_id": "otrf:SDWIN-190518210125"
+  },
+  {
+   "alert_id": "al-a2ed1b86989fd5b6f23f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "4f4984fd687c4502",
+   "scenario_id": "otrf:SDWIN-201012183248"
+  },
+  {
+   "alert_id": "al-d4874909909969313005",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "3a4feebd67f8c578",
+   "scenario_id": "evtx:Privilege Escalation/Sysmon_UACME_33"
+  },
+  {
+   "alert_id": "al-ad3ccc253535893887f2",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "043460a3433501c0",
+   "scenario_id": "otrf:SDWIN-201023031210"
+  },
+  {
+   "alert_id": "al-3319122c1dd2d2eb7fab",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "cb9de2df68f1d448",
+   "scenario_id": "otrf:SDWIN-200806030120"
+  },
+  {
+   "alert_id": "al-ba944bafb767bbceecfb",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a182d1b66507666f",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-1273174164f0893d0747",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "53dfd268bb2940ca",
+   "scenario_id": "otrf:SDWIN-200921230246"
+  },
+  {
+   "alert_id": "al-09cf5513b27463b66d45",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "7876eaded13c5d4e",
+   "scenario_id": "otrf:SDWIN-190319024742"
+  },
+  {
+   "alert_id": "al-0c4c4e41ad488f4ec9f4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "1c4c5b0b491beff0",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-831af77647a507dd10af",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "b5ae32c96e8a4fcc",
+   "scenario_id": "otrf:SDWIN-200921001437"
+  },
+  {
+   "alert_id": "al-078d8914c63fa38f68bf",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "58b946fe9a382cd1",
+   "scenario_id": "otrf:SDWIN-190518221344"
+  },
+  {
+   "alert_id": "al-59571c3fb0435f8b5aca",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "0cfa519e4357629e",
+   "scenario_id": "otrf:SDWIN-190319131123"
+  },
+  {
+   "alert_id": "al-1f727e39a704d4703e22",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "afc060c3966f71ba",
+   "scenario_id": "otrf:SDWIN-201219075059"
+  },
+  {
+   "alert_id": "al-5569e9d0ad892ecfecfd",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "934e07fc07c56811",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-7462107fe6b97f2d62fa",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "81d3ccae365597d5",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-18fe6a4502069acfcffc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "478173ca95ce185d",
+   "scenario_id": "evtx:Credential Access/tutto_malseclogon"
+  },
+  {
+   "alert_id": "al-0fecb81ed8162d1511f2",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "be2f9bf1992b209c",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-108ed2d22e935543983f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "60a9cd778efb86fe",
+   "scenario_id": "otrf:SDWIN-210314014019"
+  },
+  {
+   "alert_id": "al-06f095de00cfb00ee19c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "42713b16e8432fef",
+   "scenario_id": "otrf:SDWIN-190301125905"
+  },
+  {
+   "alert_id": "al-bd15659792356876fc3f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "8609a94eefcd2133",
+   "scenario_id": "otrf:SDWIN-190518201207"
+  },
+  {
+   "alert_id": "al-b097db0fb328570699b1",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8441b4622e47c4d0",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-8caf28c2d4853486e15b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8263e8abda14a276",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-4ecd2426bfa99e5c6f1d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "bb18d156f131f33e",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-fd18823440e59e845b20",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e94c7720a96c1498",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-3f47ab9b1788bc110412",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "abb9bd3cf231e4d1",
+   "scenario_id": "otrf:SDWIN-201022002145"
+  },
+  {
+   "alert_id": "al-a75e5d0e3e9574847d8c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "f85ae4cdbf498f1f",
+   "scenario_id": "evtx:Lateral Movement/remote task update 4624 4702 same logonid"
+  },
+  {
+   "alert_id": "al-d5190324439e0208c4af",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "706f48946c58108e",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-071259e9298c673a4641",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "7a44f6521ad87248",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-73987a312c8e007a9322",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "49c838aa5c3241cd",
+   "scenario_id": "otrf:SDWIN-201012183248"
+  },
+  {
+   "alert_id": "al-56ca8f896aac320df17c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "abd12c30eab52b7e",
+   "scenario_id": "otrf:SDWIN-210314014019"
+  },
+  {
+   "alert_id": "al-cfab9b45bc60454cb144",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "e79e090d8ba1d1e0",
+   "scenario_id": "otrf:SDWIN-190518235535"
+  },
+  {
+   "alert_id": "al-028d4e97c1a0dcd235a7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "2a494bc2f16a01a0",
+   "scenario_id": "evtx:Privilege Escalation/samaccount_spoofing_CVE-2021-42287_CVE-2021-42278_DC_securitylogs"
+  },
+  {
+   "alert_id": "al-285d9831e34e67bc2a81",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "284a4e557e662508",
+   "scenario_id": "evtx:Privilege Escalation/samaccount_spoofing_CVE-2021-42287_CVE-2021-42278_DC_securitylogs"
+  },
+  {
+   "alert_id": "al-bfbe6d15b8a43f5ba0fd",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "e48469330162c84b",
+   "scenario_id": "evtx:Lateral Movement/LM_WMI_4624_4688_TargetHost"
+  },
+  {
+   "alert_id": "al-74cef8caba0e86828bc3",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "6bdad6d2861bba33",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-756f4f106fd7c379c70c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a544dc06545a8a81",
+   "scenario_id": "otrf:SDWIN-200806022635"
+  },
+  {
+   "alert_id": "al-8952db5e3cf1947ee0bc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "086c6c9864ccce1b",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-0d0c83745c0272829acc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "3c73858afef1d4c7",
+   "scenario_id": "otrf:SDWIN-210314014019"
+  },
+  {
+   "alert_id": "al-cded825bd5a637ca4ab5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "98aa54ee5d7b742e",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-6362ed3a27e19a00b148",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "06d922fd78255d16",
+   "scenario_id": "otrf:SDWIN-200914080546"
+  },
+  {
+   "alert_id": "al-320d9b6eda9bb212291f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "24fc206e2d784f5c",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-cdf8a6c49a64038fd462",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "1bedf59d113f16c0",
+   "scenario_id": "otrf:SDWIN-190518224039"
+  },
+  {
+   "alert_id": "al-047c68e8814b995f5f8a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "cd009e1e2c3470b8",
+   "scenario_id": "otrf:SDWIN-190518221344"
+  },
+  {
+   "alert_id": "al-5ccb4c2ff4a4b9efa784",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "64963769a6dc77f4",
+   "scenario_id": "otrf:SDWIN-191027223020"
+  },
+  {
+   "alert_id": "al-e17f11463f39aa61b4d4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "f028d071403f5ec9",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-f0d225fcd6b9a0f8949f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "71d902f9afdd28b8",
+   "scenario_id": "evtx:Privilege Escalation/Sysmon_13_1_UAC_Bypass_EventVwrBypass"
+  },
+  {
+   "alert_id": "al-c69a9a952f78c8093006",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "b03a6f407ee2895b",
+   "scenario_id": "otrf:SDWIN-190319021158"
+  },
+  {
+   "alert_id": "al-db671264d010a0df09c0",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "5ae2ef1c24a7791c",
+   "scenario_id": "otrf:SDWIN-190301125905"
+  },
+  {
+   "alert_id": "al-fc6225f3edd1eab678dc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "7898b5ffe1393c8c",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-d3e181570ec30497f703",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "893cafc09ed415d2",
+   "scenario_id": "otrf:SDWIN-201019033054"
+  },
+  {
+   "alert_id": "al-153d3e1865be710296eb",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "aefa0224c9294c13",
+   "scenario_id": "evtx:Privilege Escalation/privexchange_dirkjan"
+  },
+  {
+   "alert_id": "al-bc0a42fa5c59b2c4a6c5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "d9d2a32b75b37982",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-ddbe038a52ce097f40a7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "056acaec7dfc6d9e",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-b22d8842640ed0013836",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e8b4abd7bad2a687",
+   "scenario_id": "otrf:SDWIN-200806035621"
+  },
+  {
+   "alert_id": "al-fc9a0098be75f5733bcd",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "ebee5b63b2dd7ba1",
+   "scenario_id": "otrf:SDWIN-201023023651"
+  },
+  {
+   "alert_id": "al-462350016b96f23ef33d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "3ee90515da82f1e7",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-06d9fc51c7d9ab492475",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "959c8d20a1df71dc",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-4619c6de2086593a07a6",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "a08877a3cc00fb02",
+   "scenario_id": "otrf:SDWIN-200806030120"
+  },
+  {
+   "alert_id": "al-370a89aa0704f62fc2ed",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "b4f48671fa940d9e",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-915e2184f2728f2a19e1",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a1d36da10b975591",
+   "scenario_id": "otrf:SDWIN-200806022635"
+  },
+  {
+   "alert_id": "al-0a27ae83590d9eba8b57",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "485a320050dafca2",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-09152f39373352a57fec",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a29041f03798c986",
+   "scenario_id": "otrf:SDWIN-190519005224"
+  },
+  {
+   "alert_id": "al-8c6f96150bcef2f5e34b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "28d4a0869f335fb2",
+   "scenario_id": "otrf:SDWIN-190625103712"
+  },
+  {
+   "alert_id": "al-af25b1c54da038fe673a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "c11aac9bc308a8a7",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-de40e1e513965587656f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "6110ee9d5f8b58a6",
+   "scenario_id": "evtx:Privilege Escalation/sysmon_1_13_11_cmstp_ini_uacbypass"
+  },
+  {
+   "alert_id": "al-38b196bb242622e776b4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "0b0a7fc8330cf3d6",
+   "scenario_id": "otrf:SDWIN-220630130349"
+  },
+  {
+   "alert_id": "al-23e21fef8be570b1fcc0",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "4a4d622ceb2a9461",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-66fa08182447117f2b0c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "94cdb67d3f0761e9",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-d2e6d564e1945121f04b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "947b749f225f91bd",
+   "scenario_id": "otrf:SDWIN-190518211456"
+  },
+  {
+   "alert_id": "al-30edc46f2b7d195fcb3d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "d21e97271b790cde",
+   "scenario_id": "otrf:SDWIN-220630130349"
+  },
+  {
+   "alert_id": "al-ff49eb69058b42e629ca",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "10e53d017663a28a",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-757be7c5338c0ca51698",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "756a95fffe3eb530",
+   "scenario_id": "otrf:SDWIN-200806012009"
+  },
+  {
+   "alert_id": "al-0e6cf3c5e3209d317d0e",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "32dee59fc8e20121",
+   "scenario_id": "otrf:SDWIN-200916232559"
+  },
+  {
+   "alert_id": "al-36f84ba3b03388bed4ad",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "c3e41bfd0268b1c9",
+   "scenario_id": "otrf:SDWIN-200806115603"
+  },
+  {
+   "alert_id": "al-98e67fc226c9ac362574",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "2cad3ce93ee92d07",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-a77f917edd0328f0814c",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "b85ee5bea890d2ba",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-eb8e48c051b3a04c49f7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "7693f4aa7ddd1fea",
+   "scenario_id": "evtx:Privilege Escalation/samaccount_spoofing_CVE-2021-42287_CVE-2021-42278_DC_securitylogs"
+  },
+  {
+   "alert_id": "al-66edcba42ef8e745a831",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "306ef25374d4d32d",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-2cdb5719e39938b252cf",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "c1082ec7dc1f857f",
+   "scenario_id": "otrf:SDWIN-200805020926"
+  },
+  {
+   "alert_id": "al-857f84e707b7c2b4388f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "30d16297b92c9670",
+   "scenario_id": "otrf:SDWIN-200806130039"
+  },
+  {
+   "alert_id": "al-e331343c4be187359e3b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "d47869c3e6b488af",
+   "scenario_id": "otrf:SDWIN-200921001437"
+  },
+  {
+   "alert_id": "al-eb4c483021188c32f0cc",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "66f7a40fde577276",
+   "scenario_id": "otrf:SDWIN-220630130349"
+  },
+  {
+   "alert_id": "al-d97d8ee42603cc6bfeed",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "56b095273c3fc34d",
+   "scenario_id": "otrf:SDWIN-191027223020"
+  },
+  {
+   "alert_id": "al-2a8281d321869c661ef9",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "eb2ccd6fcc1c6db6",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-d205efd47c5d132b8519",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "951c0fe34751cca5",
+   "scenario_id": "otrf:SDWIN-200921001437"
+  },
+  {
+   "alert_id": "al-395d36a481a8a9f143c5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "f9e3461a97b27fdb",
+   "scenario_id": "evtx:Discovery/dicovery_4661_net_group_domain_admins_target"
+  },
+  {
+   "alert_id": "al-db23668ef5c4a4dddd42",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "401d19c992df4264",
+   "scenario_id": "otrf:SDWIN-190518211052"
+  },
+  {
+   "alert_id": "al-02847aca6a7235bd0ecf",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "47247a30e9fdaa4d",
+   "scenario_id": "otrf:SDWIN-220703123711"
+  },
+  {
+   "alert_id": "al-28f96bc6adb1fd3ceda2",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "4c3542da32840bc5",
+   "scenario_id": "otrf:SDWIN-200921230246"
+  },
+  {
+   "alert_id": "al-e9a6dd75d348b6a8b704",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "d30353a47d89a192",
+   "scenario_id": "otrf:SDWIN-190518184306"
+  },
+  {
+   "alert_id": "al-b392558aecfe646a7f9f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "6e238f65b5c544cb",
+   "scenario_id": "otrf:SDWIN-200917174542"
+  },
+  {
+   "alert_id": "al-34066f300bcfa0bd38e7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "c21dc20560dd3059",
+   "scenario_id": "otrf:SDWIN-200806030120"
+  },
+  {
+   "alert_id": "al-1499a9f3a165886535b7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "7386270d1af0a15e",
+   "scenario_id": "otrf:SDWIN-200724174200"
+  },
+  {
+   "alert_id": "al-16b7b71bdd867354573b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8d0445e8380ebb20",
+   "scenario_id": "otrf:SDWIN-190319145126"
+  },
+  {
+   "alert_id": "al-b03206f28e83b9574e10",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "93f5d221887333ba",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-b91c5aa1a2eeb4647706",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e1cb48c50df51c86",
+   "scenario_id": "otrf:SDWIN-200806035621"
+  },
+  {
+   "alert_id": "al-a4f05709df86a2e8fd08",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "814502b63380efe0",
+   "scenario_id": "otrf:SDWIN-190518200432"
+  },
+  {
+   "alert_id": "al-74669cd4ee3bb6c218d5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "f87c09ae68803b06",
+   "scenario_id": "otrf:SDWIN-201022022144"
+  },
+  {
+   "alert_id": "al-808190a8ecd75cec09a4",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "f769057be97f677b",
+   "scenario_id": "otrf:SDWIN-230720004300"
+  },
+  {
+   "alert_id": "al-c36995f35a5b1aa547f5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8e8b0ebb5e9f0c34",
+   "scenario_id": "otrf:SDWIN-201019002900"
+  },
+  {
+   "alert_id": "al-3341af1cf8d7e82f209e",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "01f107daa0848727",
+   "scenario_id": "otrf:SDWIN-220705170038"
+  },
+  {
+   "alert_id": "al-ca6bfc82a1b981a1eeb7",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e7e33c6a652d98b1",
+   "scenario_id": "otrf:SDWIN-190319024742"
+  },
+  {
+   "alert_id": "al-0a9655784607e02bd0e5",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "8e99ef319d734f67",
+   "scenario_id": "otrf:SDWIN-200807103913"
+  },
+  {
+   "alert_id": "al-5e4e18a552d88e702c66",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "8a8afceebd301f8d",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-7caf8baa55014a03029b",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "120131db5eaefb2b",
+   "scenario_id": "evtx:Privilege Escalation/sysmon_11_1_15_WScriptBypassUAC"
+  },
+  {
+   "alert_id": "al-0876370e11c19707b275",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "73453a48e6d8cb7d",
+   "scenario_id": "otrf:SDWIN-200806030120"
+  },
+  {
+   "alert_id": "al-d64de6c7b764225b3e7e",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "fae58c57ca93a5fa",
+   "scenario_id": "otrf:SDWIN-200921175806"
+  },
+  {
+   "alert_id": "al-405c9b8357b5fc83f800",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "d3af9e4748c5d00a",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-84cf916acf211bb73539",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "264d692177b484b5",
+   "scenario_id": "otrf:SDWIN-190301125905"
+  },
+  {
+   "alert_id": "al-fc6e1d0e94b176137775",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "43eddd4053e98b33",
+   "scenario_id": "otrf:SDWIN-201022042947"
+  },
+  {
+   "alert_id": "al-2a9686114b613ba66df3",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "d2acfbb4c55353f4",
+   "scenario_id": "evtx:Defense Evasion/DE_Fake_ComputerAccount_4720"
+  },
+  {
+   "alert_id": "al-a19c03c5154f319f1f03",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "2179f1ea883006d0",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-4554c13b6706c1a38651",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "76561f7ce7dc9f0a",
+   "scenario_id": "otrf:SDWIN-190403133337"
+  },
+  {
+   "alert_id": "al-3ea049377ce4892355ca",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "ca34c19214007911",
+   "scenario_id": "otrf:SDWIN-201023023651"
+  },
+  {
+   "alert_id": "al-5c9a0c16c89bbb1098b0",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "b137d51978bd5b21",
+   "scenario_id": "otrf:SDWIN-190518224039"
+  },
+  {
+   "alert_id": "al-9435dbc0dc517feccb5f",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "133e5b4d33b08c33",
+   "scenario_id": "otrf:SDWIN-190518210125"
+  },
+  {
+   "alert_id": "al-3b1efa0e372a49983d71",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "32131fd31648b308",
+   "scenario_id": "otrf:SDWIN-200918145959"
+  },
+  {
+   "alert_id": "al-901cfc0a1b3a8dfc6c5d",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "ccf38f12be97a6a3",
+   "scenario_id": "otrf:SDWIN-191027055035"
+  },
+  {
+   "alert_id": "al-4c7f643f75f66f44c0ab",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "38912f69a63c9c54",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-c9755abd28edaa34ad46",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "11df00a4ae1cea15",
+   "scenario_id": "otrf:SDWIN-190319023812"
+  },
+  {
+   "alert_id": "al-168ee14f614a2127448a",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "c5336663065d02f8",
+   "scenario_id": "evtx:Privilege Escalation/sysmon_11_7_1_uacbypass_windirectory_mocking"
+  },
+  {
+   "alert_id": "al-13dd6f0c4f9a8f9a0725",
+   "gold_label": "true_positive",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "5fc8688f87ddccbe",
+   "scenario_id": "otrf:SDWIN-191027223020"
+  },
+  {
+   "alert_id": "al-6dd17c284d7463b04333",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "a9a915b9a463e7c4",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-4922d53dc99c002fa3cc",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "b4e03f9b8973df52",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-f8f4d4f40a7880ccc6aa",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "705d7eb4d789d009",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-f5d02594b06b8932b5ba",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "b26e5b4b8220a24b",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-c8f86c127dea9a3b4e17",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "507ca5c68ddc5711",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-b132f73890cfac231b46",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "39722bc75511f9c2",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-8a3fb5e4f2366c66ccff",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "d81def38a8fd8078",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-c15033ec208a487f7ab2",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "933cd5844faeaea7",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-f598044ef525105b186d",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "18105510fdac6d45",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-de9cc53ad9589e376236",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "d9b3eaf8b524ce0f",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-b88cc4fe65a07da9c696",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "d75f705ee8bc23e4",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-8a0cbc6e3e511402444b",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "d6bce529f17d7c37",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-a1987e1e63a82a7a14cc",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "972113c156db8880",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-d1a1f71032dbeaacaf61",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "a932f6b86f80e888",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-a6e612ff324dd2f1aad9",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "f48bf2298689796b",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-57c7600eb783e37e76e4",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "998c396c25057d7a",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-06803221e40bbda2660d",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "b77686546e2f7206",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-d58e521a56adea345585",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "fa35f2c8de7b2e24",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-cfbcb1d6fec505d0d5d3",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "c306896a1cfad72e",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-812fdb0711eb16328b9a",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "b4be3f0586322a1e",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-5b18b7cfa19851879367",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "9ae078047fe82995",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-28c47558ad0ef9a3c3b0",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "39898946005942ce",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-903558b211eaf59bbda6",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "f52951a89f40e5fb",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-c7728eda20c454230450",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "ecad1c14e026be52",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-ae4fc9340f67b1beb950",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "8e837851a658db2f",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-1ed9a1cf35a20cc5be8f",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "375b42ea98542ece",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-cc085a4fd8feb3f796a4",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "0a7aeb18b467260a",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-2ec72211c10c83b6addb",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "6e95bf2264e67dc6",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-218bd4c179aaa8c11956",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "0a184e7b7da286d8",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-95060c5120539a46f286",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "4d05dafc2a4c9530",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-6c8f2933379ccae4f8a2",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "2c95e6dc05891d6a",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-3b0f4b50bbcf3fb74871",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "347b288c33a10701",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-92e3a9edaace049f8314",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "e6686d1568881696",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-d5e038c2e22a6b1c0eb0",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "d254fa28e622856a",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-1ff67937afb7ded1764c",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "dd15eac4050b7d08",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-a2e17c2956836407402b",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "58d4d229de585731",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-af01c0155aba4867963b",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "781af324e3bcc84a",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-e57c5c644ae2f412508a",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "9ee8396ee39f7f33",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-b97ef801aa91e866b00e",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "438ec64ae351fa82",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-49297523a4f2321dfe8d",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "a9cd0600471d1c73",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-c7df0f70a38d14557a0a",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "4c20f3582abd116c",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-13243ff9da88f3d141f1",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "243c0570fd048d40",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-5644f2b01a5eaf3e2fee",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "5ca7fab367d9895b",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-0cc91dfb498db20a5905",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "2d118fa81ec4ada7",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-7124c450c577189ff520",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "d2fc857208dcc9d4",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-da319a8644e17840dc71",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "02e3669273778ffd",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-3d57cde4ec70d519759f",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "a9169bc1beabbd77",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-8f857cf2dfe7867b585f",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "541214258604ee39",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-f77198e30142b16f72f0",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "eb7b966c30b3a8c5",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-882299603decc6a2aa38",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "a613eb334d5b5611",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-103c090a62d05f21f538",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "b383e82b1ca697d6",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-fa1e45d3357d1f4ca4af",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "f062866ed7ce82bf",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-d0e6bcb8d9abcc546090",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "c089523d039275e4",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-6c38cafb9e76639a6432",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "8130cf1ebd40dd6a",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-62a17013d757ea46b8f1",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "f94a361a8a393be8",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-abd376cb30be47ec40a9",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "021112dfd91fe1ce",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-7d74bbd31e000be3ddea",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "74e0eba9f8d9173c",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-8c0db6ad33005f9112bf",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "f1b94b619c8322df",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-3a8c3bdb9c71f9d12f22",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "5251209408790095",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-0d12a8efb85a0cb9e258",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "c451946770252d17",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-51bc05dcbede3de21ee8",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "8d2bae56701a5bad",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-00391c083e5e6666ed31",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "0188cd8e737dd82b",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-70ae9538319276bcf4fc",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "8f71a2a941f3259f",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-34e1d02d3495c3605186",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "7831ecb354a2f4a6",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-71f3ddebe0fa05dbd660",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "7d61f4268b9cf080",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-7dbf40c50e58622fdc18",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "6161ec9ae7b88ddc",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-f27a828dade5f96e1543",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "50f55789783fe73f",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-cc5a3963d1418511913b",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "381daefbb45fa6ea",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-e74d9bdf3b43d6a4b7bd",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "1514d1ec310810c3",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-7c8566247703b6162a0c",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "6dbdb4b4e7b2bf32",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-3e26a69f680a74fdbe5f",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "b247c639d7a93b14",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-2ad4877b92ffbeff46bf",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "828b7ed82c638030",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-18b829259892b66f1ba3",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "3d0c9fff7bd55509",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-96481f41ae680eb8e302",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "38c772467c47c340",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-44e0081300d3b5aa15e5",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "9a8de1ed09cbdbde",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-5b6994112f1a01b5db5c",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "358e4e1335e0434d",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-a1e9c97931390c857116",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "a18c8b05569f7bea",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-1d0620ff15c096b4eece",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "576864e3928097ab",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-0c06f41c345c65dee672",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "5bb681aae3b6408c",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-6b633aea8ac627ce2dc4",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "ccbe1b3b04036737",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-83355bec4dcfc423b5c9",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "d9c96b68b3e5e4f9",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-0ecadb6500d99b3009f2",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "be9168a483743684",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-c95d7bcac6c9db5317f1",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "56ecd19f97dd2d9a",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-4c9a061eeed12b4f813a",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "5345370869b2d14f",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-d3bda8d26e45e5ff2337",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "83d089c800ac5dd5",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-c73fa6f22eb8117af97f",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "056dd9f076a76585",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-0fd7a6ce88802bc8b990",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "1330eb63c4ed28e1",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-91c721c23e6422c3fc18",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "8014fa6026a44d6d",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-481d905ac77e6c2e72aa",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "22d162ebb0ac9fe4",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-fc9428f7d0bbc3de1001",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "01d06a77a3267e95",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-0f1f5112ead25daf037f",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "fda312beb96ffded",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-14810c740d3c395a73d3",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "e1ebd81c27a04ccd",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-f7d0880a76c5df771ae5",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "97648a77af3e7ff1",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-4d87acb8648cc708c101",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "0a94c4bddf3e2d13",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-c54df807fbbcd6720cf0",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "07fa1aa372a7f9a9",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-7196f98c02ebc4b82c86",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "beb03fbfb965e24e",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-2069703f3a1cc7ddd151",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "6030664b8f0d63dc",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-2a0de0a70ce688c9ee1d",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "a5341cab8c099115",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-779693c1104546f78304",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "81e2c5d51261008f",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-c7a9d48b20a09f7e86b7",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "986f3cc0b2b19d3a",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-78903d1d66d383b79472",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "2ed1664e5176f2f4",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-371b4c4136b4b23764b8",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "3934a7fd00cfce10",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-c680923f403261db84c7",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "94ec0793c5a62e5a",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-d5c95d4c234e55df148c",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "afdd16cbad43c58e",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-d1132e25c020141fd383",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "0533a08add8074c4",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-8840524f713cf4f2671a",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "97de7736e443bff5",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-169a49c7a1f0f606d846",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "2f368e7cb4e97c39",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-a63992f3c4c7ea3ba55a",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "caefb17ce65c7e7c",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-0667cc61b530a483c9ef",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "34601b250061b5bc",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-4787c0015238513bc034",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "e2e9fd8dc867fbfe",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-a7dd3791c5437f97b488",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "b24919db40d08250",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-793aeadf034617441429",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "9f9779e2bfd59f93",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-c8add8fff0ba9f0c51de",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "99849316bfc8a1b0",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-8fd7eec1443fb5adf40b",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "126ed8be9bf34721",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-fee6c34a5d095b07d71a",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "5e1410b3375ee4ab",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-e69360d6db5f61f1c9b6",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "de6283fa1e64eae1",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-574d9ec7e093067fa05d",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "2d7d1bac3c36ad2b",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-e23bc51c982120cfbf43",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "22a3abf018bf5b68",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-9a8251a968ad3dad5948",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "f598d025fffff9b6",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-383fa42bc530cb5722a0",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "dbd8758e2667b2d4",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-0e3d7513d112c2bc4537",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "cdaa42730962599d",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-65e4795ac6ba025f12c0",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "64b5ccc0c73bb170",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-f96fb5a724c1c4b30042",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "275f86a459affc6e",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-dde5e1c7375cd8f6f83b",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "869a32cc1e956a0a",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-20442a70058dc05f9664",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "67fba931c3e37111",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-6aa7a5ee2e82218e9c2f",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "72d4cf7dd3f2d809",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-23442da5d355799e3cc4",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "cfda6a317a84cb18",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-a9ad5b09031e1eb3534f",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "0c9d914dd50ffca9",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-4e5af740128d1da971b5",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "4158763dff3e4286",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-439a905cf03868aac0df",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "2656c471934096ad",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-51f0a8b1d55b9a47168d",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "04e6d800f858b479",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-a8682792a275b03ce385",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "7de1f103c98a2a18",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-6c0f548237e73e2328a4",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "12c5305816e3380f",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-5999b197b1293bad93cf",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "c115b36c40607973",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-e6baf084180d8b7ba8ae",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "421a20c567ae9738",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-439b52df73493b77d57c",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "72a17e87af7f5896",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-66a8b4cb5eb65ffb7d7c",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "e39de96d21650b58",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-c5d7b3cdb4c26070a90c",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "da43d46adcc09765",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-dd28b0afbd4ec0071ce7",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "0ef2aa76ced0d7a6",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-4fc92b5efc6133edd5dc",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "074eee7bcdd3f7f0",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-aa5957f947561bc1c3e5",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "1d149cc2122584ff",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-f6d539119d0f9ae0a946",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "053462fc799a32df",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-e04a8c1f6e2b9a1975f8",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "c79c9b50875efc36",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-cd69b77a3fd8bd631c05",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "316c31097eee8ffa",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-ec68cfe7b5e23964f85b",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "4ff278d3b1777173",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-e91c039c7b08e4836d29",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "41bd477d12e47c05",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-5360b26d74352d87a5fe",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "7b4a636532c37471",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-afcaed99e759c0db9a66",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "0db360d35669c017",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-819afe9229a1bb0ff7db",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "8899266c2635f7ba",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-60dbb0265d311d7694c1",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "f9d5fb7216e41453",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-46eb358be0defe5ea402",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "74b433e1ad11eaee",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-c4ff0adc2bc9ec888cbb",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "3c805bcf31ffa9d2",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-73d051f3586756f3be4a",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "c32f778a8393f549",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-5650a2ccc83c279d6954",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "89ad4da58933add2",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-effd3d58975ef292dec2",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "2ea1dc0934b3989f",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-764ee040317aec90c7c9",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "bbd819601268d8f9",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-017b2464309d46b8a9e6",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "ddcea2bdec5f7655",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-a76dcade28000b463c5c",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "f3e4a77ad876e125",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-72e5af1560ac6d257d4e",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "4b185f4ad43b9abf",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-afe7467b03de4d68ccbb",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "6c971aeb807b9d87",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-31f63160fa9e85702793",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "a7e6731bf919f587",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-232ff156d62761003008",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "3b615aeabd7bea85",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-2787c83bb5408dce319d",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "07875bb14c4a321d",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-dbae6b923fce574ac334",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "5f2f883349ec00ec",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-e117a9d22fcc57b3bc13",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "c9d5716bf34c7483",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-e3b764cd68de36417b65",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "49b9be95ccfbb6fe",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-e1e30d6baccf20c7d1a2",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "8d5ea9d6f59c1e6f",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-65e8421df499c7e9af14",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "3aa655aa9eb0a746",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-9847c4d4cf639ba0acd2",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "cb6dfdaf10bf7891",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-60abeb1e2e4089f793ae",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "1184de9fa764c0a4",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-059bd6d5fb4a497d9035",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "36fa88227e53eb97",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-ba8331c565ac31ec3133",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "63dc56c14fbc51d6",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-d42596c77769f0f4a7a1",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "e555e207bfe544aa",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-aaa56b57fac3d1e3bdf1",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "5a3b5bf43b016707",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-c2840d9b472227c7b946",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "e03931f83154b96a",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-6225cdbb91da2691b874",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "8b4fc17160896f87",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-ec941bf285f73c84fb7f",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "e8fb00e4f135097a",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-5bebbb405074bfad0b9a",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "7449142d3a05f632",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-1fcce4200b2d79ea2306",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "e9700b231f02b1c2",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-34c69a27372c84c003ca",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "d9cc11bc31dd32ae",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-d1c7785d5023d4cbd055",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "dd0974e65d38167e",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-8ed8bf89a22d2976ff01",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "5fb2aeebed7c680f",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-e08ff1ac05d6cf9a9123",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "d32582a19b96066a",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-193485bc16653b955ba1",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "9c838a3c814f8a2c",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-3eaff42c852d644da7ab",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "bcacd632e5971245",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-56eaefefd6b81f520179",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "2d201131d3595e3d",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-e11cb7a4ff387898ddbb",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "65c65a39762de29e",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-4353921adf3462869639",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "065847367de82c61",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-163adf7fc17e2a71f9ea",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "29b6a2f663205649",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-e199b495d883e7e698c8",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "86bad26eeed1acec",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-fa67e2e116260dc57d68",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "946d5d1105c039b0",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-fb40be2f3c2efe2aef8b",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "228528168be0b401",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-f841ebd063fa3e680a1c",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "71fce18960f3323f",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-1d036bb7ae9540944916",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "c21b91355518072a",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-d71bd3805a40788d2a55",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "e8ff499be00bc0a9",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-e3af0b0d009a871d3d5e",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "8cc00ca19cf42cc1",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-bb1c436dd549ef80399e",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "7586602626993d2f",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-fd827f1e7dbd8a001ce0",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "9c3b3e5aec436aaa",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-ce06d17672934a1f6557",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "d4ca65344a7ec8d9",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-1f35af4ba603a214dd3e",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "7ab31ddd11a0e285",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-8c2de87ba6cd1007af8e",
+   "gold_label": "false_positive",
+   "fp_type": "scheduled_task_maintenance",
+   "split": "test",
+   "content_hash": "9463be98256cdd4e",
+   "scenario_id": "noise:scheduled_task_maintenance"
+  },
+  {
+   "alert_id": "al-5689fb11acd007d52309",
+   "gold_label": "false_positive",
+   "fp_type": "backup_agent",
+   "split": "train",
+   "content_hash": "622093f5292460ee",
+   "scenario_id": "noise:backup_agent"
+  },
+  {
+   "alert_id": "al-74a091db25252413b451",
+   "gold_label": "false_positive",
+   "fp_type": "dev_procdump",
+   "split": "test",
+   "content_hash": "8f6c994b2c6ad187",
+   "scenario_id": "noise:dev_procdump"
+  },
+  {
+   "alert_id": "al-d0f3f0317baab93703ee",
+   "gold_label": "false_positive",
+   "fp_type": "helpdesk_remote_support",
+   "split": "train",
+   "content_hash": "9d8a0b07a39571de",
+   "scenario_id": "noise:helpdesk_remote_support"
+  },
+  {
+   "alert_id": "al-e3cfd6796abcf776aeb5",
+   "gold_label": "false_positive",
+   "fp_type": "admin_powershell",
+   "split": "train",
+   "content_hash": "b6abe31bfb589876",
+   "scenario_id": "noise:admin_powershell"
+  },
+  {
+   "alert_id": "al-e2020570ac0d0f5356ee",
+   "gold_label": "false_positive",
+   "fp_type": "vuln_scanner",
+   "split": "train",
+   "content_hash": "af355063989bdf77",
+   "scenario_id": "noise:vuln_scanner"
+  },
+  {
+   "alert_id": "al-144dd98bf25f7109c910",
+   "gold_label": "false_positive",
+   "fp_type": "redteam_tool_name_benign",
+   "split": "val",
+   "content_hash": "24d7960451e137e3",
+   "scenario_id": "noise:redteam_tool_name_benign"
+  },
+  {
+   "alert_id": "al-dbf7dff3ea695128b3f9",
+   "gold_label": "false_positive",
+   "fp_type": "software_deployment",
+   "split": "train",
+   "content_hash": "16a71540576a2eed",
+   "scenario_id": "noise:software_deployment"
+  },
+  {
+   "alert_id": "al-4ea6cca2439efeb656ed",
+   "gold_label": "false_positive",
+   "fp_type": "service_account_lockout",
+   "split": "val",
+   "content_hash": "3af7b1cf2902e0d8",
+   "scenario_id": "noise:service_account_lockout"
+  },
+  {
+   "alert_id": "al-2d9806a0b4f8a8493b0e",
+   "gold_label": "false_positive",
+   "fp_type": "psexec_admin",
+   "split": "train",
+   "content_hash": "c7f08eada779d192",
+   "scenario_id": "noise:psexec_admin"
+  },
+  {
+   "alert_id": "al-5f746e62bc1a4ed01d81",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "204e45598ebd0561",
+   "scenario_id": "ambiguous:0"
+  },
+  {
+   "alert_id": "al-92b7a0741f4c0691e000",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "06b4c17ee56a9fb8",
+   "scenario_id": "ambiguous:1"
+  },
+  {
+   "alert_id": "al-4c469e0ad634a1742d4f",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "be6114c8b80dd516",
+   "scenario_id": "ambiguous:2"
+  },
+  {
+   "alert_id": "al-d5f8f109de35b4220c18",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "ddfa5913542124ca",
+   "scenario_id": "ambiguous:3"
+  },
+  {
+   "alert_id": "al-ebc70788eddb86ce30eb",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "62da649fdced667a",
+   "scenario_id": "ambiguous:0"
+  },
+  {
+   "alert_id": "al-740579d90013612073ab",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "eb1cadf116e514f8",
+   "scenario_id": "ambiguous:1"
+  },
+  {
+   "alert_id": "al-75af7987493fd15aac13",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "f2b8d7c77023a080",
+   "scenario_id": "ambiguous:2"
+  },
+  {
+   "alert_id": "al-c0e1cbba1cb3c91ec953",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "f75adbc11fb2cd61",
+   "scenario_id": "ambiguous:3"
+  },
+  {
+   "alert_id": "al-db1186ec0fc8e368e736",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "1d494ce905599468",
+   "scenario_id": "ambiguous:0"
+  },
+  {
+   "alert_id": "al-1cda48c945092f941d19",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "6ec586c3f6cc7591",
+   "scenario_id": "ambiguous:1"
+  },
+  {
+   "alert_id": "al-759c5bece9510a022b85",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "b1388917d2709c2b",
+   "scenario_id": "ambiguous:2"
+  },
+  {
+   "alert_id": "al-d729eb23b3282a8eda8f",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "16fb9f662fab916b",
+   "scenario_id": "ambiguous:3"
+  },
+  {
+   "alert_id": "al-657b850facd159283ea1",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "984ac498b2cded58",
+   "scenario_id": "ambiguous:0"
+  },
+  {
+   "alert_id": "al-f3bade3a846892bf0266",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "f404f82be48c4182",
+   "scenario_id": "ambiguous:1"
+  },
+  {
+   "alert_id": "al-082d197d5e564c2d9407",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "c54a4ad73eaf76ea",
+   "scenario_id": "ambiguous:2"
+  },
+  {
+   "alert_id": "al-19282eea5e10882f47f0",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "47950d249b668e31",
+   "scenario_id": "ambiguous:3"
+  },
+  {
+   "alert_id": "al-784129748727556410be",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "57ececeb1050e2d4",
+   "scenario_id": "ambiguous:0"
+  },
+  {
+   "alert_id": "al-fcd4423e44f782588a3a",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "test",
+   "content_hash": "657d542a722dacc3",
+   "scenario_id": "ambiguous:1"
+  },
+  {
+   "alert_id": "al-24325d8c04fc041c19d3",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "val",
+   "content_hash": "c88bf6048f03bb04",
+   "scenario_id": "ambiguous:2"
+  },
+  {
+   "alert_id": "al-c7853c03d41efd362b68",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "e9f320baeb45fc96",
+   "scenario_id": "ambiguous:3"
+  },
+  {
+   "alert_id": "al-09ce3b24a9d916cf15a5",
+   "gold_label": "escalate",
+   "fp_type": null,
+   "split": "train",
+   "content_hash": "a85c8492f41e2f11",
+   "scenario_id": "ambiguous:0"
+  }
+ ]
+}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AEGIS Benchmark Report</title>
+<style>
+  :root { color-scheme: light dark; --bg:#0f1420; --card:#1a2232; --fg:#e6edf6; --muted:#8b98ab;
+          --accent:#5cc8ff; --good:#3fb950; --warn:#d29922; --bad:#f85149; --line:#2a3448; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg);
+         color:var(--fg); }
+  .wrap { max-width:1100px; margin:0 auto; padding:24px 16px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  h2 { font-size:16px; margin:28px 0 10px; color:var(--accent); }
+  .sub { color:var(--muted); margin:0 0 20px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .kpi { font-size:26px; font-weight:600; }
+  .kpi.good { color:var(--good); } .kpi.warn { color:var(--warn); } .kpi.bad { color:var(--bad); }
+  .lbl { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  table { width:100%; border-collapse:collapse; margin-top:8px; }
+  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:500; font-size:12px; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .bar { height:8px; background:#2a3448; border-radius:4px; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:var(--accent); }
+  .best { color:var(--good); font-weight:600; }
+  svg { max-width:100%; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+  .foot { color:var(--muted); margin-top:24px; font-size:12px; }
+  code { background:#0b0f18; padding:1px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AEGIS Benchmark Report</h1>
+  <p class="sub" id="meta"></p>
+
+  <div class="grid" id="kpis"></div>
+
+  <h2>Comparison arms</h2>
+  <table id="arms"><thead><tr>
+    <th>Arm</th><th class="num">Accuracy</th><th class="num">Macro-F1</th>
+    <th class="num">FP-suppression&nbsp;@≤2% missed</th><th class="num">Escalation precision</th>
+    <th class="num">Technique F1</th><th class="num">Tactic F1</th>
+    <th class="num">Citations</th><th class="num">s/alert</th>
+  </tr></thead><tbody></tbody></table>
+
+  <h2>FP-suppression vs missed true-positive (ROC-style)</h2>
+  <svg id="roc" viewBox="0 0 520 320" width="520" height="320" role="img"></svg>
+
+  <h2>Confusion matrix — AEGIS full</h2>
+  <table id="confusion"><thead></thead><tbody></tbody></table>
+
+  <h2>False-positive suppression by fp_type — AEGIS full</h2>
+  <table id="fptype"><thead><tr><th>fp_type</th><th class="num">suppressed</th></tr></thead><tbody></tbody></table>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/*__DATA__*/
+
+const ARMS = ["rules_only","single_shot_llm","aegis_no_triage","aegis_full"];
+const NAMES = {rules_only:"Rules only", single_shot_llm:"Single-shot LLM",
+               aegis_no_triage:"AEGIS (no triage model)", aegis_full:"AEGIS full"};
+const fmtPct = v => (v*100).toFixed(1) + "%";
+
+document.getElementById("meta").textContent =
+  `Split: ${META.split||"test"} · ${META.n||0} alerts · manifest ${(""+(META.manifest_hash||"")).slice(0,12)} · generated ${META.generated||""}`;
+
+// KPI cards from AEGIS full
+const full = SCORES.aegis_full || {};
+const base = SCORES.single_shot_llm || {};
+function cls(v, hi){ return v>=hi ? "good" : v>=hi*0.6 ? "warn" : "bad"; }
+const kpis = [
+  ["Verdict accuracy", fmtPct(full.accuracy||0), cls(full.accuracy||0,0.8)],
+  ["FP-suppression @≤2% missed", fmtPct(full.fp_suppression_at_2pct_missed||0), cls(full.fp_suppression_at_2pct_missed||0,0.6)],
+  ["Escalation precision", fmtPct(full.escalation_precision||0), cls(full.escalation_precision||0,0.7)],
+  ["Citation compliance", fmtPct(full.citation_rate||0), cls(full.citation_rate||0,0.99)],
+  ["vs single-shot LLM", ((full.accuracy-base.accuracy>=0?"+":"")+fmtPct(full.accuracy-base.accuracy)), cls(1,1)],
+];
+document.getElementById("kpis").innerHTML = kpis.map(([l,v,c]) =>
+  `<div class="card"><div class="lbl">${l}</div><div class="kpi ${c}">${v}</div></div>`).join("");
+
+// Arms table
+const bestAcc = Math.max(...ARMS.map(a => (SCORES[a]||{}).accuracy||0));
+const bestSupp = Math.max(...ARMS.map(a => (SCORES[a]||{}).fp_suppression_at_2pct_missed||0));
+document.querySelector("#arms tbody").innerHTML = ARMS.filter(a=>SCORES[a]).map(a => {
+  const s = SCORES[a];
+  const acc = s.accuracy===bestAcc ? "best" : "";
+  const sup = s.fp_suppression_at_2pct_missed===bestSupp ? "best" : "";
+  return `<tr><td>${NAMES[a]}</td>
+    <td class="num ${acc}">${fmtPct(s.accuracy)}</td>
+    <td class="num">${s.macro_f1.toFixed(3)}</td>
+    <td class="num ${sup}">${fmtPct(s.fp_suppression_at_2pct_missed)}</td>
+    <td class="num">${fmtPct(s.escalation_precision)}</td>
+    <td class="num">${s.technique_f1.toFixed(3)}</td>
+    <td class="num">${s.tactic_f1.toFixed(3)}</td>
+    <td class="num">${fmtPct(s.citation_rate)}</td>
+    <td class="num">${(s.avg_seconds||0).toFixed(2)}</td></tr>`;
+}).join("");
+
+// ROC-style curve: x = missed TP rate, y = FP suppression
+(function(){
+  const W=520,H=320,pad=44;
+  const x = v => pad + v*(W-2*pad);
+  const y = v => H-pad - v*(H-2*pad);
+  const colors = {rules_only:"#8b98ab", single_shot_llm:"#d29922",
+                  aegis_no_triage:"#5cc8ff", aegis_full:"#3fb950"};
+  let s = `<line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="#2a3448"/>`;
+  s += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="#2a3448"/>`;
+  s += `<line x1="${x(0.02)}" y1="${pad}" x2="${x(0.02)}" y2="${H-pad}" stroke="#f85149" stroke-dasharray="4 3" opacity="0.6"/>`;
+  s += `<text x="${x(0.02)+4}" y="${pad+12}" fill="#f85149" font-size="10">2% missed-TP</text>`;
+  s += `<text x="${W/2}" y="${H-8}" fill="#8b98ab" font-size="11" text-anchor="middle">missed true-positive rate</text>`;
+  s += `<text x="14" y="${H/2}" fill="#8b98ab" font-size="11" transform="rotate(-90 14 ${H/2})" text-anchor="middle">FP suppression</text>`;
+  for (const a of ARMS) {
+    const roc = (ROCS[a]||[]).slice().sort((p,q)=>p.missed_tp_rate-q.missed_tp_rate);
+    if (!roc.length) continue;
+    const pts = roc.map(p => `${x(Math.min(1,p.missed_tp_rate))},${y(p.fp_suppression)}`).join(" ");
+    s += `<polyline points="${pts}" fill="none" stroke="${colors[a]}" stroke-width="2" opacity="0.9"/>`;
+  }
+  const leg = ARMS.filter(a=>ROCS[a]).map((a,i)=>
+    `<g><rect x="${W-pad-150}" y="${pad+i*16}" width="10" height="10" fill="${colors[a]}"/>`+
+    `<text x="${W-pad-136}" y="${pad+9+i*16}" fill="#e6edf6" font-size="10">${NAMES[a]}</text></g>`).join("");
+  document.getElementById("roc").innerHTML = s + leg;
+})();
+
+// Confusion matrix
+(function(){
+  const c = full.confusion || {};
+  const labels = ["true_positive","false_positive","escalate"];
+  document.querySelector("#confusion thead").innerHTML =
+    "<tr><th>gold ↓ / pred →</th>" + labels.map(l=>`<th class="num">${l}</th>`).join("") + "</tr>";
+  document.querySelector("#confusion tbody").innerHTML = labels.map(g =>
+    `<tr><td>${g}</td>` + labels.map(p => {
+      const v = (c[g]||{})[p]||0; const hit = g===p;
+      return `<td class="num" style="${hit?'color:var(--good);font-weight:600':''}">${v}</td>`;
+    }).join("") + "</tr>").join("");
+})();
+
+// per fp_type suppression
+(function(){
+  const m = full.per_fp_type_suppression || {};
+  document.querySelector("#fptype tbody").innerHTML = Object.entries(m).map(([t,v]) =>
+    `<tr><td>${t}</td><td class="num">${fmtPct(v)}<div class="bar"><i style="width:${v*100}%"></i></div></td></tr>`).join("")
+    || `<tr><td colspan="2">no fp_type data</td></tr>`;
+})();
+
+document.getElementById("foot").innerHTML =
+  "Primary metric is false-positive suppression at a fixed &le;2% missed-true-positive operating point. "+
+  "All arms run offline on the frozen benchmark manifest with the deterministic reasoner; with an API "+
+  "key the AEGIS arms use the LLM reasoner. Numbers regenerate via <code>aegis bench run</code>.";
+</script>
+</body>
+</html>
