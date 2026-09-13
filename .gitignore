@@ -1,0 +1,19 @@
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+dist/
+*.egg-info/
+# project
+.cache/
+/data/
+*.evtx
+*.zip
+.env
+# node
+web/node_modules/
+web/.next/
+# results are committed deliberately, not ignored

@@ -1,0 +1,30 @@
+id: pb_ransomware_impact
+name: Ransomware / Destructive Impact
+techniques: [T1486, T1490, T1489, T1491, T1485]
+applies_when:
+  verdict: [true_positive, escalate]
+severity_floor: high
+recommended_steps:
+  - order: 1
+    action: "Isolate affected and adjacent hosts; disable the involved account"
+    owner: analyst
+    requires_approval: true
+    note: "Human-approved containment only (§1.2)."
+  - order: 2
+    action: "Identify and protect backups; verify the last known-good restore point"
+    owner: it-ops
+    requires_approval: false
+  - order: 3
+    action: "Determine encryption scope from the file-write evidence in the timeline"
+    owner: analyst
+    requires_approval: false
+  - order: 4
+    action: "Engage incident response and legal/comms per the IR plan"
+    owner: ir-team
+    requires_approval: true
+  - order: 5
+    action: "Block the C2 indicators (domains/IPs) cited in the report at the egress point"
+    owner: network-team
+    requires_approval: true
+references:
+  - https://attack.mitre.org/tactics/TA0040/

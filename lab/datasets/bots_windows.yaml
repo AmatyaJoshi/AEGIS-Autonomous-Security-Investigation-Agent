@@ -1,0 +1,105 @@
+# Attack windows for Splunk Boss of the SOC datasets, transcribed from PUBLISHED material only.
+#
+# Granularity is deliberately coarse (day-level UTC) with a host scope, because the official
+# answer material gives dates/hosts/IOCs, not second-precise start/end times. Every window is
+# `reviewed: false` until an analyst tightens it in the Labels UI (Phase 4). Nothing here is
+# inferred by AEGIS.
+#
+# refs:
+#   [1] Splunk, "Boss of the SOC (BOTS) v1 dataset", https://github.com/splunk/botsv1
+#   [2] Splunk .conf2016/2017 BOTS v1 scenario walk-throughs (APT "po1s0n1vy"; Cerber ransomware)
+#   [3] Splunk Security Essentials / BOTS v1 question set (imreallynotbatman.com, we8105desk)
+
+botsv1:
+  # ---------------------------------------------------------------- Scenario 1: APT (po1s0n1vy)
+  - id: s1-web-scan
+    scenario: apt-po1s0n1vy
+    step: 1
+    techniques: [T1595.002]        # Active Scanning: Vulnerability Scanning (Acunetix)
+    tactics: [TA0043]
+    host: WE1149SRV               # imreallynotbatman.com web server (192.168.250.70)
+    start: 2016-08-10T00:00:00Z
+    end:   2016-08-10T23:59:59Z
+    notes: "Acunetix scan of imreallynotbatman.com from 40.80.148.42"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s1-brute-force
+    scenario: apt-po1s0n1vy
+    step: 2
+    techniques: [T1110.001]        # Brute Force: Password Guessing against Joomla admin
+    tactics: [TA0006]
+    host: WE1149SRV
+    start: 2016-08-10T00:00:00Z
+    end:   2016-08-10T23:59:59Z
+    notes: "Joomla admin password guessing from 23.22.63.114"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s1-webshell-upload
+    scenario: apt-po1s0n1vy
+    step: 3
+    techniques: [T1505.003, T1190] # Web Shell; Exploit Public-Facing Application
+    tactics: [TA0003, TA0001]
+    host: WE1149SRV
+    start: 2016-08-10T00:00:00Z
+    end:   2016-08-10T23:59:59Z
+    notes: "Executable 3791.exe uploaded through Joomla and executed"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s1-defacement
+    scenario: apt-po1s0n1vy
+    step: 4
+    techniques: [T1491.002]        # Defacement: External Defacement
+    tactics: [TA0040]
+    host: WE1149SRV
+    start: 2016-08-10T00:00:00Z
+    end:   2016-08-10T23:59:59Z
+    notes: "poisonivy-is-coming-for-you-batman.jpeg fetched from prankglassinebracket.jumpingcrab.com"
+    ref: "[2][3]"
+    reviewed: false
+
+  # ---------------------------------------------------------------- Scenario 2: Cerber ransomware
+  - id: s2-macro-execution
+    scenario: cerber-ransomware
+    step: 1
+    techniques: [T1204.002, T1059.005] # User Execution: Malicious File; VBScript
+    tactics: [TA0002]
+    host: WE8105DESK
+    user: bob.smith
+    start: 2016-08-24T00:00:00Z
+    end:   2016-08-24T23:59:59Z
+    notes: "Miranda_Tate_unveiled.dotm opened from USB (MIRANDA_PRI); VBScript 121214.tmp run"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s2-c2-dns
+    scenario: cerber-ransomware
+    step: 2
+    techniques: [T1071.004]        # Application Layer Protocol: DNS
+    tactics: [TA0011]
+    host: WE8105DESK
+    start: 2016-08-24T00:00:00Z
+    end:   2016-08-24T23:59:59Z
+    notes: "DNS resolution of solidaritedeproximite.org before encryption"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s2-encryption-desktop
+    scenario: cerber-ransomware
+    step: 3
+    techniques: [T1486]            # Data Encrypted for Impact
+    tactics: [TA0040]
+    host: WE8105DESK
+    start: 2016-08-24T00:00:00Z
+    end:   2016-08-24T23:59:59Z
+    notes: "Cerber encrypts local files on we8105desk"
+    ref: "[2][3]"
+    reviewed: false
+  - id: s2-encryption-fileserver
+    scenario: cerber-ransomware
+    step: 4
+    techniques: [T1486]
+    tactics: [TA0040]
+    host: WE9041SRV
+    start: 2016-08-24T00:00:00Z
+    end:   2016-08-24T23:59:59Z
+    notes: "Files on the we9041srv share encrypted via bob.smith's mapped drive"
+    ref: "[2][3]"
+    reviewed: false

@@ -1,0 +1,6 @@
+# Lab hosts (must match lab/vms/Vagrantfile). `default_user` is the account Invoke-AtomicTest runs
+# under and is recorded in the ground-truth window when a step does not override `user`.
+hosts:
+  - {name: DC01,  os: windows, address: 192.168.56.10, vagrant_name: dc01,  ssh_user: vagrant, default_user: vagrant}
+  - {name: WS01,  os: windows, address: 192.168.56.20, vagrant_name: ws01,  ssh_user: vagrant, default_user: vagrant}
+  - {name: LNX01, os: linux,   address: 192.168.56.30, vagrant_name: lnx01, ssh_user: vagrant, default_user: vagrant}

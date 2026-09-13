@@ -1,0 +1,31 @@
+# Core AEGIS services (SPEC §2.1). The lab telemetry stack (Elasticsearch/Kibana) lives in
+# docker-compose.lab.yml so `--offline` work needs nothing here. Bring both up with:
+#   docker compose -f docker-compose.yml -f docker-compose.lab.yml up -d
+name: aegis
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: aegis
+      POSTGRES_PASSWORD: aegis
+      POSTGRES_DB: aegis
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aegis"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

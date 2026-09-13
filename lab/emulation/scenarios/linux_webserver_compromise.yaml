@@ -1,0 +1,18 @@
+id: linux_webserver_compromise
+title: "Linux web server compromise and credential theft"
+platform: linux
+narrative: >
+  A shell command executes on the Ubuntu web server, followed by host and account discovery, access
+  to /etc/shadow and SSH private keys, a SetUID privilege-escalation attempt, and internal port
+  scanning. Mirrors the auditd/Sysmon-for-Linux telemetry a real DMZ host would emit.
+gap_seconds: 75
+tags: [linux, credential-access, discovery]
+steps:
+  - {technique: T1059.004, test_guid: 7e7ac3ed-f795-4fa5-b711-09d6fbe9b873, host: LNX01, tactic: TA0002, note: "create and execute bash script"}
+  - {technique: T1082, test_guid: edff98ec-0f73-4f63-9890-6b117092aff6, host: LNX01, tactic: TA0007, note: "system info discovery"}
+  - {technique: T1087.001, test_guid: f8aab3dd-5990-4bf8-b8ab-2226c951696f, host: LNX01, tactic: TA0007, note: "enumerate local accounts"}
+  - {technique: T1057, test_guid: 4ff64f0b-aaf2-4866-b39d-38d9791407cc, host: LNX01, tactic: TA0007, note: "process discovery"}
+  - {technique: T1003.008, test_guid: 3723ab77-c546-403c-8fb4-bb577033b235, host: LNX01, tactic: TA0006, note: "access /etc/shadow"}
+  - {technique: T1552.004, test_guid: 46959285-906d-40fa-9437-5a439accd878, host: LNX01, tactic: TA0006, note: "discover private SSH keys"}
+  - {technique: T1548.001, test_guid: 759055b3-3885-4582-a8ec-c00c9d64dd79, host: LNX01, tactic: TA0004, note: "set SetUID flag"}
+  - {technique: T1046, test_guid: 68e907da-2539-48f6-9fc9-257a78c05540, host: LNX01, tactic: TA0007, note: "port scan"}

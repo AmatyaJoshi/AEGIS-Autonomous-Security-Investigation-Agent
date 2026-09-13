@@ -1,0 +1,24 @@
+---
+# Minimal Active Directory so the domain-oriented atomics (Kerberos, DCSync-style, SPN enumeration)
+# have a real domain. This provisions a fresh forest CORP.LOCAL and a few non-privileged users that
+# match lab/noise/org.yaml. It does NOT install any offensive tooling.
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Promote to a new AD forest CORP.LOCAL
+      ansible.windows.win_domain:
+        dns_domain_name: corp.local
+        safe_mode_password: "{{ safe_mode_password | default('P@ssw0rd-lab-only!') }}"
+      register: domain_install
+
+    - name: Reboot after promotion
+      ansible.windows.win_reboot:
+      when: domain_install.reboot_required
+
+    - name: Create sample org users (non-privileged)
+      ansible.windows.win_domain_user:
+        name: "{{ item }}"
+        password: "P@ssw0rd-lab-only!"
+        state: present
+        groups: [Domain Users]
+      loop: [alice.ng, bob.reyes, carol.diaz, dev.kumar, hd.singh]

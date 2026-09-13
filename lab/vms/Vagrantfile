@@ -1,0 +1,55 @@
+# AEGIS lab (SPEC §5.1): a Domain Controller, a Windows workstation and an Ubuntu server, each with
+# endpoint telemetry (Sysmon / auditd) shipped by Elastic Agent to the Elasticsearch started by
+# docker-compose.lab.yml on the host (192.168.56.1:9200).
+#
+# Requirements: ~16 GB RAM free, VirtualBox (or libvirt). If you cannot run VMs, skip this entirely
+# and use `--offline` Parquet snapshots instead (see the README "Offline mode").
+#
+#   cd lab/vms && vagrant up            # brings up dc01, ws01, lnx01
+#   cd lab/vms && vagrant provision     # re-run Sysmon/auditd/Elastic Agent config
+#
+# Boxes are the standard public ones; nothing here is custom attack tooling.
+
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |vb|
+    vb.linked_clone = true
+  end
+
+  # ---- Domain Controller (Windows Server 2022) ----
+  config.vm.define "dc01" do |dc|
+    dc.vm.box = "gusztavvargadr/windows-server-2022-standard"
+    dc.vm.hostname = "DC01"
+    dc.vm.network "private_network", ip: "192.168.56.10"
+    dc.vm.provider "virtualbox" { |vb| vb.memory = 4096; vb.cpus = 2 }
+    dc.vm.provision "shell", path: "sysmon/install-sysmon.ps1"
+    dc.vm.provision "shell", path: "elastic-agent/install-agent.ps1",
+                    env: {"FLEET_URL" => ENV.fetch("FLEET_URL", ""),
+                          "ENROLL_TOKEN" => ENV.fetch("ENROLL_TOKEN", "")}
+    dc.vm.provision "ansible" do |a|
+      a.playbook = "ansible/dc.yml"
+    end
+  end
+
+  # ---- Windows 10/11 workstation ----
+  config.vm.define "ws01" do |ws|
+    ws.vm.box = "gusztavvargadr/windows-10"
+    ws.vm.hostname = "WS01"
+    ws.vm.network "private_network", ip: "192.168.56.20"
+    ws.vm.provider "virtualbox" { |vb| vb.memory = 4096; vb.cpus = 2 }
+    ws.vm.provision "shell", path: "sysmon/install-sysmon.ps1"
+    ws.vm.provision "shell", path: "elastic-agent/install-agent.ps1",
+                    env: {"FLEET_URL" => ENV.fetch("FLEET_URL", ""),
+                          "ENROLL_TOKEN" => ENV.fetch("ENROLL_TOKEN", "")}
+  end
+
+  # ---- Ubuntu server ----
+  config.vm.define "lnx01" do |lnx|
+    lnx.vm.box = "bento/ubuntu-22.04"
+    lnx.vm.hostname = "LNX01"
+    lnx.vm.network "private_network", ip: "192.168.56.30"
+    lnx.vm.provider "virtualbox" { |vb| vb.memory = 2048; vb.cpus = 2 }
+    lnx.vm.provision "ansible" do |a|
+      a.playbook = "ansible/linux.yml"
+    end
+  end
+end

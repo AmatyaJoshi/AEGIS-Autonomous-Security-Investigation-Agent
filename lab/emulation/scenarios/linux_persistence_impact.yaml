@@ -1,0 +1,17 @@
+id: linux_persistence_impact
+title: "Linux persistence, collection and impact"
+platform: linux
+narrative: >
+  The operator persists via cron and a systemd service, creates a new user, captures traffic,
+  clears shell history to cover tracks, stages and encrypts data, and pulls in a remote file. Covers
+  Linux persistence, defense evasion and impact tactics for benchmark tactic coverage.
+gap_seconds: 75
+tags: [linux, persistence, impact]
+steps:
+  - {technique: T1053.003, test_guid: 435057fb-74b1-410e-9403-d81baf194f75, host: LNX01, tactic: TA0003, note: "cron persistence"}
+  - {technique: T1543.002, test_guid: d9e4f24f-aa67-4c6e-bcbf-85622b697a7c, host: LNX01, tactic: TA0003, note: "systemd service"}
+  - {technique: T1136.001, test_guid: 40d8eabd-e394-46f6-8785-b9bfa1d011d2, host: LNX01, tactic: TA0003, note: "create local user"}
+  - {technique: T1040, test_guid: 7fe741f7-b265-4951-a7c7-320889083b3e, host: LNX01, tactic: TA0009, note: "packet capture"}
+  - {technique: T1070.003, test_guid: a934276e-2be5-4a36-93fd-98adbb5bd4fc, host: LNX01, tactic: TA0005, note: "clear bash history"}
+  - {technique: T1105, test_guid: 0fc6e977-cb12-44f6-b263-2824ba917409, host: LNX01, tactic: TA0011, note: "rsync remote file copy"}
+  - {technique: T1486, test_guid: 7b8ce084-3922-4618-8d22-95f996173765, host: LNX01, tactic: TA0040, note: "encrypt files with gpg"}

@@ -1,0 +1,22 @@
+id: win_intrusion_full
+title: "Phishing to ransomware on a Windows workstation"
+platform: windows
+narrative: >
+  A user opens a malicious document that spawns a command shell (initial access + execution). The
+  intruder establishes persistence, escalates via a UAC bypass, dumps credentials, performs local
+  discovery, then destroys backups and stops services before impact. Every step is a published
+  Atomic Red Team test; nothing here is novel tooling.
+gap_seconds: 90
+tags: [ransomware, workstation, end-to-end]
+steps:
+  - {technique: T1566.001, test_guid: 114ccff9-ae6d-4547-9ead-4cd69f687306, host: WS01, tactic: TA0001, note: "download macro-enabled attachment"}
+  - {technique: T1204.002, test_guid: 0330a5d2-a45a-4272-a9ee-e364411c4b18, host: WS01, tactic: TA0002, note: "maldoc choice flags command execution"}
+  - {technique: T1059.003, test_guid: 127b4afe-2346-4192-815c-69042bec570e, host: WS01, tactic: TA0002}
+  - {technique: T1547.001, test_guid: e55be3fd-3521-4610-9d1a-e210e42dcf05, host: WS01, tactic: TA0003, note: "Run key persistence"}
+  - {technique: T1053.005, test_guid: 42f53695-ad4a-4546-abb6-7d837f644a71, host: WS01, tactic: TA0003, note: "local scheduled task"}
+  - {technique: T1548.002, test_guid: 3f627297-6c38-4e7d-a278-fc2563eaaeaa, host: WS01, tactic: TA0004, note: "Fodhelper UAC bypass"}
+  - {technique: T1003.001, test_guid: 0be2230c-9ab3-4ac2-8826-3199b9a0ebf8, host: WS01, tactic: TA0006, note: "ProcDump LSASS"}
+  - {technique: T1082, test_guid: 66703791-c902-4560-8770-42b8a91f7667, host: WS01, tactic: TA0007}
+  - {technique: T1518.001, test_guid: f92a380f-ced9-491f-b338-95a991418ce2, host: WS01, tactic: TA0007, note: "security software discovery"}
+  - {technique: T1490, test_guid: 43819286-91a9-4369-90ed-d31fb4da2c01, host: WS01, tactic: TA0040, note: "delete volume shadow copies"}
+  - {technique: T1489, test_guid: 21dfb440-830d-4c86-a3e5-2a491d5a8d04, host: WS01, tactic: TA0040, note: "stop service"}

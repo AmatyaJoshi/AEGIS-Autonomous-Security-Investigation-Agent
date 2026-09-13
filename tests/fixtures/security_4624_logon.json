@@ -1,0 +1,19 @@
+{
+  "Channel": "Security",
+  "SourceName": "Microsoft-Windows-Security-Auditing",
+  "EventID": 4624,
+  "Hostname": "DC01.corp.local",
+  "TimeCreated": "2025-01-06T14:25:11.000000Z",
+  "SubjectUserName": "-",
+  "SubjectDomainName": "-",
+  "SubjectLogonId": "0x0",
+  "TargetUserName": "adm.patel",
+  "TargetDomainName": "CORP",
+  "TargetLogonId": "0x1a2b3c",
+  "LogonType": "3",
+  "IpAddress": "10.10.20.31",
+  "IpPort": "51314",
+  "Status": "0x0",
+  "AuthenticationPackageName": "NTLM",
+  "WorkstationName": "WS-HELPDESK"
+}

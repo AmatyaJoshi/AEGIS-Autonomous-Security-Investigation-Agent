@@ -1,0 +1,44 @@
+# Curated Sigma pack selection (SPEC §5.1: "~300 rules").
+#
+# Rules are taken from the SigmaHQ "core++" release bundle (stable + test rules, all levels) and
+# filtered by logsource so that the pack matches the telemetry the lab actually produces
+# (Sysmon, Windows Security/System/PowerShell, auditd). `min_level` drops `informational`/`low`
+# noise; `max_rules` caps the pack, keeping the highest-level rules first, then by status.
+#
+# Everything in `logsources` is converted to BOTH ES|QL (Elasticsearch, ECS field names) and SPL
+# (Splunk, Sysmon field names). Conversion failures are recorded in the output, not hidden.
+
+source:
+  release_url: https://github.com/SigmaHQ/sigma/releases/latest/download/sigma_core++.zip
+  pinned_tag: null          # set to e.g. r2026-07-01 to freeze; null = latest
+
+selection:
+  min_level: medium         # informational < low < medium < high < critical
+  statuses: [stable, test]
+  max_rules: 320
+  logsources:
+    - {product: windows, category: process_creation}
+    - {product: windows, category: image_load}
+    - {product: windows, category: process_access}
+    - {product: windows, category: registry_set}
+    - {product: windows, category: registry_add}
+    - {product: windows, category: registry_event}
+    - {product: windows, category: file_event}
+    - {product: windows, category: network_connection}
+    - {product: windows, category: dns_query}
+    - {product: windows, category: pipe_created}
+    - {product: windows, category: ps_script}
+    - {product: windows, service: security}
+    - {product: windows, service: system}
+    - {product: windows, service: powershell}
+    - {product: linux, category: process_creation}
+    - {product: linux, service: auditd}
+  # Held-out categories for the NL->query model (§7.2) - never used for training; converted anyway
+  # so execution-equivalence eval has gold queries.
+  holdout_categories: [proxy, dns_query, webserver]
+
+targets:
+  esql:
+    pipelines: [windows_logsource, ecs_windows]
+  spl:
+    pipelines: [sysmon, windows_logsource]

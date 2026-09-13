@@ -1,0 +1,22 @@
+id: win_discovery_lateral
+title: "Domain reconnaissance and lateral movement"
+platform: windows
+narrative: >
+  With a foothold, the operator enumerates the domain (accounts, groups, trusts, shares, hosts) then
+  moves laterally over SMB admin shares and remote service execution, staging data along the way.
+  Overlaps deliberately with helpdesk_remote_support and psexec_admin noise so discovery precision is
+  tested, not just recall.
+gap_seconds: 75
+tags: [discovery, lateral-movement]
+steps:
+  - {technique: T1087.002, test_guid: 6fbc9e68-5ad7-444a-bd11-8bf3136c477e, host: WS01, tactic: TA0007}
+  - {technique: T1069.002, test_guid: dd66d77d-8998-48c0-8024-df263dc2ce5d, host: WS01, tactic: TA0007}
+  - {technique: T1482, test_guid: 4700a710-c821-4e17-a3ec-9e4c81d6845f, host: WS01, tactic: TA0007, note: "domain trusts via dsquery"}
+  - {technique: T1018, test_guid: 85321a9c-897f-4a60-9f20-29788e50bccd, host: WS01, tactic: TA0007, note: "remote system discovery net"}
+  - {technique: T1016, test_guid: 970ab6a1-0157-4f3f-9a73-ec4166754b23, host: WS01, tactic: TA0007}
+  - {technique: T1049, test_guid: 0940a971-809a-48f1-9c4d-b1d785e96ee5, host: WS01, tactic: TA0007}
+  - {technique: T1135, test_guid: 20f1097d-81c1-405c-8380-32174d493bbb, host: WS01, tactic: TA0007, note: "network share discovery"}
+  - {technique: T1021.002, test_guid: 3386975b-367a-4fbb-9d77-4dcf3639ffd3, host: WS01, tactic: TA0008, note: "map admin share"}
+  - {technique: T1569.002, test_guid: 2382dee2-a75f-49aa-9378-f52df6ed3fb1, host: WS01, tactic: TA0008, note: "execute command as a service"}
+  - {technique: T1039, test_guid: 6ed67921-1774-44ba-bac6-adb51ed60660, host: WS01, tactic: TA0009, note: "copy sensitive file over admin share"}
+  - {technique: T1074.001, test_guid: 107706a5-6f9f-451a-adae-bab8c667829f, host: WS01, tactic: TA0009, note: "stage data"}

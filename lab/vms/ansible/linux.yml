@@ -1,0 +1,42 @@
+---
+# auditd + Sysmon-for-Linux telemetry on the Ubuntu server (SPEC §5.1).
+- hosts: all
+  become: true
+  tasks:
+    - name: Install auditd
+      ansible.builtin.apt:
+        name: [auditd, audispd-plugins]
+        state: present
+        update_cache: true
+
+    - name: Deploy audit rules (process exec, identity, sensitive files)
+      ansible.builtin.copy:
+        dest: /etc/audit/rules.d/aegis.rules
+        content: |
+          -a always,exit -F arch=b64 -S execve -k proc_exec
+          -a always,exit -F arch=b32 -S execve -k proc_exec
+          -w /etc/passwd -p wa -k identity
+          -w /etc/shadow -p wa -k identity
+          -w /etc/sudoers -p wa -k priv_esc
+          -w /root/.ssh -p rwa -k ssh_keys
+          -w /var/log/auth.log -p wa -k logins
+      notify: restart auditd
+
+    - name: Install Microsoft repo for Sysmon-for-Linux
+      ansible.builtin.shell: |
+        curl -sSL https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -o /tmp/ms.deb
+        dpkg -i /tmp/ms.deb || true
+        apt-get update
+      args:
+        creates: /etc/apt/sources.list.d/microsoft-prod.list
+
+    - name: Install sysmonforlinux
+      ansible.builtin.apt:
+        name: sysmonforlinux
+        state: present
+
+  handlers:
+    - name: restart auditd
+      ansible.builtin.service:
+        name: auditd
+        state: restarted

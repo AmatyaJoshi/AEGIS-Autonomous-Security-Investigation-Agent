@@ -1,0 +1,36 @@
+# Mock organisation used by the noise generators and (Phase 2) the asset/identity lookup tools.
+# Deliberately small and internally consistent so investigations can cross-reference it.
+domain: CORP
+dns_suffix: corp.local
+business_hours: {start: 8, end: 19, tz_offset_hours: 0}
+
+hosts:
+  - {name: DC01,       os: windows, role: domain-controller, criticality: critical, owner: it-ops,   zone: servers,      ip: 10.10.1.10}
+  - {name: FS01,       os: windows, role: file-server,       criticality: high,     owner: it-ops,   zone: servers,      ip: 10.10.1.20}
+  - {name: SQL01,      os: windows, role: database,          criticality: high,     owner: data-eng, zone: servers,      ip: 10.10.1.30}
+  - {name: WEB01,      os: linux,   role: web-server,        criticality: high,     owner: platform, zone: dmz,          ip: 10.10.2.10}
+  - {name: BUILD01,    os: linux,   role: ci-runner,         criticality: medium,   owner: platform, zone: servers,      ip: 10.10.1.40}
+  - {name: SCAN01,     os: linux,   role: vuln-scanner,      criticality: medium,   owner: secops,   zone: mgmt,         ip: 10.10.3.5}
+  - {name: BACKUP01,   os: windows, role: backup-server,     criticality: high,     owner: it-ops,   zone: servers,      ip: 10.10.1.50}
+  - {name: SCCM01,     os: windows, role: software-deploy,   criticality: medium,   owner: it-ops,   zone: servers,      ip: 10.10.1.60}
+  - {name: WS-ALICE,   os: windows, role: workstation,       criticality: low,      owner: alice.ng, zone: workstations, ip: 10.10.20.11}
+  - {name: WS-BOB,     os: windows, role: workstation,       criticality: low,      owner: bob.reyes, zone: workstations, ip: 10.10.20.12}
+  - {name: WS-CAROL,   os: windows, role: workstation,       criticality: low,      owner: carol.diaz, zone: workstations, ip: 10.10.20.13}
+  - {name: WS-DEV1,    os: windows, role: dev-workstation,   criticality: low,      owner: dev.kumar, zone: workstations, ip: 10.10.20.21}
+  - {name: WS-DEV2,    os: windows, role: dev-workstation,   criticality: low,      owner: dev.oconnor, zone: workstations, ip: 10.10.20.22}
+  - {name: WS-HELPDESK,os: windows, role: workstation,       criticality: low,      owner: hd.singh, zone: workstations, ip: 10.10.20.31}
+
+users:
+  - {name: alice.ng,     role: finance-analyst,   privileged: false, dept: finance}
+  - {name: bob.reyes,    role: sales,             privileged: false, dept: sales}
+  - {name: carol.diaz,   role: hr-generalist,     privileged: false, dept: hr}
+  - {name: dev.kumar,    role: software-engineer, privileged: false, dept: engineering, local_admin: true}
+  - {name: dev.oconnor,  role: software-engineer, privileged: false, dept: engineering, local_admin: true}
+  - {name: hd.singh,     role: helpdesk,          privileged: true,  dept: it,  groups: [Helpdesk-Admins]}
+  - {name: adm.patel,    role: sysadmin,          privileged: true,  dept: it,  groups: [Domain Admins]}
+  - {name: adm.wu,       role: sysadmin,          privileged: true,  dept: it,  groups: [Server-Admins]}
+  - {name: svc_backup,   role: service-account,   privileged: true,  dept: it,  service: veeam}
+  - {name: svc_sccm,     role: service-account,   privileged: true,  dept: it,  service: sccm}
+  - {name: svc_scanner,  role: service-account,   privileged: true,  dept: secops, service: nessus}
+  - {name: svc_ci,       role: service-account,   privileged: false, dept: engineering, service: gitlab-runner}
+  - {name: svc_legacyapp,role: service-account,   privileged: false, dept: finance, service: legacy-erp, notes: "password rotated 2024-11; app config not updated"}

@@ -1,0 +1,23 @@
+id: win_defense_evasion_exfil
+title: "Defense evasion, collection and exfiltration"
+platform: windows
+narrative: >
+  The operator hides activity (signed-binary proxy execution, masquerading, registry and file
+  hiding, ownership changes), collects and compresses data, then exfiltrates over alternative
+  channels. Persistence via WMI event subscription and a service is added for durability.
+gap_seconds: 75
+tags: [defense-evasion, exfiltration, collection]
+steps:
+  - {technique: T1218.011, test_guid: 638730e7-7aed-43dc-bf8c-8117f805f5bb, host: WS01, tactic: TA0005, note: "rundll32 vbscript"}
+  - {technique: T1218.010, test_guid: 449aa403-6aba-47ce-8a37-247d21ef0306, host: WS01, tactic: TA0005, note: "regsvr32 scriptlet"}
+  - {technique: T1036.003, test_guid: 5ba5a3d1-cf3c-4499-968a-a93155d1f717, host: WS01, tactic: TA0005, note: "masquerade as lsass"}
+  - {technique: T1112, test_guid: 282f929a-6bc5-42b8-bd93-960c3ba35afe, host: WS01, tactic: TA0005, note: "modify registry"}
+  - {technique: T1564.001, test_guid: f70974c8-c094-4574-b542-2c545af95a32, host: WS01, tactic: TA0005, note: "hidden system file via attrib"}
+  - {technique: T1222.001, test_guid: 98d34bb4-6e75-42ad-9c41-1dae7dc6a001, host: WS01, tactic: TA0005, note: "take ownership"}
+  - {technique: T1027, test_guid: a50d5a97-2531-499e-a1de-5544c74432c6, host: WS01, tactic: TA0005, note: "base64-encoded PowerShell"}
+  - {technique: T1546.003, test_guid: 3c64f177-28e2-49eb-a799-d767b24dd1e0, host: WS01, tactic: TA0003, note: "WMI event subscription persistence"}
+  - {technique: T1543.003, test_guid: 981e2942-e433-44e9-afc1-8c957a1496b6, host: WS01, tactic: TA0003, note: "service installation cmd"}
+  - {technique: T1005, test_guid: d3d9af44-b8ad-4375-8b0a-4bff4b7e419c, host: WS01, tactic: TA0009, note: "collect local files"}
+  - {technique: T1560.001, test_guid: 02ea31cb-3b4c-4a2d-9bf1-e4e70ebcf5d0, host: WS01, tactic: TA0009, note: "compress with rar"}
+  - {technique: T1048.003, test_guid: dd4b4421-2e25-4593-90ae-7021947ad12e, host: WS01, tactic: TA0010, note: "exfil over ICMP"}
+  - {technique: T1071.001, test_guid: dc3488b0-08c7-4fea-b585-905c83b48180, host: WS01, tactic: TA0011, note: "malicious user agent"}

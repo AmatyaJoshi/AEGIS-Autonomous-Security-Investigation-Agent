@@ -1,0 +1,20 @@
+id: pb_benign_close
+name: Benign / False Positive - Recommend Close
+techniques: []
+applies_when:
+  verdict: [false_positive]
+severity_floor: informational
+recommended_steps:
+  - order: 1
+    action: "Confirm the benign explanation cited in the report (owner, change ticket, or known service account)"
+    owner: analyst
+    requires_approval: false
+  - order: 2
+    action: "Recommend closing the alert as a false positive; record the fp_type for detection tuning"
+    owner: analyst
+    requires_approval: false
+  - order: 3
+    action: "If recurring, propose a tuning exception for the detection rule (documented, scoped)"
+    owner: detection-eng
+    requires_approval: true
+references: []
