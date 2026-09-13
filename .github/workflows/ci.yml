@@ -20,8 +20,11 @@ jobs:
         with:
           python-version: "3.12"
           enable-cache: true
-      - name: Install
-        run: uv pip install --system -e ".[dev]"
+      - name: Create venv and install
+        run: |
+          uv venv --python 3.12
+          uv pip install -e ".[dev]"
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - name: Ruff
         run: ruff check aegis lab bench training tests
       - name: Ruff format check
@@ -41,11 +44,13 @@ jobs:
         with:
           python-version: "3.12"
           enable-cache: true
-      - name: Install
-        run: uv pip install --system -e ".[dev]"
-      - name: Sigma pack (offline convert of cached bundle if present, else skip)
+      - name: Create venv and install
         run: |
-          python -m aegis.cli lab scenarios
+          uv venv --python 3.12
+          uv pip install -e ".[dev]"
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+      - name: Scenarios validate against the ART index
+        run: python -m aegis.cli lab scenarios
       - name: Generate noise + snapshot + verify (no external services)
         run: |
           python -m aegis.cli lab noise --days 3 --per-day 6
