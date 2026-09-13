@@ -1,5 +1,118 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { color-scheme: dark; }
-body { background:#0b0f18; color:#e6edf6; }
+
+/* ------------------------------------------------------------------ design tokens */
+:root {
+  /* light theme (default) */
+  --bg: 244 246 250;
+  --surface: 255 255 255;
+  --surface-2: 248 250 252;
+  --elevated: 255 255 255;
+  --border: 226 232 240;
+  --border-strong: 203 213 225;
+  --text: 15 23 42;
+  --text-muted: 71 85 105;
+  --text-dim: 148 163 184;
+  --accent: 37 99 235;
+  --accent-hover: 29 78 216;
+  --accent-soft: 219 234 254;
+  --ring: 59 130 246;
+  --shadow: 15 23 42;
+  --shadow-strength: 0.06;
+
+  --critical: 220 38 38;
+  --high: 234 88 12;
+  --medium: 202 138 4;
+  --low: 37 99 235;
+  --info: 100 116 139;
+  --success: 22 163 74;
+  --danger: 220 38 38;
+  --warning: 217 119 6;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: 7 11 20;
+  --surface: 16 22 36;
+  --surface-2: 20 27 43;
+  --elevated: 24 32 50;
+  --border: 33 43 62;
+  --border-strong: 45 57 79;
+  --text: 232 238 246;
+  --text-muted: 148 163 184;
+  --text-dim: 100 116 139;
+  --accent: 59 130 246;
+  --accent-hover: 96 165 250;
+  --accent-soft: 30 58 95;
+  --ring: 59 130 246;
+  --shadow: 0 0 0;
+  --shadow-strength: 0.35;
+
+  --critical: 248 113 113;
+  --high: 251 146 60;
+  --medium: 250 204 21;
+  --low: 96 165 250;
+  --info: 148 163 184;
+  --success: 74 222 128;
+  --danger: 248 113 113;
+  --warning: 251 191 36;
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ base */
+* { border-color: rgb(var(--border)); }
+
+html { font-size: 16px; }
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.006em;
+}
+
+/* subtle ambient gradient like enterprise consoles */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgb(var(--accent) / 0.06), transparent 60%),
+    radial-gradient(50rem 40rem at -10% 110%, rgb(var(--accent) / 0.05), transparent 60%);
+  z-index: 0;
+}
+
+::selection { background: rgb(var(--accent) / 0.25); }
+
+/* refined scrollbars */
+* { scrollbar-width: thin; scrollbar-color: rgb(var(--border-strong)) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--border-strong));
+  border-radius: 9999px;
+  border: 3px solid rgb(var(--bg));
+}
+*::-webkit-scrollbar-thumb:hover { background: rgb(var(--text-dim)); }
+
+/* markdown report styling */
+.report h1 { font-size: 1.25rem; font-weight: 650; margin: 0 0 .5rem; }
+.report h2 { font-size: 1rem; font-weight: 600; color: rgb(var(--accent)); margin: 1.1rem 0 .4rem; }
+.report h3 { font-size: .95rem; font-weight: 600; margin: .8rem 0 .3rem; }
+.report p { margin: .35rem 0; color: rgb(var(--text-muted)); line-height: 1.65; }
+.report ul { margin: .3rem 0 .3rem 1.1rem; list-style: disc; }
+.report li { color: rgb(var(--text-muted)); margin: .15rem 0; }
+.report strong { color: rgb(var(--text)); font-weight: 600; }
+.report code {
+  background: rgb(var(--surface-2)); padding: .05rem .35rem; border-radius: .35rem;
+  font-size: .85em; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.animate-in { animation: fadein .25s ease both; }
