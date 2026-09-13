@@ -20,7 +20,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import typer
 from rich.console import Console
@@ -69,12 +69,71 @@ def _not_yet(phase: str) -> None:
 
 @app.command()
 def investigate(
-    source: str = typer.Option("elastic", help="elastic | splunk | sigma | offline"),
-    since: str = typer.Option("1h", help="look-back window for live sources"),
+    source: str = typer.Option("offline", help="offline | elastic | splunk"),
+    snapshot: str = typer.Option("dev", help="snapshot name for offline source"),
+    limit: int = typer.Option(5, help="number of alerts to investigate"),
+    seed: int = typer.Option(1337),
     review: bool = typer.Option(False, help="interrupt before playbook for human review"),
+    out: Path | None = typer.Option(None, help="write reports to this directory"),
 ) -> None:
-    """Run the investigation graph over alerts (Phase 3)."""
-    _not_yet("3")
+    """Run the investigation graph over alerts (Phase 3). Offline uses the DuckDB snapshot."""
+    from aegis.graph.deps import Deps
+    from aegis.graph.reasoner import HeuristicReasoner
+    from aegis.graph.runner import run_investigation
+    from aegis.ingest.generate import generate_alerts
+    from aegis.llm.router import LLMRouter
+    from aegis.siem.duckdb import DuckDBSiem
+
+    if source != "offline":
+        console.print(
+            "[yellow]Live Elastic/Splunk ingestion needs a running SIEM; use "
+            "--source offline for the snapshot path.[/]"
+        )
+        raise typer.Exit(2)
+    settings = get_settings()
+    snap = settings.data.snapshots / snapshot
+    siem = DuckDBSiem(snap)
+    router = LLMRouter()
+    reasoner: Any
+    if router.available:
+        from aegis.graph.llm_reasoner import LLMReasoner
+
+        reasoner = LLMReasoner(router)
+        console.print(f"[green]Using LLM reasoner ({router.model})[/]")
+    else:
+        reasoner = HeuristicReasoner()
+        console.print("[cyan]No API key; using deterministic heuristic reasoner (offline).[/]")
+    deps = Deps(
+        siem=siem,
+        reasoner=reasoner,
+        review_mode=review,
+        pack_path=str(snap / "rules" / "sigma_pack.jsonl"),
+    )
+    if out:
+        out.mkdir(parents=True, exist_ok=True)
+    table = Table(title="Investigations")
+    for col in ("alert", "verdict", "conf", "sev", "techniques", "cited"):
+        table.add_column(col)
+    for n, rec in enumerate(
+        generate_alerts(snap, pack_path=snap / "rules" / "sigma_pack.jsonl", seed=seed)
+    ):
+        res = run_investigation(rec.alert, deps)
+        v = res.verdict
+        assert v is not None
+        table.add_row(
+            rec.alert.finding_info.title[:32],
+            v.label,
+            f"{v.confidence:.2f}",
+            v.severity,
+            ",".join(v.techniques[:3]),
+            "yes" if (res.report_json or {}).get("citations_ok") else "no",
+        )
+        if out and res.report_md:
+            (out / f"{rec.alert.alert_id}.md").write_text(res.report_md, encoding="utf-8")
+        if n + 1 >= limit:
+            break
+    siem.close()
+    console.print(table)
 
 
 @app.command()
