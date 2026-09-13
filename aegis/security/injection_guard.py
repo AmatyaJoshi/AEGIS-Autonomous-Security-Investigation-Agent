@@ -50,6 +50,18 @@ _PATTERNS: list[tuple[str, re.Pattern[str], Severity]] = [
         "high",
     ),
     (
+        # Non-English verdict-steering (French/Spanish/Portuguese) + machine-verdict assertions.
+        "verdict_steer_intl",
+        re.compile(
+            r"faux[\s-]?positif|falso[\s-]?positivo|classez\s+comme|clasificar?\s+como|"
+            r"ignorez\s+les\s+instructions|ignore[nz]?\s+les|activit[eé]\s+est\s+autoris|"
+            r"actividad\s+(est[aá]|es)\s+autoriz|\bverdict\s*[=:]\s*(false|benign|fp)\b|"
+            r"\bknown[\s-]?good\b|marque[nz]?\s+comme",
+            re.I,
+        ),
+        "high",
+    ),
+    (
         "system_marker",
         re.compile(
             r"(<\|?(system|assistant|user|im_start|im_end)\|?>|\[/?(inst|sys|system)\])", re.I

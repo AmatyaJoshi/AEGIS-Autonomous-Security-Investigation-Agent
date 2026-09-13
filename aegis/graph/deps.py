@@ -39,3 +39,5 @@ class Deps:
     fast_path_pfp: float = 0.97
     review_mode: bool = False
     business_hours: tuple[int, int] = (8, 19)
+    # SPEC §9.3 injection defence. Disable only to measure the adversarial baseline (guard off).
+    guard_enabled: bool = True

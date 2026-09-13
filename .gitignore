@@ -21,3 +21,5 @@ training/triage/artifacts/
 training/triage/data/
 training/query_gen/data/
 training/query_gen/artifacts/
+data/aegis.db
+data/test_api.db

@@ -205,3 +205,44 @@ Evaluation compares returned `event_id` sets of the generated query vs an indepe
 query (substantive cases return 90-352 rows), so it measures result equivalence, not SQL string
 match. The fine-tuned Qwen2.5-Coder LoRA plugs into the same harness (needs a GPU to train).
 Model card: `training/MODEL_CARDS/query_gen.md`.
+
+## Phase 4 - Review UI + API
+
+FastAPI backend (SQLite-backed offline) + Next.js 15 UI. Endpoints verified by `tests/test_api.py`:
+queue, investigation detail (report + hypotheses + timeline + evidence), review
+(approve/override/annotate; overrides become gold labels), live metrics. `aegis serve` runs it;
+`web/` is the Queue / Investigation / Labels / Metrics UI.
+
+## Phase 8 - Adversarial track + Lens bridge
+
+```
+aegis bench adversarial          # 60 injection variants of TP alerts, guard off vs on
+aegis lens ci --limit 40         # small-suite gate: faithfulness / tool-correctness / accuracy
+```
+
+### Adversarial log-injection track (60 variants, 5 categories)
+
+| Metric | Guard OFF | Guard ON |
+|---|---:|---:|
+| Verdict-flip rate (TP → auto-closed FP) | 0% | 0% |
+| Injection detection rate | 0% | **100%** |
+| Report contamination rate | 0% | 0% |
+
+The deterministic reasoner is inherently injection-resistant (0% flip even with the guard off,
+because it scores from real command-line indicators, not natural-language instructions embedded in
+log fields). The guard adds defence-in-depth, detecting 100% of the injection corpus across all five
+categories (plain, obfuscated, multilingual, split-across-fields, TI-embedded) and forcing
+`escalate`; reports are never contaminated by injected text. Note: an LLM reasoner is more
+susceptible to injection than the heuristic; the guard + `<data>` envelopes are what protect that
+path, and the same corpus is the probe set for Lens's red-team module.
+
+### Lens metrics + CI gate (test split)
+
+| Gate | Value | Threshold |
+|---|---:|---|
+| Report faithfulness (cited ids resolve) | 100% | ≥ 95% |
+| Tool-call correctness (queries scoped) | 100% | ≥ 99% |
+| Verdict accuracy | 90% | ≥ 75% |
+
+`lens ci` exits non-zero on a breach so CI blocks regressions. OpenTelemetry spans + an `evaluation`
+event export to Lens (Project 2) via OTLP when `AEGIS_OTLP_ENDPOINT` is set.

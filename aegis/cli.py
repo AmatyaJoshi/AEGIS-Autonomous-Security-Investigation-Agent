@@ -223,12 +223,28 @@ def bench(
                 )
         console.print(table)
 
+    def _adversarial() -> None:
+        from bench.adversarial.run import run_adversarial
+
+        rep = run_adversarial(snap, bench_dir, results_dir, limit=30)
+        console.print_json(_json.dumps(rep))
+        off, on = rep["guard_off"], rep["guard_on"]
+        console.print(f"[bold]Adversarial injection track[/] ({rep['n_variants']} variants)")
+        console.print(
+            f"  verdict-flip rate:  guard off {off['verdict_flip_rate']:.0%} -> "
+            f"guard on {on['verdict_flip_rate']:.0%}"
+        )
+        console.print(f"  injection detection (guard on): {on['injection_detection_rate']:.0%}")
+        console.print(f"  report contamination: {on['report_contamination_rate']:.0%}")
+
     if action == "prepare":
         _prepare()
     elif action == "build":
         _build()
     elif action == "run":
         _run()
+    elif action == "adversarial":
+        _adversarial()
     elif action in ("score", "report"):
         _score_and_report()
     elif action == "all":
@@ -245,10 +261,55 @@ def bench(
         raise typer.Exit(2)
 
 
+lens_app = typer.Typer(no_args_is_help=True, help="Lens bridge: eval metrics + CI gate (SPEC §10).")
+app.add_typer(lens_app, name="lens")
+
+
+@lens_app.command("ci")
+def lens_ci(
+    snapshot: str = typer.Option("dev"),
+    limit: int = typer.Option(40, help="alerts from the test split to gate on"),
+) -> None:
+    """Run the small suite + Lens metrics and gate on thresholds (exit non-zero on breach)."""
+    from aegis.lens.ci import run_ci
+
+    settings = get_settings()
+    report = run_ci(
+        settings.data.snapshots / snapshot, settings.data.root / "benchmark", limit=limit
+    )
+    console.print_json(json.dumps(report))
+    table = Table(title="Lens CI gates")
+    for col in ("gate", "value", "threshold", "ok"):
+        table.add_column(col)
+    for g in report["gates"]:
+        table.add_row(
+            g["name"],
+            f"{g['value']:.3f}",
+            f"{g['direction']} {g['threshold']}",
+            "[green]PASS[/]" if g["ok"] else "[red]FAIL[/]",
+        )
+    console.print(table)
+    raise typer.Exit(0 if report["passed"] else 1)
+
+
+@lens_app.command("metrics")
+def lens_metrics(snapshot: str = typer.Option("dev"), limit: int = typer.Option(40)) -> None:
+    """Print aggregate Lens metrics (faithfulness, tool correctness, efficiency)."""
+    from aegis.lens.ci import run_ci
+
+    settings = get_settings()
+    report = run_ci(
+        settings.data.snapshots / snapshot, settings.data.root / "benchmark", limit=limit
+    )
+    console.print_json(json.dumps(report["lens"]))
+
+
 @app.command()
-def serve(host: str = "127.0.0.1", port: int = 8000) -> None:
-    """Run the FastAPI review backend (Phase 4)."""
-    _not_yet("4")
+def serve(host: str = "127.0.0.1", port: int = 8000, reload: bool = False) -> None:
+    """Run the FastAPI review backend + WebSocket (Phase 4)."""
+    import uvicorn
+
+    uvicorn.run("aegis.api.app:app", host=host, port=port, reload=reload)
 
 
 @app.command()

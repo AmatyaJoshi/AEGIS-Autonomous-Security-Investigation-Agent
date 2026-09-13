@@ -48,3 +48,23 @@ def span(name: str, **attributes: Any) -> Iterator[Any]:
         for k, v in attributes.items():
             s.set_attribute(k, v)
         yield s
+
+
+def emit_evaluation(predicted_conf: float, gold_label: str | None, **attrs: Any) -> None:
+    """Emit the OTel ``evaluation`` event on verdict (SPEC §10) for Lens's calibration view.
+
+    A no-op when telemetry is disabled. Carries {predicted_conf, gold_label} plus any span
+    attributes (aegis.verdict, aegis.confidence, llm.cost_usd, ...).
+    """
+    if _TRACER is None:
+        return
+    try:
+        from opentelemetry import trace
+
+        current = trace.get_current_span()
+        current.add_event(
+            "evaluation",
+            {"predicted_conf": predicted_conf, "gold_label": gold_label or "unknown", **attrs},
+        )
+    except Exception:
+        return

@@ -28,9 +28,10 @@ from aegis.tools.attack_kb import validate_techniques
 def make_normalize(deps: Deps):  # type: ignore[no-untyped-def]
     def normalize(state: InvestigationState) -> dict[str, Any]:
         alert = state["alert"]
-        guard = scan_fields(alert.free_text_fields())
+        # Guard can be disabled ONLY to measure the adversarial baseline (SPEC §8.4 before/after).
+        flags = scan_fields(alert.free_text_fields()).flags if deps.guard_enabled else []
         return {
-            "injection_flags": guard.flags,
+            "injection_flags": flags,
             "node_log": ["normalize"],
             "spent": _bump(state, tool_calls=0),
         }

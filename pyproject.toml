@@ -74,8 +74,13 @@ warn_unreachable = true
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["sigma.*", "evtx", "duckdb", "elasticsearch.*", "pyarrow.*"]
+module = ["sigma.*", "evtx", "duckdb", "elasticsearch.*", "pyarrow.*", "lightgbm.*", "uvicorn.*"]
 ignore_missing_imports = true
+
+# FastAPI route decorators are untyped upstream; strict-mode flags every handler otherwise.
+[[tool.mypy.overrides]]
+module = ["aegis.api.app"]
+disallow_untyped_decorators = false
 
 # CLAUDE.md: mypy --strict applies to aegis/ only. lab/, bench/ and training/ are data-plane
 # scripting checked by tests, not the type gate; imports from them are followed but not reported.
