@@ -15,6 +15,10 @@ export default {
         critical: v("critical"), high: v("high"), medium: v("medium"), low: v("low"),
         info: v("info"), success: v("success"), danger: v("danger"), warning: v("warning"),
       },
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+        mono: ["var(--font-mono)"],
+      },
       borderRadius: { lg: "0.7rem", xl: "0.95rem", "2xl": "1.25rem", "3xl": "1.6rem" },
       boxShadow: {
         card: "0 1px 1px rgb(var(--shadow) / calc(var(--shadow-strength) * 0.6)), 0 6px 20px -8px rgb(var(--shadow) / var(--shadow-strength))",

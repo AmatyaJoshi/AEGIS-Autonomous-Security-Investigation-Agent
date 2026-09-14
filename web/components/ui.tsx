@@ -26,6 +26,10 @@ export const Icon = {
   check: svg(<path d="m5 12 5 5 9-11" stroke="currentColor" strokeWidth="2" />),
   clock: svg(<><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" /><path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.7" /></>),
   globe: svg(<><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" /><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" stroke="currentColor" strokeWidth="1.3" /></>),
+  spark: svg(<><path d="M12 3c.4 3.8 2.2 5.6 6 6-3.8.4-5.6 2.2-6 6-.4-3.8-2.2-5.6-6-6 3.8-.4 5.6-2.2 6-6Z" fill="currentColor" opacity=".14" /><path d="M12 3c.4 3.8 2.2 5.6 6 6-3.8.4-5.6 2.2-6 6-.4-3.8-2.2-5.6-6-6 3.8-.4 5.6-2.2 6-6Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" /><path d="M18.5 3.5c.15 1.3.8 1.95 2.1 2.1-1.3.15-1.95.8-2.1 2.1-.15-1.3-.8-1.95-2.1-2.1 1.3-.15 1.95-.8 2.1-2.1Z" fill="currentColor" /></>),
+  send: svg(<path d="M4 12 20 4l-7 16-2.5-6.5L4 12Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />),
+  close: svg(<path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="1.9" />),
+  book: svg(<><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z" stroke="currentColor" strokeWidth="1.6" /><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20" stroke="currentColor" strokeWidth="1.6" /></>),
 };
 
 /* ------------------------------------------------------------------ primitives */

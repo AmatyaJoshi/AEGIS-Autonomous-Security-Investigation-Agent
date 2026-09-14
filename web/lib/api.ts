@@ -105,6 +105,24 @@ export const api = {
     }),
 };
 
+export interface AssistantCitation { source: string; ref: string }
+export interface AssistantReply {
+  intent: string;
+  answer: string;
+  citations: AssistantCitation[];
+  suggestions: string[];
+  guardrail_notice: string | null;
+}
+export const assistant = {
+  suggestions: () => j<{ starters: string[] }>(`/api/assistant/suggestions`),
+  ask: (question: string) =>
+    j<AssistantReply>(`/api/assistant/ask`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ question }),
+    }),
+};
+
 export const fetcher = (url: string) =>
   fetch(url, { cache: "no-store", headers: authHeaders() }).then((r) => {
     if (r.status === 401 && typeof window !== "undefined" && !location.pathname.startsWith("/login")) {

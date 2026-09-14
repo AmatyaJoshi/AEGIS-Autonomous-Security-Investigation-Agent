@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   return (
     <AuthScreen>
-      <h2 className="text-2xl font-semibold tracking-tight">Welcome back</h2>
+      <h2 className="text-2xl font-bold tracking-tight">Welcome back</h2>
       <p className="mt-1 text-sm text-muted">Sign in to the AEGIS console</p>
 
       <form onSubmit={submit} className="mt-7 space-y-4">
@@ -41,7 +41,7 @@ export default function LoginPage() {
         <Field label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
         {err && <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">{err}</p>}
         <button type="submit" disabled={busy}
-          className="w-full rounded-full bg-accent py-2.5 text-sm font-semibold text-white transition hover:bg-accent-hover active:scale-[.99] disabled:opacity-50">
+          className="w-full rounded-xl bg-accent py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-accent-hover active:scale-[.99] disabled:opacity-50">
           {busy ? "Signing in…" : "Sign in"}
         </button>
       </form>

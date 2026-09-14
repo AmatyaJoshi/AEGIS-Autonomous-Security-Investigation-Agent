@@ -8,7 +8,10 @@ import { Icon } from "@/components/ui";
 
 type NavItem = { href: string; label: string; icon: (p: { className?: string }) => React.ReactNode; perm?: string };
 const NAV: { group: string; items: NavItem[] }[] = [
-  { group: "Overview", items: [{ href: "/overview", label: "Dashboard", icon: Icon.chart }] },
+  { group: "Overview", items: [
+    { href: "/overview", label: "Dashboard", icon: Icon.chart },
+    { href: "/assistant", label: "AI Copilot", icon: Icon.spark },
+  ] },
   { group: "Operate", items: [
     { href: "/monitor", label: "Monitor", icon: Icon.monitor },
     { href: "/", label: "Investigations", icon: Icon.queue },
@@ -64,7 +67,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             <Icon.shield className="h-6 w-6" />
           </span>
           <div className="leading-tight">
-            <div className="text-[15px] font-semibold tracking-tight">AEGIS</div>
+            <div className="text-[15px] font-bold tracking-tight">AEGIS</div>
             <div className="text-[11px] text-dim">Autonomous SOC</div>
           </div>
         </div>
@@ -112,6 +115,17 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         </header>
         <main className="mx-auto w-full max-w-[1240px] flex-1 px-6 py-7">{children}</main>
       </div>
+
+      {!pathname.startsWith("/assistant") && (
+        <Link
+          href="/assistant"
+          aria-label="Ask the AI Copilot"
+          className="group fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full bg-gradient-to-br from-accent to-accent-hover py-3 pl-3.5 pr-4 text-white shadow-glow transition duration-200 ease-spring hover:scale-105 active:scale-95"
+        >
+          <Icon.spark className="h-5 w-5" />
+          <span className="text-sm font-semibold">Ask Copilot</span>
+        </Link>
+      )}
     </div>
   );
 
