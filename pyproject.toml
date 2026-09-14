@@ -79,7 +79,7 @@ ignore_missing_imports = true
 
 # FastAPI route decorators are untyped upstream; strict-mode flags every handler otherwise.
 [[tool.mypy.overrides]]
-module = ["aegis.api.app"]
+module = ["aegis.api.app", "aegis.api.soc", "aegis.api.auth"]
 disallow_untyped_decorators = false
 
 # CLAUDE.md: mypy --strict applies to aegis/ only. lab/, bench/ and training/ are data-plane

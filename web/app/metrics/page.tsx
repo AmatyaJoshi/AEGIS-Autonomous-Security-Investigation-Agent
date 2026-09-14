@@ -21,7 +21,7 @@ export default function MetricsPage() {
   const verdicts = Object.entries(data.by_verdict);
 
   return (
-    <div className="animate-in">
+    <div className="animate-rise">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Metrics</h1>
         <p className="mt-1 text-sm text-muted">Live operational and quality signals across the review queue</p>

@@ -6,26 +6,16 @@ type Theme = "light" | "dark";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
-
-  useEffect(() => {
-    const stored = (localStorage.getItem("aegis-theme") as Theme | null) ?? "dark";
-    setTheme(stored);
-  }, []);
-
+  useEffect(() => setTheme((localStorage.getItem("aegis-theme") as Theme | null) ?? "dark"), []);
   function apply(next: Theme) {
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem("aegis-theme", next);
-    } catch {
-      /* ignore */
-    }
+    try { localStorage.setItem("aegis-theme", next); } catch { /* ignore */ }
   }
-
   return (
     <button
       onClick={() => apply(theme === "dark" ? "light" : "dark")}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted hover:text-text hover:border-border-strong transition"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-muted transition duration-200 ease-spring hover:text-text hover:border-border-strong active:scale-95"
       title={theme === "dark" ? "Switch to light" : "Switch to dark"}
       aria-label="Toggle theme"
     >
@@ -34,5 +24,4 @@ export function ThemeToggle() {
   );
 }
 
-/** Inline script that sets the theme before first paint to avoid a flash of the wrong theme. */
 export const themeScript = `(function(){try{var t=localStorage.getItem('aegis-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;

@@ -19,7 +19,7 @@ import asyncio
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -28,6 +28,14 @@ from aegis.api.store import Store
 app = FastAPI(title="AEGIS Review API", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 _store = Store()
+
+from aegis.api.auth import require_role, seed_demo_users  # noqa: E402
+from aegis.api.auth import router as auth_router  # noqa: E402
+from aegis.api.soc import router as soc_router  # noqa: E402
+
+app.include_router(auth_router)
+app.include_router(soc_router)
+seed_demo_users()  # idempotent: ensures the console has demo accounts on first load
 
 
 class Hub:
@@ -84,10 +92,14 @@ def investigation(investigation_id: str) -> dict[str, Any]:
 
 
 @app.post("/api/investigations/{investigation_id}/review")
-def review(investigation_id: str, body: ReviewIn) -> dict[str, Any]:
+def review(
+    investigation_id: str,
+    body: ReviewIn,
+    user: dict[str, Any] = Depends(require_role("analyst")),
+) -> dict[str, Any]:
     try:
         rid = _store.add_review(
-            investigation_id, body.analyst, body.action, body.override_verdict, body.annotation
+            investigation_id, user["name"], body.action, body.override_verdict, body.annotation
         )
     except KeyError as e:
         raise HTTPException(404, "investigation not found") from e
@@ -100,7 +112,9 @@ def metrics() -> dict[str, Any]:
 
 
 @app.post("/api/investigate")
-async def investigate(body: InvestigateIn) -> dict[str, Any]:
+async def investigate(
+    body: InvestigateIn, user: dict[str, Any] = Depends(require_role("analyst"))
+) -> dict[str, Any]:
     from aegis.config import get_settings
 
     settings = get_settings()

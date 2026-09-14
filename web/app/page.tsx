@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { api, fetcher, type Summary } from "@/lib/api";
-import { Button, Card, Icon, SeverityBadge, Spinner, VerdictBadge } from "@/components/ui";
+import { Button, Card, Icon, PageHeader, Segmented, SeverityBadge, Spinner, VerdictBadge } from "@/components/ui";
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -41,19 +41,17 @@ export default function QueuePage() {
   }
 
   return (
-    <div className="animate-in">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Investigation queue</h1>
-          <p className="mt-1 text-sm text-muted">
-            Autonomous verdicts with calibrated confidence — {data?.length ?? 0} investigations
-          </p>
-        </div>
-        <Button onClick={runBatch} disabled={busy}>
-          <Icon.bolt className="h-4 w-4" />
-          {busy ? "Investigating…" : "Investigate 15 alerts"}
-        </Button>
-      </div>
+    <div className="animate-rise">
+      <PageHeader
+        title="Investigations"
+        subtitle={`Autonomous verdicts with calibrated confidence — ${data?.length ?? 0} investigations`}
+        action={
+          <Button onClick={runBatch} disabled={busy}>
+            <Icon.bolt className="h-4 w-4" />
+            {busy ? "Investigating…" : "Investigate 15 alerts"}
+          </Button>
+        }
+      />
 
       {/* summary strip */}
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -72,19 +70,7 @@ export default function QueuePage() {
 
       {/* controls */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <div className="flex rounded-lg border border-border bg-surface p-0.5">
-          {FILTERS.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                filter === f.key ? "bg-accent text-white shadow-card" : "text-muted hover:text-text"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <Segmented options={FILTERS} value={filter} onChange={setFilter} />
         <div className="relative ml-auto">
           <Icon.search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-dim" />
           <input

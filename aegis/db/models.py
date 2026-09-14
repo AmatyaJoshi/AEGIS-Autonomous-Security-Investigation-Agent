@@ -100,3 +100,22 @@ class Playbook(Base):
     name: Mapped[str] = mapped_column(String(256))
     techniques: Mapped[list[str]] = mapped_column(JSON, default=list)
     yaml: Mapped[str] = mapped_column(Text)
+
+
+class User(Base):
+    """Analyst account with a role (SPEC §6 review UI is role-based)."""
+
+    __tablename__ = "users"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    email: Mapped[str] = mapped_column(String(256), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(128))
+    password_hash: Mapped[str] = mapped_column(String(256))
+    role: Mapped[str] = mapped_column(
+        String(24), default="analyst"
+    )  # admin|soc_manager|analyst|viewer
+    team: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    avatar_color: Mapped[str] = mapped_column(String(16), default="#0A84FF")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    last_login: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    active: Mapped[bool] = mapped_column(default=True)

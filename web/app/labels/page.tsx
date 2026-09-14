@@ -9,7 +9,7 @@ export default function LabelsPage() {
   const { data, isLoading } = useSWR<Summary[]>("/api/queue?limit=200", fetcher, { refreshInterval: 8000 });
 
   return (
-    <div className="animate-in">
+    <div className="animate-rise">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Labels</h1>
         <p className="mt-1 max-w-2xl text-sm text-muted">

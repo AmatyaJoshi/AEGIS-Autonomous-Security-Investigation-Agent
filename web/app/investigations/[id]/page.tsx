@@ -4,6 +4,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import ReactMarkdown from "react-markdown";
 import { api, fetcher, type Investigation } from "@/lib/api";
+import { useAuth } from "@/components/auth";
 import { Button, Card, Icon, SectionTitle, SeverityBadge, Spinner, VerdictBadge } from "@/components/ui";
 
 const STATUS: Record<string, { cls: string; label: string }> = {
@@ -15,6 +16,7 @@ const STATUS: Record<string, { cls: string; label: string }> = {
 
 export default function InvestigationPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { has } = useAuth();
   const { data, mutate } = useSWR<Investigation>(`/api/investigations/${id}`, fetcher);
   const [drawer, setDrawer] = useState<Record<string, unknown> | null>(null);
 
@@ -29,7 +31,7 @@ export default function InvestigationPage({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <div className="animate-in">
+    <div className="animate-rise">
       <Link href="/" className="mb-4 inline-flex items-center gap-1.5 text-sm text-dim hover:text-text">
         <Icon.chevron className="h-4 w-4 rotate-180" /> Queue
       </Link>
@@ -146,6 +148,7 @@ export default function InvestigationPage({ params }: { params: Promise<{ id: st
             ) : (
               <p className="text-sm text-dim">No playbook selected.</p>
             )}
+            {has("review") ? (
             <div className="mt-4 space-y-2">
               <Button variant="success" className="w-full" onClick={() => act("approve")}>
                 Approve recommendation
@@ -157,6 +160,9 @@ export default function InvestigationPage({ params }: { params: Promise<{ id: st
               </div>
               <Button variant="ghost" className="w-full" onClick={() => act("annotate")}>Annotate</Button>
             </div>
+            ) : (
+              <p className="mt-4 rounded-lg border border-border bg-surface-2 px-3 py-2 text-xs text-dim">Read-only role — reviewing requires an analyst account.</p>
+            )}
             <p className="mt-3 text-[11px] leading-relaxed text-dim">
               Overrides become training labels. AEGIS recommends; a human decides and acts.
             </p>
@@ -185,7 +191,7 @@ export default function InvestigationPage({ params }: { params: Promise<{ id: st
       {/* evidence drawer */}
       {drawer && (
         <div className="fixed inset-0 z-40 flex justify-end bg-black/50 backdrop-blur-sm" onClick={() => setDrawer(null)}>
-          <div className="h-full w-full max-w-lg overflow-auto border-l border-border bg-surface p-6 shadow-pop animate-in" onClick={(e) => e.stopPropagation()}>
+          <div className="h-full w-full max-w-lg overflow-auto border-l border-border bg-surface p-6 shadow-pop animate-rise" onClick={(e) => e.stopPropagation()}>
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold">Raw event</h3>
               <button onClick={() => setDrawer(null)} className="text-dim hover:text-text">✕</button>
