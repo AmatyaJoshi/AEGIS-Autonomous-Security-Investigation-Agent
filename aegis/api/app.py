@@ -29,12 +29,14 @@ app = FastAPI(title="AEGIS Review API", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 _store = Store()
 
+from aegis.api.assistant import router as assistant_router  # noqa: E402
 from aegis.api.auth import require_role, seed_demo_users  # noqa: E402
 from aegis.api.auth import router as auth_router  # noqa: E402
 from aegis.api.soc import router as soc_router  # noqa: E402
 
 app.include_router(auth_router)
 app.include_router(soc_router)
+app.include_router(assistant_router)
 seed_demo_users()  # idempotent: ensures the console has demo accounts on first load
 
 

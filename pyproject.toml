@@ -79,7 +79,7 @@ ignore_missing_imports = true
 
 # FastAPI route decorators are untyped upstream; strict-mode flags every handler otherwise.
 [[tool.mypy.overrides]]
-module = ["aegis.api.app", "aegis.api.soc", "aegis.api.auth"]
+module = ["aegis.api.app", "aegis.api.soc", "aegis.api.auth", "aegis.api.assistant"]
 disallow_untyped_decorators = false
 
 # CLAUDE.md: mypy --strict applies to aegis/ only. lab/, bench/ and training/ are data-plane
@@ -91,5 +91,6 @@ ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q"
 markers = ["network: tests that need network access (skipped in CI)"]
