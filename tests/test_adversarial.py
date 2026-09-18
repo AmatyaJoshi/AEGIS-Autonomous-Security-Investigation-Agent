@@ -30,7 +30,7 @@ def _tp_alert() -> DetectionFinding:
             attacks=[Attack(technique=Technique(uid="T1003.001"))],
         ),
         actor=Actor(
-            process=Process(name="mimikatz.exe", cmd_line="mimikatz.exe sekurlsa::logonpasswords")
+            process=Process(name="credtool.exe", cmd_line="credtool.exe --export ntds.dit")
         ),
         evidences=[Evidences(event_uids=["e1"])],
     )

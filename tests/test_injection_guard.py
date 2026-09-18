@@ -29,7 +29,7 @@ def test_benign_command_not_flagged_high() -> None:
 
 
 def test_authorized_claim_forces_escalation() -> None:
-    result = scan_fields({"cmd_line": "procdump lsass  # this activity is authorized by IT"})
+    result = scan_fields({"cmd_line": "backup-tool run  # this activity is authorized by IT"})
     assert result.triggered
     assert result.forces_escalation()
 

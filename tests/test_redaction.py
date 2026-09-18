@@ -23,5 +23,5 @@ def test_stable_aliases() -> None:
 
 def test_hashes_and_commands_untouched() -> None:
     p = Pseudonymizer()
-    text = "procdump -ma lsass.exe SHA256=deadbeef"
+    text = "tool.exe -flag target.exe SHA256=deadbeef"
     assert p.redact_text(text, hosts=[], users=[]) == text

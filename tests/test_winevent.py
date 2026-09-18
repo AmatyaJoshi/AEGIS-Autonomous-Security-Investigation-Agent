@@ -6,8 +6,8 @@ from lab.common.ecs import make_event_id, split_hashes, split_user, win_category
 from lab.common.winevent import flatten_evtx, map_windows_event
 
 
-def test_map_sysmon_process(sysmon_lsass_event) -> None:
-    ev = map_windows_event(sysmon_lsass_event, dataset="otrf", dataset_ref="unit")
+def test_map_sysmon_process(sysmon_process_event) -> None:
+    ev = map_windows_event(sysmon_process_event, dataset="otrf", dataset_ref="unit")
     assert ev is not None
     assert ev.event_code == "1"
     assert ev.event_category == "process"
@@ -15,7 +15,7 @@ def test_map_sysmon_process(sysmon_lsass_event) -> None:
     assert ev.host_name == "WS01"  # FQDN trimmed + upper
     assert ev.user_name == "adm.patel"
     assert ev.user_domain == "CORP"
-    assert ev.process_name == "procdump64.exe"
+    assert ev.process_name == "devtool64.exe"
     assert ev.process_parent_name == "powershell.exe"
     assert (
         ev.process_hash_sha256 == "11064e9edc605bd5b0c0a505538a0d5fd7de53883af342f091687cae8628acd0"
@@ -35,9 +35,9 @@ def test_map_security_logon(security_4624_event) -> None:
     assert ev.source_ip == "10.10.20.31"
 
 
-def test_event_id_is_deterministic(sysmon_lsass_event) -> None:
-    a = map_windows_event(sysmon_lsass_event, dataset="otrf", dataset_ref="unit")
-    b = map_windows_event(dict(sysmon_lsass_event), dataset="otrf", dataset_ref="unit")
+def test_event_id_is_deterministic(sysmon_process_event) -> None:
+    a = map_windows_event(sysmon_process_event, dataset="otrf", dataset_ref="unit")
+    b = map_windows_event(dict(sysmon_process_event), dataset="otrf", dataset_ref="unit")
     assert a and b and a.event_id == b.event_id
     assert len(a.event_id) == 32
 

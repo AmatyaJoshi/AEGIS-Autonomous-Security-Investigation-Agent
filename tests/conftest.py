@@ -12,8 +12,8 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 
 @pytest.fixture(scope="session")
-def sysmon_lsass_event() -> dict:
-    return json.loads((FIXTURES / "sysmon_procdump_lsass.json").read_text(encoding="utf-8"))
+def sysmon_process_event() -> dict:
+    return json.loads((FIXTURES / "sysmon_process_create.json").read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="session")

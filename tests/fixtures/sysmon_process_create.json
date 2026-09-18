@@ -1,0 +1,21 @@
+{
+  "Channel": "Microsoft-Windows-Sysmon/Operational",
+  "SourceName": "Microsoft-Windows-Sysmon",
+  "EventID": 1,
+  "Hostname": "WS01.corp.local",
+  "UtcTime": "2025-01-06 14:22:05.910",
+  "ProcessGuid": "{39e4a257-d4ad-5f8c-3303-000000000700}",
+  "ProcessId": "4824",
+  "Image": "C:\\Tools\\devtool64.exe",
+  "OriginalFileName": "devtool",
+  "CommandLine": "devtool64.exe -accepteula -o C:\\Windows\\Temp\\out.log",
+  "CurrentDirectory": "C:\\Tools\\",
+  "User": "CORP\\adm.patel",
+  "LogonId": "0xC61D9",
+  "IntegrityLevel": "High",
+  "Hashes": "SHA1=7662A8D2F23C3474DEC6EF8E2B0365B0B86714EE,MD5=F68AF942FD7CCC0E7BAB1A2335D2AD26,SHA256=11064E9EDC605BD5B0C0A505538A0D5FD7DE53883AF342F091687CAE8628ACD0,IMPHASH=F27A7FC3A53E74F45BE370131953896A",
+  "ParentProcessId": "6100",
+  "ParentImage": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "ParentCommandLine": "powershell.exe ",
+  "Message": "Process Create"
+}
