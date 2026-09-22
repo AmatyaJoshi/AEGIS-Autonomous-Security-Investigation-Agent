@@ -103,3 +103,14 @@ def test_api_endpoints(tmp_path, monkeypatch) -> None:
     d = c.get("/api/investigations/inv-9").json()
     assert d["verdict"] == "true_positive"
     assert c.get("/api/investigations/missing").status_code == 404
+
+
+def test_reset_investigations_keeps_nothing_but_users(tmp_path) -> None:
+    store = Store(f"sqlite:///{tmp_path / 'reset.db'}")
+    store.save_result(_result("inv-r1"), gold_label="true_positive")
+    store.add_review("inv-r1", "ana", "approve")
+    assert store.metrics()["total"] == 1
+    assert store.reset_investigations() == 1
+    m = store.metrics()
+    assert m["total"] == 0 and m["reviews"] == 0
+    assert store.get_investigation("inv-r1") is None

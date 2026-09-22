@@ -57,3 +57,16 @@
   hostnames, usernames, titles and report text never appear in it.
 - Analyst review (approve/override) writes `aegis_feedback`; `agreed` = analyst verdict equals
   AEGIS verdict. Override rate feeds `analyst_override_rate` in the priors.
+
+## 2026-09-22 — Phase 2 demo + deploy artefacts
+- `aegis demo` picks 1 TP / 3 FP (distinct fp_types) / 1 ambiguous from the frozen benchmark's
+  test split (seeded), resets only the review queue + case memory, never data or snapshot. Local
+  run: 15 s with the deterministic reasoner. The `service_account_lockout` FP still lands as TP
+  (known hard class, RESULTS.md) — shown honestly, not hidden.
+- Demo LLM timeout is 60 s per call (`AEGIS_DEMO_LLM_TIMEOUT_S`) so a slow CPU Ollama degrades to
+  the deterministic reasoner instead of blowing the 3-minute budget; the header badge says so.
+- Docker: `Dockerfile` (api), `web/Dockerfile`, `docker-compose.demo.yml` (api + web + ollama +
+  one-shot model pull), `Makefile` with plain-command equivalents. Hosting per COST.md: Oracle
+  Always Free ARM primary, Render free backup, DuckDNS + Caddy, self-hosted Umami — not Fly.io or
+  Plausible (docs/DEPLOY.md). Compose verified with `docker compose config -q` here; container run
+  is verified on the Docker laptop.

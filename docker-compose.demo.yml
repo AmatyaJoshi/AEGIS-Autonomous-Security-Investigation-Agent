@@ -1,0 +1,71 @@
+# AEGIS live-demo stack (Phase 2): API + UI over the offline snapshot, plus a local Ollama for the
+# LLM reasoner. Zero external services; everything free (COST.md).
+#
+#   docker compose -f docker-compose.demo.yml up -d --build      # or: make up
+#   docker compose -f docker-compose.demo.yml exec api python -m aegis.cli demo --ui-url http://localhost:3000
+#
+# First run on a clean clone: build the data once (about 25 min, 140 MB download):
+#   docker compose -f docker-compose.demo.yml run --rm api make -f /app/Makefile data PY=python
+# (or run the README Quickstart steps 1 and 3 on the host; ./data is bind-mounted).
+name: aegis-demo
+
+services:
+  api:
+    build: .
+    environment:
+      AEGIS_DATA_ROOT: /app/data
+      AEGIS_API_DSN: sqlite:////app/data/aegis.db
+      AEGIS_OLLAMA_URL: http://ollama:11434
+      AEGIS_LLM_PROVIDER: ${AEGIS_LLM_PROVIDER:-auto}
+      AEGIS_LLM_MODEL: ${AEGIS_LLM_MODEL:-llama3.1:8b}
+      AEGIS_LLM_TIMEOUT_S: ${AEGIS_LLM_TIMEOUT_S:-120}
+      BUDGET_LLM_CALLS_PER_RUN: ${BUDGET_LLM_CALLS_PER_RUN:-60}
+      BUDGET_LLM_TOKENS_PER_DAY: ${BUDGET_LLM_TOKENS_PER_DAY:-300000}
+      AEGIS_MEMORY_BACKEND: ${AEGIS_MEMORY_BACKEND:-auto}
+      AEGIS_PULSE_API_KEY: ${AEGIS_PULSE_API_KEY:-}
+      AEGIS_PULSE_BASE_URL: ${AEGIS_PULSE_BASE_URL:-https://pulse.evorozen.com}
+      BUDGET_PULSE_CALLS_PER_DAY: ${BUDGET_PULSE_CALLS_PER_DAY:-40}
+      AEGIS_AUTH_SECRET: ${AEGIS_AUTH_SECRET:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+      - ./training/triage/artifacts:/app/training/triage/artifacts
+    ports: ["8000:8000"]
+    depends_on:
+      ollama:
+        condition: service_started
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_UMAMI_SRC: ${NEXT_PUBLIC_UMAMI_SRC:-}
+        NEXT_PUBLIC_UMAMI_ID: ${NEXT_PUBLIC_UMAMI_ID:-}
+    environment:
+      AEGIS_API_URL: http://api:8000
+    ports: ["3000:3000"]
+    depends_on:
+      api:
+        condition: service_healthy
+
+  ollama:
+    image: ollama/ollama
+    volumes: ["ollama:/root/.ollama"]
+    ports: ["11434:11434"]
+    # GPU (optional): uncomment on a host with the NVIDIA container toolkit.
+    # deploy: { resources: { reservations: { devices: [{ driver: nvidia, count: all, capabilities: [gpu] }] } } }
+
+  # One-shot model pull; the api reports cost_mode=degraded (deterministic reasoner) until it finishes.
+  ollama-pull:
+    image: ollama/ollama
+    volumes: ["ollama:/root/.ollama"]
+    environment: { OLLAMA_HOST: "http://ollama:11434" }
+    entrypoint: ["/bin/sh", "-c", "ollama pull ${AEGIS_LLM_MODEL:-llama3.1:8b}"]
+    depends_on:
+      ollama:
+        condition: service_started
+    restart: "no"
+
+volumes:
+  ollama:

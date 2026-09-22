@@ -328,6 +328,67 @@ def bench(
         raise typer.Exit(2)
 
 
+@app.command()
+def demo(
+    snapshot: str = typer.Option("dev"),
+    reset: bool = typer.Option(True, help="clear the review queue and case memory first"),
+    reasoner_kind: str = typer.Option("auto", "--reasoner", help="auto | llm | heuristic"),
+    triage: Path = typer.Option(Path("training/triage/artifacts/model.txt")),
+    ui_url: str = typer.Option("http://localhost:3000", envvar="AEGIS_UI_URL"),
+) -> None:
+    """Three-minute live demo: reset, investigate 1 TP + 3 FP + 1 ambiguous, print the URL."""
+    from aegis.demo import DemoCase, run_demo
+
+    settings = get_settings()
+    snap = settings.data.snapshots / snapshot
+    bench_dir = settings.data.root / "benchmark"
+    if not snap.exists() or not (bench_dir / "benchmark_v1.json").exists():
+        console.print(
+            "[red]Need the snapshot and the benchmark first: "
+            "run `make data` (or README Quickstart steps 1 and 3).[/]"
+        )
+        raise typer.Exit(2)
+    table = Table(title="AEGIS demo - 5 alerts")
+    for c in ("gold", "fp_type", "verdict", "conf", "cited", "s", "prior"):
+        table.add_column(c)
+
+    def on_case(c: DemoCase) -> None:
+        prior = c.memory_prior or {}
+        table.add_row(
+            c.gold_label,
+            c.fp_type or "-",
+            c.verdict or "-",
+            f"{c.confidence:.2f}" if c.confidence is not None else "-",
+            "yes" if c.cited else "NO",
+            f"{c.seconds:.1f}",
+            f"{prior.get('key')} w={prior.get('weight', 0):.2f}" if prior.get("key") else "-",
+        )
+        console.print(f"[dim]{c.gold_label:14} -> {c.verdict} ({c.seconds:.1f}s)[/]")
+
+    rep = run_demo(
+        snapshot=snap,
+        bench_dir=bench_dir,
+        reset=reset,
+        reasoner_kind=reasoner_kind,
+        triage_path=triage,
+        ui_url=ui_url,
+        on_case=on_case,
+    )
+    console.print(table)
+    llm = rep["llm"]
+    console.print(
+        f"reasoner={rep['reasoner']} provider={llm['provider'] or 'none'} "
+        f"cost_mode={llm['cost_mode']} fallbacks={rep['fallbacks']} "
+        f"memory={rep['memory']['backend']} ({rep['memory']['priors_source']}) "
+        f"total={rep['seconds']}s"
+    )
+    console.print(f"[bold green]Open the ambiguous case:[/] {rep['open']}")
+    console.print(
+        "[dim]Login: analyst@aegis.local / aegis1234 - approve it, "
+        "then watch Metrics > Case memory.[/]"
+    )
+
+
 memory_app = typer.Typer(no_args_is_help=True, help="Case memory (Phase 1): Pulse mirror / local.")
 app.add_typer(memory_app, name="memory")
 

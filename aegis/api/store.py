@@ -149,6 +149,18 @@ class Store:
             s.commit()
             return review.id
 
+    def reset_investigations(self) -> int:
+        """`aegis demo --reset`: clear investigations, reviews, alerts and gold labels.
+
+        Users/roles live in the same database and are kept. Datasets and snapshots are untouched.
+        """
+        with self.session() as s:
+            n = s.query(Investigation).count()
+            for model in (Review, Investigation, GoldLabel, Alert):
+                s.query(model).delete()
+            s.commit()
+            return int(n)
+
     # ------------------------------------------------------------------ reads
     def list_investigations(
         self, *, verdict: str | None = None, limit: int = 100

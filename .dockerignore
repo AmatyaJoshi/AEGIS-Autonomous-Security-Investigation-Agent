@@ -1,0 +1,16 @@
+.venv
+.git
+.mypy_cache
+.ruff_cache
+.pytest_cache
+__pycache__
+data
+web/node_modules
+web/.next
+training/triage/artifacts
+training/triage/data
+training/query_gen/data
+training/query_gen/artifacts
+*.evtx
+*.zip
+.env
