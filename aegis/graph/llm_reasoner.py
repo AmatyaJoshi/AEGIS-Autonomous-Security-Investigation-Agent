@@ -17,6 +17,7 @@ from aegis.graph.citation import check_report
 from aegis.graph.reasoner import HeuristicReasoner
 from aegis.graph.report_util import render_markdown_report
 from aegis.graph.state import ContextBundle, EvidenceRef, Hypothesis, TimelineEvent, Verdict
+from aegis.llm.budget import DegradedError
 from aegis.llm.prompts_loader import load_prompt
 from aegis.llm.router import LLMRouter
 from aegis.llm.schemas import (
@@ -37,6 +38,7 @@ class LLMReasoner:
         self.router = router
         self.system = load_prompt("system")
         self._fallback = HeuristicReasoner()
+        self.fallbacks = 0  # calls answered by the deterministic reasoner (degraded/invalid)
 
     def hypothesize(self, alert: DetectionFinding, context: ContextBundle) -> HypothesesOut:
         user = load_prompt("hypothesize").format(
@@ -44,7 +46,8 @@ class LLMReasoner:
         )
         try:
             out = self.router.complete_schema(self.system, user, HypothesesOut)
-        except ValueError:
+        except (ValueError, DegradedError):
+            self.fallbacks += 1
             return self._fallback.hypothesize(alert, context)
         if not any(h.is_benign for h in out.hypotheses):
             out.hypotheses.append(self._fallback.hypothesize(alert, context).hypotheses[1])
@@ -83,7 +86,8 @@ class LLMReasoner:
         try:
             assessment = self.router.complete_schema(self.system, user_prompt, EvidenceAssessment)
             assessment.hypothesis_id = hypothesis.id
-        except ValueError:
+        except (ValueError, DegradedError):
+            self.fallbacks += 1
             return self._fallback.assess_evidence(hypothesis, alert, context, siem)
         return assessment, refs
 
@@ -97,7 +101,8 @@ class LLMReasoner:
         )
         try:
             v = self.router.complete_schema(self.system, user, VerdictOut)
-        except ValueError:
+        except (ValueError, DegradedError):
+            self.fallbacks += 1
             return self._fallback.decide(alert, context, hypotheses)
         return v
 
@@ -128,7 +133,8 @@ class LLMReasoner:
         for _ in range(2):
             try:
                 out = self.router.complete_schema(self.system, user, ReportOut)
-            except ValueError:
+            except (ValueError, DegradedError):
+                self.fallbacks += 1
                 break
             report = check_report(out.markdown, valid)
             if report.ok:

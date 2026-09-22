@@ -26,3 +26,19 @@
 - B3: `bench build` writes the frozen manifest only when `manifest_hash` changes; an unchanged
   rebuild leaves the committed file byte-identical, a changed one raises and asks for a new
   BENCH_VERSION + RESULTS.md entry.
+
+## 2026-09-22 — B5 zero-cost LLM path
+- Providers are raw httpx calls (Ollama `/api/chat` JSON mode, Groq/OpenAI-compatible, Gemini
+  `generateContent`), no vendor SDKs: removes the undeclared `anthropic`/`openai` imports and keeps
+  the dependency list unchanged. Paid endpoints stay in the file but are refused unless
+  `AEGIS_ALLOW_PAID_PROVIDERS=1`.
+- `auto` order is Ollama → Groq → Gemini. Ollama is probed once per router with a 2 s `/api/tags`
+  call; the result is cached so `/health` polling does not hammer it.
+- Budget caps default to 60 LLM calls per run (an investigation makes ~5–8) and 300k tokens per
+  day, persisted in `data/budget.json`. A cap or a provider outage raises `DegradedError`, which
+  `LLMReasoner` turns into a deterministic answer and counts in `reasoner.fallbacks`.
+- Pulse docs (fetched 2026-09-22) expose `create_schema`, `insert_data`, `select_data`,
+  `update_data`, `delete_data`, `chat` with `Authorization: Bearer` and a `data_payload` body — not
+  the `bulk_insert`/`upsert_data`/`count`/`analytics` verbs in the brief. Phase 1 client implements
+  the documented verbs and composes the rest (batched inserts, select+update upsert, select+len
+  count, `chat` for analytics). Flagged to the owner in the Phase 1 report.

@@ -90,6 +90,9 @@ def investigate(
     seed: int = typer.Option(1337),
     review: bool = typer.Option(False, help="interrupt before playbook for human review"),
     out: Path | None = typer.Option(None, help="write reports to this directory"),
+    reasoner_kind: str = typer.Option(
+        "auto", "--reasoner", help="auto | llm | heuristic (llm needs Ollama/Groq/Gemini, COST.md)"
+    ),
 ) -> None:
     """Run the investigation graph over alerts (Phase 3). Offline uses the DuckDB snapshot."""
     from aegis.graph.deps import Deps
@@ -108,16 +111,26 @@ def investigate(
     settings = get_settings()
     snap = settings.data.snapshots / snapshot
     siem = DuckDBSiem(snap)
+    from aegis.llm.budget import log_allowlist
+
+    log_allowlist()
     router = LLMRouter()
     reasoner: Any
-    if router.available:
+    if reasoner_kind != "heuristic" and router.available:
         from aegis.graph.llm_reasoner import LLMReasoner
 
         reasoner = LLMReasoner(router)
-        console.print(f"[green]Using LLM reasoner ({router.model})[/]")
+        d = router.describe()
+        console.print(f"[green]Using LLM reasoner via {d['provider']} ({d['model']}), $0 tier[/]")
     else:
         reasoner = HeuristicReasoner()
-        console.print("[cyan]No API key; using deterministic heuristic reasoner (offline).[/]")
+        if reasoner_kind == "llm":
+            console.print("[red]--reasoner llm requested but no free provider is reachable.[/]")
+            raise typer.Exit(2)
+        console.print(
+            "[cyan]No free LLM provider reachable (Ollama/Groq/Gemini); "
+            "using the deterministic heuristic reasoner.[/]"
+        )
     deps = Deps(
         siem=siem,
         reasoner=reasoner,
@@ -149,6 +162,11 @@ def investigate(
             break
     siem.close()
     console.print(table)
+    d = router.describe()
+    console.print(
+        f"[dim]llm provider={d['provider'] or 'none'} calls={d['calls']} "
+        f"tokens={d['total_tokens']} cost_usd={d['total_cost_usd']} cost_mode={d['cost_mode']}[/]"
+    )
 
 
 @app.command()

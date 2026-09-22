@@ -39,6 +39,10 @@ app.include_router(soc_router)
 app.include_router(assistant_router)
 seed_demo_users()  # idempotent: ensures the console has demo accounts on first load
 
+from aegis.llm.budget import log_allowlist  # noqa: E402
+
+log_allowlist()  # COST.md: one startup line listing every outbound host
+
 
 class Hub:
     def __init__(self) -> None:
@@ -75,9 +79,33 @@ class InvestigateIn(BaseModel):
     seed: int = 1337
 
 
+_router: Any = None
+
+
+def get_router() -> Any:
+    """Process-wide LLM router (provider resolution is cached; Ollama probe happens once)."""
+    global _router
+    if _router is None:
+        from aegis.llm.router import LLMRouter
+
+        _router = LLMRouter()
+    return _router
+
+
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> dict[str, Any]:
+    """Liveness + cost posture (COST.md): ``cost_mode`` is ``normal`` or ``degraded``."""
+    from aegis.llm.budget import get_guard
+
+    r = get_router()
+    d = r.describe()
+    return {
+        "status": "ok",
+        "cost_mode": d["cost_mode"],
+        "degraded_reason": d["degraded_reason"],
+        "llm": {"provider": d["provider"] or "none", "model": d["model"]},
+        "budget": get_guard().snapshot(),
+    }
 
 
 @app.get("/api/queue")
