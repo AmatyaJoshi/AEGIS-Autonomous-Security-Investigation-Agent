@@ -134,17 +134,26 @@ def run_benchmark(
     split: str | None = None,
     triage_model: Any | None = None,
     limit: int | None = None,
+    reasoner: Any | None = None,
 ) -> dict[str, Any]:
+    """Run the arms. ``reasoner`` defaults to the deterministic ``HeuristicReasoner``; pass an
+    ``LLMReasoner`` (``aegis bench run --reasoner llm``) to measure the LLM path on the same alerts.
+    Predictions and scores are archived with the reasoner name so both are reported (README)."""
     entries = load_benchmark(bench_dir)
     if split:
         entries = [e for e in entries if e.split == split]
     if limit:
         entries = entries[:limit]
     siem = DuckDBSiem(snapshot_dir)
-    reasoner = HeuristicReasoner()
+    reasoner = reasoner or HeuristicReasoner()
     pack = str(snapshot_dir / "rules" / "sigma_pack.jsonl")
     out_dir.mkdir(parents=True, exist_ok=True)
-    results: dict[str, Any] = {"split": split or "all", "n": len(entries), "arms": {}}
+    results: dict[str, Any] = {
+        "split": split or "all",
+        "n": len(entries),
+        "reasoner": getattr(reasoner, "name", "heuristic"),
+        "arms": {},
+    }
     try:
         for arm in arms:
             deps: Deps | None = None

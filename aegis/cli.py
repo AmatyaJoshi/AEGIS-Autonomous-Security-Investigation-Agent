@@ -213,6 +213,10 @@ def bench(
     split: str = typer.Option("test", help="split to run/score (train|val|test|all)"),
     total: int = typer.Option(420, help="benchmark size for build"),
     triage: Path | None = typer.Option(None, help="triage model path for aegis_full arm"),
+    reasoner_kind: str = typer.Option(
+        "heuristic", "--reasoner", help="heuristic | llm (llm needs Ollama/Groq/Gemini, COST.md)"
+    ),
+    limit: int | None = typer.Option(None, help="cap alerts per arm (LLM runs on a laptop)"),
 ) -> None:
     """Build, run and score the benchmark (SPEC §8)."""
     import datetime as _dt
@@ -248,11 +252,30 @@ def bench(
             from aegis.models.triage import load_triage
 
             tri = load_triage(triage)
-        console.print_json(
-            _json.dumps(
-                run_benchmark(snap, bench_dir, results_dir, split=real_split, triage_model=tri)
-            )
+        reasoner: Any = None
+        if reasoner_kind == "llm":
+            from aegis.graph.llm_reasoner import LLMReasoner
+            from aegis.llm.budget import log_allowlist
+            from aegis.llm.router import LLMRouter
+
+            log_allowlist()
+            router = LLMRouter()
+            if not router.available:
+                console.print("[red]--reasoner llm: no free provider reachable (COST.md).[/]")
+                raise typer.Exit(2)
+            reasoner = LLMReasoner(router)
+            console.print(f"[green]LLM reasoner via {router.describe()['provider']}[/]")
+        rep = run_benchmark(
+            snap,
+            bench_dir,
+            results_dir,
+            split=real_split,
+            triage_model=tri,
+            limit=limit,
+            reasoner=reasoner,
         )
+        (results_dir / "run_meta.json").write_text(_json.dumps(rep), encoding="utf-8")
+        console.print_json(_json.dumps(rep))
 
     def _score_and_report() -> None:
         scores = score_all(results_dir, ARMS)
@@ -268,9 +291,17 @@ def bench(
             meta["manifest_hash"] = frozen.get("manifest_hash")
         except FileNotFoundError:
             pass
+        kind = "heuristic"
+        try:
+            run_meta = _json.loads((results_dir / "run_meta.json").read_text(encoding="utf-8"))
+            kind = str(run_meta.get("reasoner", kind))
+            meta["reasoner"] = kind
+            meta["n_run"] = run_meta.get("n")
+        except (FileNotFoundError, ValueError):
+            meta["reasoner"] = kind
         out = render_report(scores, meta, results_dir / "report.html", roc_dir=results_dir)
         console.print(f"[green]report -> {out}[/]")
-        arch = _archive_result(f"bench_{split}", {"meta": meta, "scores": scores})
+        arch = _archive_result(f"bench_{split}_{kind}", {"meta": meta, "scores": scores})
         console.print(f"[green]archived -> {arch}[/]")
         table = Table(title=f"Benchmark ({split})")
         for c in ("arm", "acc", "F1", "FPsupp@2%", "escP", "techF1", "cite"):

@@ -113,3 +113,20 @@ run now writes a copy there automatically; README and RESULTS.md rewritten from 
 (README Quickstart trains the triage model before the benchmark run). Working process from Frist24
 adopted (DECISIONS.md). Open: B5 (zero-cost LLM reasoner, Phase 1), B7 (route auth audit), B8 (browser
 walk-through on the Docker laptop).
+
+## 8. Update — Tue 22 Sep 2026, evening: all phases built
+
+| Phase | Delivered | Verified here | Still to verify on the Docker laptop |
+|---|---|---|---|
+| B5 zero-cost LLM | Ollama/Groq/Gemini router over httpx, budget guards, degraded mode, allow-list, `--reasoner` on `investigate` and `bench run` | 9 tests with recorded responses; gates clean | A real Ollama run: `aegis investigate --reasoner llm --limit 5`, then `aegis bench run --split test --reasoner llm --limit 20` + `bench report` to produce the LLM results file |
+| 1 Pulse memory | `aegis/memory/` (client, local + Pulse stores, priors), triage blend on the OTel span, `/api/memory`, Memory panel, SECURITY.md boundary | 16 tests incl. 2 s network-off fallback and metadata-only assertion; 1 live test skipped (no key) | `AEGIS_PULSE_API_KEY=… pytest -m network tests/test_memory.py` writes 3 cases and reads priors back |
+| 2 demo | `aegis demo` (15 s locally), Makefile, Dockerfiles, `docker-compose.demo.yml` (config validated), `docs/DEPLOY.md` | Demo command run end to end against the local snapshot; web `tsc` + `next build` clean | `make up`, then `make demo`, browser click-through of queue → case → approve → Memory panel (B8) |
+| 3 docs | README (autonomous SaaS, AI layer, Pulse boundary verbatim, 3 commands, both reasoners, limitations), `docs/DEVPOST.md`, RESULTS/COST/DECISIONS/TODO | — | — |
+
+Test suite: **114 passed, 1 skipped** (live Pulse). Gates: ruff, format, mypy strict, tsc, next build all
+clean. Pulse request-shape mismatch vs the brief (no bulk/upsert/count/analytics verbs in the docs) is
+recorded in DECISIONS.md and handled by composing documented verbs.
+
+**Verdict: ready for a live demo: yes** with the deterministic reasoner and local memory on any laptop
+that has run `make data`; **yes with the LLM reasoner and Pulse** once the two checks in the last
+column pass on the Docker laptop.

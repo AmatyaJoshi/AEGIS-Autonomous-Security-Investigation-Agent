@@ -130,7 +130,7 @@ borderline dual-use activity by trusted accounts against sensitive assets. Split
 
 ### Results on the held-out test split (104 alerts, all 10 fp_types, offline heuristic reasoner)
 
-Archived: `bench/results/20260922_1737a3e_bench_test.json` (every `bench report` run writes a copy
+Archived: `bench/results/20260922_1737a3e_bench_test_heuristic.json` (every `bench report` run writes a copy
 here so the committed numbers always have a committed file behind them).
 
 | Arm | Accuracy | Macro-F1 | FP-suppression @≤2% missed | Escalation precision | Citations |
