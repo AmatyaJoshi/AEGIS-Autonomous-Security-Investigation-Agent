@@ -102,3 +102,14 @@ hours** for a zero-cost LLM reasoner path (B5).
 investigate, benchmark, adversarial track, Lens gate and the API in ~25 minutes; every report cites
 its evidence). **No, for anything described as an LLM reasoner** until B5 lands on a free provider,
 and not with the current README numbers until B1–B4 are fixed.
+
+## 7. Update — Tue 22 Sep 2026
+
+Fixed and committed: **B1** (pyparsing pin + `lab rules` conversion floor, exit 2), **B2** (lightgbm
+declared as a core dependency; scikit-learn was never imported), **B3** (`bench build` no longer touches
+an unchanged frozen manifest and refuses a silent content change), **B4** (numbers regenerated on commit
+`1737a3e` and archived under `bench/results/`; every `bench report`, `bench adversarial` and `lens ci`
+run now writes a copy there automatically; README and RESULTS.md rewritten from those files), **B6**
+(README Quickstart trains the triage model before the benchmark run). Working process from Frist24
+adopted (DECISIONS.md). Open: B5 (zero-cost LLM reasoner, Phase 1), B7 (route auth audit), B8 (browser
+walk-through on the Docker laptop).

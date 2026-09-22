@@ -1,0 +1,37 @@
+{
+ "passed": true,
+ "n": 40,
+ "accuracy": 0.9,
+ "lens": {
+  "n": 40,
+  "mean_report_faithfulness": 1.0,
+  "mean_tool_call_correctness": 1.0,
+  "mean_tool_calls": 5.58,
+  "mean_llm_calls": 5.03,
+  "injection_detected_rate": 0.025,
+  "fully_faithful_rate": 1.0
+ },
+ "gates": [
+  {
+   "name": "report_faithfulness",
+   "value": 1.0,
+   "threshold": 0.95,
+   "ok": true,
+   "direction": ">="
+  },
+  {
+   "name": "tool_call_correctness",
+   "value": 1.0,
+   "threshold": 0.99,
+   "ok": true,
+   "direction": ">="
+  },
+  {
+   "name": "verdict_accuracy",
+   "value": 0.9,
+   "threshold": 0.75,
+   "ok": true,
+   "direction": ">="
+  }
+ ]
+}

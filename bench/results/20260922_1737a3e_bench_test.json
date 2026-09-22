@@ -1,0 +1,190 @@
+{
+ "meta": {
+  "split": "test",
+  "n": 104,
+  "generated": "2026-09-22T20:38:42",
+  "manifest_hash": "afda49db3d3dc4b8565294e252e9ffa662e3485641d54c0b809164499dbf5797"
+ },
+ "scores": {
+  "rules_only": {
+   "arm": "rules_only",
+   "n": 104,
+   "accuracy": 0.4519,
+   "macro_f1": 0.2321,
+   "confusion": {
+    "true_positive": {
+     "true_positive": 47,
+     "false_positive": 0,
+     "escalate": 0
+    },
+    "false_positive": {
+     "true_positive": 36,
+     "false_positive": 0,
+     "escalate": 16
+    },
+    "escalate": {
+     "true_positive": 5,
+     "false_positive": 0,
+     "escalate": 0
+    }
+   },
+   "fp_suppression_at_2pct_missed": 0.3077,
+   "fp_suppression_threshold": 0.75,
+   "missed_tp_rate_at_threshold": 0.0,
+   "escalation_precision": 1.0,
+   "technique_f1": 0.0541,
+   "tactic_f1": 0.1565,
+   "citation_rate": 1.0,
+   "avg_seconds": 0.0,
+   "avg_tool_calls": 0.0,
+   "per_fp_type_suppression": {
+    "admin_powershell": 0.0,
+    "backup_agent": 0.0,
+    "dev_procdump": 0.0,
+    "helpdesk_remote_support": 1.0,
+    "psexec_admin": 0.0,
+    "redteam_tool_name_benign": 0.0,
+    "scheduled_task_maintenance": 1.0,
+    "service_account_lockout": 0.0,
+    "software_deployment": 1.0,
+    "vuln_scanner": 0.0
+   },
+   "roc_points": 5
+  },
+  "single_shot_llm": {
+   "arm": "single_shot_llm",
+   "n": 104,
+   "accuracy": 0.5192,
+   "macro_f1": 0.2629,
+   "confusion": {
+    "true_positive": {
+     "true_positive": 3,
+     "false_positive": 44,
+     "escalate": 0
+    },
+    "false_positive": {
+     "true_positive": 1,
+     "false_positive": 51,
+     "escalate": 0
+    },
+    "escalate": {
+     "true_positive": 0,
+     "false_positive": 5,
+     "escalate": 0
+    }
+   },
+   "fp_suppression_at_2pct_missed": 0.6154,
+   "fp_suppression_threshold": 0.205,
+   "missed_tp_rate_at_threshold": 0.0,
+   "escalation_precision": 0.0,
+   "technique_f1": 0.037,
+   "tactic_f1": 0.0345,
+   "citation_rate": 1.0,
+   "avg_seconds": 0.0,
+   "avg_tool_calls": 0.0,
+   "per_fp_type_suppression": {
+    "admin_powershell": 0.714,
+    "backup_agent": 1.0,
+    "dev_procdump": 0.0,
+    "helpdesk_remote_support": 1.0,
+    "psexec_admin": 1.0,
+    "redteam_tool_name_benign": 0.0,
+    "scheduled_task_maintenance": 1.0,
+    "service_account_lockout": 0.0,
+    "software_deployment": 1.0,
+    "vuln_scanner": 0.0
+   },
+   "roc_points": 7
+  },
+  "aegis_no_triage": {
+   "arm": "aegis_no_triage",
+   "n": 104,
+   "accuracy": 0.8942,
+   "macro_f1": 0.8766,
+   "confusion": {
+    "true_positive": {
+     "true_positive": 43,
+     "false_positive": 4,
+     "escalate": 0
+    },
+    "false_positive": {
+     "true_positive": 5,
+     "false_positive": 45,
+     "escalate": 2
+    },
+    "escalate": {
+     "true_positive": 0,
+     "false_positive": 0,
+     "escalate": 5
+    }
+   },
+   "fp_suppression_at_2pct_missed": 0.2885,
+   "fp_suppression_threshold": 0.06,
+   "missed_tp_rate_at_threshold": 0.0,
+   "escalation_precision": 1.0,
+   "technique_f1": 0.0541,
+   "tactic_f1": 0.1565,
+   "citation_rate": 1.0,
+   "avg_seconds": 0.083,
+   "avg_tool_calls": 5.98,
+   "per_fp_type_suppression": {
+    "admin_powershell": 0.143,
+    "backup_agent": 0.0,
+    "dev_procdump": 0.0,
+    "helpdesk_remote_support": 0.429,
+    "psexec_admin": 0.25,
+    "redteam_tool_name_benign": 0.0,
+    "scheduled_task_maintenance": 1.0,
+    "service_account_lockout": 0.0,
+    "software_deployment": 1.0,
+    "vuln_scanner": 0.0
+   },
+   "roc_points": 16
+  },
+  "aegis_full": {
+   "arm": "aegis_full",
+   "n": 104,
+   "accuracy": 0.8942,
+   "macro_f1": 0.8766,
+   "confusion": {
+    "true_positive": {
+     "true_positive": 43,
+     "false_positive": 4,
+     "escalate": 0
+    },
+    "false_positive": {
+     "true_positive": 5,
+     "false_positive": 45,
+     "escalate": 2
+    },
+    "escalate": {
+     "true_positive": 0,
+     "false_positive": 0,
+     "escalate": 5
+    }
+   },
+   "fp_suppression_at_2pct_missed": 0.9038,
+   "fp_suppression_threshold": 0.436,
+   "missed_tp_rate_at_threshold": 0.0,
+   "escalation_precision": 0.7143,
+   "technique_f1": 0.0603,
+   "tactic_f1": 0.1736,
+   "citation_rate": 1.0,
+   "avg_seconds": 0.0882,
+   "avg_tool_calls": 5.66,
+   "per_fp_type_suppression": {
+    "admin_powershell": 1.0,
+    "backup_agent": 1.0,
+    "dev_procdump": 1.0,
+    "helpdesk_remote_support": 1.0,
+    "psexec_admin": 1.0,
+    "redteam_tool_name_benign": 1.0,
+    "scheduled_task_maintenance": 1.0,
+    "service_account_lockout": 0.0,
+    "software_deployment": 1.0,
+    "vuln_scanner": 1.0
+   },
+   "roc_points": 19
+  }
+ }
+}

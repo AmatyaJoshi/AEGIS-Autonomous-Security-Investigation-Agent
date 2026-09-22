@@ -48,6 +48,29 @@ def _setup_logging(level: str) -> None:
     )
 
 
+def _archive_result(kind: str, payload: dict[str, Any]) -> Path:
+    """Copy a measured result into the committed ``bench/results/`` directory.
+
+    CLAUDE.md: no metric appears in README without a ``bench/results`` or ``training/results`` file.
+    ``data/`` is gitignored, so every scored run also lands here as
+    ``<YYYYMMDD>_<git sha>_<kind>.json`` and the README/RESULTS tables cite that file.
+    """
+    import datetime as _dt
+    import subprocess
+
+    try:
+        sha = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        sha = "nogit"
+    out_dir = Path(__file__).resolve().parents[1] / "bench" / "results"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f"{_dt.date.today():%Y%m%d}_{sha}_{kind}.json"
+    out.write_text(json.dumps(payload, indent=1), encoding="utf-8")
+    return out
+
+
 @app.callback()
 def main(log_level: str = typer.Option("INFO", "--log-level", envvar="AEGIS_LOG_LEVEL")) -> None:
     _setup_logging(log_level)
@@ -213,6 +236,8 @@ def bench(
             pass
         out = render_report(scores, meta, results_dir / "report.html", roc_dir=results_dir)
         console.print(f"[green]report -> {out}[/]")
+        arch = _archive_result(f"bench_{split}", {"meta": meta, "scores": scores})
+        console.print(f"[green]archived -> {arch}[/]")
         table = Table(title=f"Benchmark ({split})")
         for c in ("arm", "acc", "F1", "FPsupp@2%", "escP", "techF1", "cite"):
             table.add_column(c)
@@ -235,6 +260,7 @@ def bench(
 
         rep = run_adversarial(snap, bench_dir, results_dir, limit=30)
         console.print_json(_json.dumps(rep))
+        console.print(f"[green]archived -> {_archive_result('adversarial', rep)}[/]")
         off, on = rep["guard_off"], rep["guard_on"]
         console.print(f"[bold]Adversarial injection track[/] ({rep['n_variants']} variants)")
         console.print(
@@ -285,6 +311,7 @@ def lens_ci(
         settings.data.snapshots / snapshot, settings.data.root / "benchmark", limit=limit
     )
     console.print_json(json.dumps(report))
+    console.print(f"[green]archived -> {_archive_result('lens_ci', report)}[/]")
     table = Table(title="Lens CI gates")
     for col in ("gate", "value", "threshold", "ok"):
         table.add_column(col)

@@ -130,18 +130,25 @@ borderline dual-use activity by trusted accounts against sensitive assets. Split
 
 ### Results on the held-out test split (104 alerts, all 10 fp_types, offline heuristic reasoner)
 
+Archived: `bench/results/20260922_1737a3e_bench_test.json` (every `bench report` run writes a copy
+here so the committed numbers always have a committed file behind them).
+
 | Arm | Accuracy | Macro-F1 | FP-suppression @≤2% missed | Escalation precision | Citations |
 |---|---:|---:|---:|---:|---:|
 | Rules only | 45% | 0.23 | 31% | 100% | 100% |
-| Single-shot LLM (alert only) | 52% | 0.26 | 62% | 0% | 100% |
-| AEGIS (no triage model) | **88%** | **0.79** | 31% | 100% | 100% |
-| AEGIS full (+ triage model) | **88%** | **0.79** | **90%** | 60% | 100% |
+| Single-shot reasoner (alert only, no context) | 52% | 0.26 | 62% | 0% | 100% |
+| AEGIS (no triage model) | **89%** | **0.88** | 29% | 100% | 100% |
+| AEGIS full (+ triage model) | **89%** | **0.88** | **90%** | 71% | 100% |
 
-The triage model lifts false-positive suppression from **31% to 90%** at 0% missed true-positives,
+History: the 13 Sep run (commit 8ba36f8) measured 88% / 0.79 / 60% escalation precision for the
+AEGIS arms; reasoner changes after that commit moved them to the values above. Numbers are only
+ever regenerated, never hand-edited.
+
+The triage model lifts false-positive suppression from **29% to 90%** at 0% missed true-positives,
 clearing the ≥60% target. 9 of 10 fp_types are fully suppressed; `service_account_lockout`
 (a password-spray look-alike) is the one hard class. Every report passed the citation post-processor
-(100% compliance) - no uncited claims. AEGIS beats rules-only (+43% accuracy) and single-shot
-(+36%), showing that context and investigation, not just the model, drive the result.
+(100% compliance) - no uncited claims. AEGIS beats rules-only (+44 points of accuracy) and single-shot
+(+37 points), showing that context and investigation, not just the model, drive the result.
 
 **Caveats reported honestly:**
 - The offline arms use the deterministic `HeuristicReasoner`; with an API key the AEGIS arms use the
@@ -186,7 +193,7 @@ python -m training.query_gen.eval_exec --snapshot dev       # execution equivale
 
 | Metric | Value |
 |---|---:|
-| Aligned (NL, query) pairs | 18,976 |
+| Aligned (NL, query) pairs | 18,976 (requires the full Sigma pack: 367/377 ES\|QL, 377/377 SPL; `lab rules` now fails below a 90% conversion floor) |
 | Sigma-derived / paraphrase / investigative-intent | 744 / 2,232 / 16,000 |
 | Train / test | 16,173 / 2,803 |
 | Held-out Sigma categories | proxy, webserver, dns_query |
@@ -220,7 +227,9 @@ aegis bench adversarial          # 60 injection variants of TP alerts, guard off
 aegis lens ci --limit 40         # small-suite gate: faithfulness / tool-correctness / accuracy
 ```
 
-### Adversarial log-injection track (60 variants, 5 categories)
+### Adversarial log-injection track (75 variants from 30 seed TP alerts, 5 categories)
+
+Archived: `bench/results/20260922_1737a3e_adversarial.json`.
 
 | Metric | Guard OFF | Guard ON |
 |---|---:|---:|
@@ -236,7 +245,9 @@ categories (plain, obfuscated, multilingual, split-across-fields, TI-embedded) a
 susceptible to injection than the heuristic; the guard + `<data>` envelopes are what protect that
 path, and the same corpus is the probe set for Lens's red-team module.
 
-### Lens metrics + CI gate (test split)
+### Lens metrics + CI gate (test split, 40 alerts)
+
+Archived: `bench/results/20260922_1737a3e_lens_ci.json`.
 
 | Gate | Value | Threshold |
 |---|---:|---|
