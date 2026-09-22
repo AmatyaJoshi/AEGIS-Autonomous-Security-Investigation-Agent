@@ -44,6 +44,7 @@ class InvestigationResult:
     seconds: float
     node_log: list[str] = field(default_factory=list)
     prompt_versions: dict[str, int] = field(default_factory=dict)
+    memory_prior: dict[str, Any] | None = None
 
     @property
     def malicious_score(self) -> float:
@@ -93,7 +94,7 @@ def run_investigation(
         final: InvestigationState = graph.invoke(init, config=config)
     elapsed = time.perf_counter() - t0
     verdict = final.get("verdict")
-    return InvestigationResult(
+    result = InvestigationResult(
         investigation_id=inv_id,
         alert=alert,
         verdict=verdict,
@@ -109,4 +110,27 @@ def run_investigation(
         seconds=elapsed,
         node_log=final.get("node_log", []),
         prompt_versions=prompt_versions(),
+        memory_prior=final.get("memory_prior"),
     )
+    _remember(result, deps)
+    return result
+
+
+def _remember(result: InvestigationResult, deps: Deps) -> None:
+    """Write path of the case memory (Phase 1): one metadata-only record per investigation."""
+    if deps.memory is None:
+        return
+    try:
+        from aegis.memory.store import CaseRecord
+
+        router = getattr(deps.reasoner, "router", None)
+        model = router.active_model if router is not None and router.available else None
+        deps.memory.record_case(
+            CaseRecord.from_result(
+                result, reasoner=getattr(deps.reasoner, "name", "deterministic"), model=model
+            )
+        )
+    except Exception as e:  # memory must never break an investigation
+        import logging
+
+        logging.getLogger("aegis.memory").warning("case not remembered: %s", e)

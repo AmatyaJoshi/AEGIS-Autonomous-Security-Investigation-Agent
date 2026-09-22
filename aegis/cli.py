@@ -93,6 +93,9 @@ def investigate(
     reasoner_kind: str = typer.Option(
         "auto", "--reasoner", help="auto | llm | heuristic (llm needs Ollama/Groq/Gemini, COST.md)"
     ),
+    triage: str | None = typer.Option(
+        "training/triage/artifacts/model.txt", help="triage model path (skipped if missing)"
+    ),
 ) -> None:
     """Run the investigation graph over alerts (Phase 3). Offline uses the DuckDB snapshot."""
     from aegis.graph.deps import Deps
@@ -131,11 +134,22 @@ def investigate(
             "[cyan]No free LLM provider reachable (Ollama/Groq/Gemini); "
             "using the deterministic heuristic reasoner.[/]"
         )
+    from aegis.memory.store import open_memory
+
+    memory = open_memory()
+    console.print(f"[dim]memory: {memory.status()['backend']}[/]")
+    tri = None
+    if triage and Path(triage).exists():
+        from aegis.models.triage import load_triage
+
+        tri = load_triage(triage)
     deps = Deps(
         siem=siem,
         reasoner=reasoner,
         review_mode=review,
         pack_path=str(snap / "rules" / "sigma_pack.jsonl"),
+        memory=memory,
+        triage=tri,
     )
     if out:
         out.mkdir(parents=True, exist_ok=True)
@@ -161,6 +175,8 @@ def investigate(
         if n + 1 >= limit:
             break
     siem.close()
+    if hasattr(memory, "flush_priors"):
+        console.print(f"[dim]memory: priors flushed to Pulse ({memory.flush_priors()} keys)[/]")
     console.print(table)
     d = router.describe()
     console.print(
@@ -310,6 +326,33 @@ def bench(
     else:
         console.print(f"[red]unknown action {action}[/]")
         raise typer.Exit(2)
+
+
+memory_app = typer.Typer(no_args_is_help=True, help="Case memory (Phase 1): Pulse mirror / local.")
+app.add_typer(memory_app, name="memory")
+
+
+@memory_app.command("show")
+def memory_show() -> None:
+    """Print memory backend, priors by technique and the cached analytics answer."""
+    from aegis.memory.store import open_memory
+
+    mem = open_memory()
+    console.print_json(json.dumps(mem.status()))
+    table = Table(title="Priors (technique / source)")
+    for c in ("key", "n", "tp_rate", "escalate_rate", "override_rate"):
+        table.add_column(c)
+    for key, p in sorted(mem.priors().items(), key=lambda kv: -kv[1].n)[:25]:
+        table.add_row(
+            key,
+            str(p.n),
+            f"{p.tp_rate:.2f}",
+            f"{p.escalate_rate:.2f}",
+            f"{p.analyst_override_rate:.2f}",
+        )
+    console.print(table)
+    a = mem.analytics()
+    console.print(f"[bold]{a['question']}[/] ({a['source']})\n{a['answer']}")
 
 
 lens_app = typer.Typer(no_args_is_help=True, help="Lens bridge: eval metrics + CI gate (SPEC §10).")

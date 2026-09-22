@@ -14,6 +14,7 @@ from typing import Any, Protocol
 from aegis.graph.reasoner import Reasoner
 from aegis.intel.providers.base import IntelProvider
 from aegis.intel.providers.offline import OfflineProvider
+from aegis.memory.store import LocalStore, PulseStore
 from aegis.models.query_gen import QueryGenerator
 from aegis.siem.base import SiemAdapter
 
@@ -33,6 +34,8 @@ class Deps:
     generator: QueryGenerator = field(default_factory=QueryGenerator)
     intel: IntelProvider = field(default_factory=OfflineProvider)
     triage: TriageModel | None = None
+    # Phase 1 case memory (Pulse mirror or local). Read in triage_pre, written by the runner.
+    memory: LocalStore | PulseStore | None = None
     org_path: str | None = None
     pack_path: str | None = None
     intel_cache_dir: Path | None = None

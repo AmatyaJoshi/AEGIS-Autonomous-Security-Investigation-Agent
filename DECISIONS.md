@@ -42,3 +42,18 @@
   the `bulk_insert`/`upsert_data`/`count`/`analytics` verbs in the brief. Phase 1 client implements
   the documented verbs and composes the rest (batched inserts, select+update upsert, select+len
   count, `chat` for analytics). Flagged to the owner in the Phase 1 report.
+
+## 2026-09-22 — Phase 1 case memory (Evorozen Neural Pulse)
+- Pulse is memory + analytics only; the graph never reads it except in `triage_pre`, where the
+  LightGBM `p_tp` is blended with the prior's `tp_rate` at weight n/(n+20). Both numbers land on the
+  `aegis.triage_pre.memory` span, in `state.memory_prior` and in the API.
+- Composite store: `LocalStore` (SQLite) is always written; `PulseStore` mirrors when
+  `AEGIS_PULSE_API_KEY` is set. Any Pulse failure keeps the local copy, sets `priors_source=local`
+  and never raises into an investigation. Fallback is bounded by 2 s timeout x (retries + 1).
+- Free-tier economics: one `insert_data` per case, priors upserted once per batch for touched keys
+  only (`flush_priors`), priors read cached 10 min, analytics cached per day, hard cap
+  `BUDGET_PULSE_CALLS_PER_DAY=40`. `delete_data` is not exposed.
+- Case record is built from typed fields only (`CaseRecord.from_result`) and the test suite asserts
+  hostnames, usernames, titles and report text never appear in it.
+- Analyst review (approve/override) writes `aegis_feedback`; `agreed` = analyst verdict equals
+  AEGIS verdict. Override rate feeds `analyst_override_rate` in the priors.

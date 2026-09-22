@@ -122,6 +122,7 @@ class InvestigationState(TypedDict, total=False):
     validated_techniques: list[str]
     timeline: list[TimelineEvent]
     verdict: Verdict | None
+    memory_prior: dict[str, Any] | None
     report_md: str | None
     report_json: dict[str, Any] | None
     playbook_id: str | None

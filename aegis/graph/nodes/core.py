@@ -59,6 +59,7 @@ def make_triage_pre(deps: Deps):  # type: ignore[no-untyped-def]
 
         feats = serialize_features(alert, ctx)
         scores = deps.triage.score(feats)
+        prior_info = _blend_with_memory(deps, alert, scores)
         low_sev = str(alert.severity_id.name).lower() in ("low", "informational", "medium")
         if scores.get("p_fp", 0.0) > deps.fast_path_pfp and low_sev and not ctx.ti_hits:
             verdict = Verdict(
@@ -71,8 +72,12 @@ def make_triage_pre(deps: Deps):  # type: ignore[no-untyped-def]
                 llm_score=None,
                 rationale=f"Fast-pathed by triage model (p_fp={scores['p_fp']:.3f})",
             )
-            return {"verdict": verdict, "node_log": ["triage_pre:fast_path"]}
-        return {"node_log": ["triage_pre:continue"]}
+            return {
+                "verdict": verdict,
+                "memory_prior": prior_info,
+                "node_log": ["triage_pre:fast_path"],
+            }
+        return {"memory_prior": prior_info, "node_log": ["triage_pre:continue"]}
 
     return triage_pre
 
@@ -274,6 +279,56 @@ def make_playbook(deps: Deps):  # type: ignore[no-untyped-def]
         }
 
     return playbook
+
+
+def _blend_with_memory(
+    deps: Deps, alert: DetectionFinding, scores: dict[str, float]
+) -> dict[str, Any] | None:
+    """Blend the triage model's p_tp with the case-memory prior, weight n/(n+20) (Phase 1).
+
+    Mutates ``scores`` in place (p_tp, p_fp) and returns what was blended so the report, the OTel
+    span and the UI can show both numbers. No memory -> model scores pass through unchanged.
+    """
+    if deps.memory is None or "p_tp" not in scores:
+        return None
+    from aegis.memory.priors import blend_p_tp, pick_prior
+    from aegis.telemetry.otel import span
+
+    try:
+        priors = deps.memory.priors()
+    except Exception as e:  # memory must never break an investigation
+        return {"error": f"{type(e).__name__}"}
+    source = _alert_source(alert)
+    prior = pick_prior(priors, alert.technique_ids, source)
+    p_model = float(scores["p_tp"])
+    p_blended, w = blend_p_tp(p_model, prior)
+    info: dict[str, Any] = {
+        "source": getattr(deps.memory, "priors_source", deps.memory.backend),
+        "key": prior.key if prior else None,
+        "n": prior.n if prior else 0,
+        "prior_tp_rate": prior.tp_rate if prior else None,
+        "weight": round(w, 4),
+        "p_tp_model": round(p_model, 4),
+        "p_tp_blended": round(p_blended, 4),
+    }
+    if prior is not None and w > 0:
+        scores["p_tp"] = p_blended
+        # keep p_fp consistent with the blended p_tp, preserving the model's escalate mass
+        p_esc = float(scores.get("p_escalate", 0.0))
+        scores["p_fp"] = max(0.0, min(1.0, 1.0 - p_blended - p_esc))
+    with span(
+        "aegis.triage_pre.memory",
+        **{f"aegis.memory.{k}": (v if v is not None else "") for k, v in info.items()},
+    ):
+        pass
+    return info
+
+
+def _alert_source(alert: DetectionFinding) -> str | None:
+    md = alert.metadata
+    prod = getattr(md, "product", None)
+    name = getattr(prod, "name", None)
+    return str(name) if name else None
 
 
 # ------------------------------------------------------------------------------------------------

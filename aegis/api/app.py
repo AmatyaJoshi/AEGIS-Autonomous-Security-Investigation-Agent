@@ -80,6 +80,17 @@ class InvestigateIn(BaseModel):
 
 
 _router: Any = None
+_memory: Any = None
+
+
+def get_memory() -> Any:
+    """Process-wide case memory (Phase 1): Pulse mirror when configured, else local SQLite."""
+    global _memory
+    if _memory is None:
+        from aegis.memory.store import open_memory
+
+        _memory = open_memory()
+    return _memory
 
 
 def get_router() -> Any:
@@ -99,12 +110,47 @@ def health() -> dict[str, Any]:
 
     r = get_router()
     d = r.describe()
+    mem = get_memory().status()
     return {
         "status": "ok",
         "cost_mode": d["cost_mode"],
         "degraded_reason": d["degraded_reason"],
         "llm": {"provider": d["provider"] or "none", "model": d["model"]},
+        "memory": {"backend": mem["backend"], "priors_source": mem["priors_source"]},
         "budget": get_guard().snapshot(),
+    }
+
+
+@app.get("/api/memory")
+def memory_panel() -> dict[str, Any]:
+    """Memory panel (Phase 1): priors by technique, analyst-override rate, source, analytics."""
+    mem = get_memory()
+    priors = mem.priors()
+    techniques = sorted(
+        (p for k, p in priors.items() if not k.startswith("source:")),
+        key=lambda p: (p.n, p.tp_rate),
+        reverse=True,
+    )
+    sources = [p for k, p in priors.items() if k.startswith("source:")]
+    reviewed = [p for p in priors.values() if p.analyst_override_rate or p.n]
+    override = (
+        round(sum(p.analyst_override_rate * p.n for p in reviewed) / sum(p.n for p in reviewed), 4)
+        if reviewed and sum(p.n for p in reviewed)
+        else 0.0
+    )
+    status = mem.status()
+    return {
+        "backend": status["backend"],
+        "priors_source": status["priors_source"],
+        "cases": status.get("cases", 0),
+        "feedback": status.get("feedback", 0),
+        "pulse_calls": status.get("pulse_calls"),
+        "pulse_calls_per_day": status.get("pulse_calls_per_day"),
+        "last_error": status.get("last_error"),
+        "analyst_override_rate": override,
+        "techniques": [p.to_row() for p in techniques[:12]],
+        "sources": [p.to_row() for p in sources],
+        "analytics": mem.analytics(),
     }
 
 
@@ -133,7 +179,35 @@ def review(
         )
     except KeyError as e:
         raise HTTPException(404, "investigation not found") from e
+    _remember_feedback(investigation_id, body)
     return {"review_id": rid, "status": "recorded"}
+
+
+def _remember_feedback(investigation_id: str, body: ReviewIn) -> None:
+    """Analyst decision -> case memory (metadata only: case id, verdict, agreed, reason code)."""
+    if body.action not in ("approve", "override"):
+        return
+    inv = _store.get_investigation(investigation_id)
+    if inv is None:
+        return
+    from aegis.memory.store import FeedbackRecord
+
+    aegis_verdict = str(inv.get("verdict") or "")
+    analyst_verdict = body.override_verdict if body.action == "override" else aegis_verdict
+    try:
+        mem = get_memory()
+        mem.record_feedback(
+            FeedbackRecord(
+                case_id=investigation_id,
+                analyst_verdict=analyst_verdict or aegis_verdict,
+                agreed=(analyst_verdict or aegis_verdict) == aegis_verdict,
+                reason_code=body.action,
+            )
+        )
+        if hasattr(mem, "flush_priors"):
+            mem.flush_priors()
+    except Exception:  # memory must never break the review
+        pass
 
 
 @app.get("/api/metrics")
@@ -163,8 +237,19 @@ def _run_batch(snap: Path, limit: int, seed: int) -> int:
     from aegis.siem.duckdb import DuckDBSiem
 
     siem = DuckDBSiem(snap)
+    reasoner: Any = HeuristicReasoner()
+    router = get_router()
+    if router.available:
+        from aegis.graph.llm_reasoner import LLMReasoner
+
+        reasoner = LLMReasoner(router)
+    mem = get_memory()
     deps = Deps(
-        siem=siem, reasoner=HeuristicReasoner(), pack_path=str(snap / "rules" / "sigma_pack.jsonl")
+        siem=siem,
+        reasoner=reasoner,
+        pack_path=str(snap / "rules" / "sigma_pack.jsonl"),
+        memory=mem,
+        triage=_load_default_triage(),
     )
     n = 0
     try:
@@ -178,7 +263,24 @@ def _run_batch(snap: Path, limit: int, seed: int) -> int:
                 break
     finally:
         siem.close()
+        if hasattr(mem, "flush_priors"):
+            mem.flush_priors()  # one batched priors write per run (free-tier budget)
     return n
+
+
+def _load_default_triage() -> Any:
+    """Use the trained LightGBM model when its artefact exists (priors need a p_tp to blend)."""
+    import os
+
+    p = Path(os.environ.get("AEGIS_TRIAGE_MODEL", "training/triage/artifacts/model.txt"))
+    if not p.exists():
+        return None
+    try:
+        from aegis.models.triage import load_triage
+
+        return load_triage(p)
+    except Exception:
+        return None
 
 
 @app.websocket("/ws")
