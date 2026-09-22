@@ -2,6 +2,7 @@
 import useSWR from "swr";
 import { fetcher, type Metrics } from "@/lib/api";
 import { Card, SectionTitle, Spinner, StatCard } from "@/components/ui";
+import { MemoryPanel } from "@/components/memoryPanel";
 
 const VERDICT_COLOR: Record<string, string> = {
   true_positive: "rgb(var(--danger))",
@@ -75,6 +76,10 @@ export default function MetricsPage() {
             {verdicts.length === 0 && <p className="text-sm text-dim">No investigations yet.</p>}
           </div>
         </Card>
+      </div>
+
+      <div className="mt-8">
+        <MemoryPanel />
       </div>
 
       <p className="mt-6 text-xs text-dim">

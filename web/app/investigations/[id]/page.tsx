@@ -53,6 +53,18 @@ export default function InvestigationPage({ params }: { params: Promise<{ id: st
               <span className="mt-1"><SeverityBadge s={data.severity} /></span>
             </div>
             <Stat label="Techniques" value={data.techniques.join(", ") || "none"} />
+            <div className="flex flex-col">
+              <span className="text-xs uppercase tracking-wider text-dim">Citations</span>
+              <span className={`mt-1 text-sm font-medium ${data.state.citations_ok === false ? "text-danger" : "text-success"}`}>
+                {data.state.citations_ok === false ? "uncited claims" : `✓ all claims cited${data.state.cited_events ? ` · ${data.state.cited_events} events` : ""}`}
+              </span>
+            </div>
+            {data.state.memory_prior?.key && (
+              <Stat
+                label="Memory prior"
+                value={`${data.state.memory_prior.key} · n=${data.state.memory_prior.n} · w=${Math.round(data.state.memory_prior.weight * 100)}%`}
+              />
+            )}
             {data.gold_label && <Stat label="Gold label" value={data.gold_label} />}
           </div>
         </div>

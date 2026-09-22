@@ -45,6 +45,9 @@ export interface Investigation extends Summary {
     playbook: Record<string, unknown> | null;
     node_log: string[];
     malicious_score: number;
+    memory_prior?: MemoryPrior | null;
+    citations_ok?: boolean;
+    cited_events?: number;
   };
 }
 
@@ -87,7 +90,48 @@ async function j<T>(url: string, init?: RequestInit): Promise<T> {
   return r.json() as Promise<T>;
 }
 
+export interface PriorRow {
+  key: string;
+  n: number;
+  tp_rate: number;
+  escalate_rate: number;
+  analyst_override_rate: number;
+  updated_at: string;
+}
+export interface MemoryData {
+  backend: "pulse" | "local";
+  priors_source: "pulse" | "local";
+  cases: number;
+  feedback: number;
+  pulse_calls: number | null;
+  pulse_calls_per_day: number | null;
+  last_error: string | null;
+  analyst_override_rate: number;
+  techniques: PriorRow[];
+  sources: PriorRow[];
+  analytics: { question: string; answer: string; source: "pulse" | "local"; cached_at: string };
+}
+export interface HealthData {
+  status: string;
+  cost_mode: "normal" | "degraded";
+  degraded_reason: string | null;
+  llm: { provider: string; model: string | null };
+  memory: { backend: "pulse" | "local"; priors_source: "pulse" | "local" };
+  budget: Record<string, number | string | null>;
+}
+export interface MemoryPrior {
+  source: string;
+  key: string | null;
+  n: number;
+  prior_tp_rate: number | null;
+  weight: number;
+  p_tp_model: number;
+  p_tp_blended: number;
+}
+
 export const api = {
+  health: () => j<HealthData>(`/health`),
+  memory: () => j<MemoryData>(`/api/memory`),
   queue: (verdict?: string) => j<Summary[]>(`/api/queue${verdict ? `?verdict=${verdict}` : ""}`),
   investigation: (id: string) => j<Investigation>(`/api/investigations/${id}`),
   metrics: () => j<Metrics>(`/api/metrics`),

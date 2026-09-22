@@ -1,4 +1,7 @@
 "use client";
+import useSWR from "swr";
+import { fetcher, type HealthData } from "@/lib/api";
+import { MemoryBadge } from "@/components/memoryPanel";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -108,7 +111,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             <span className="font-semibold">AEGIS</span>
           </Link>
           <div className="ml-auto flex items-center gap-3">
-            <span className="hidden text-xs text-dim sm:inline">Agentic AI · Continuous cloud SOC</span>
+            <HealthBadges />
             <ThemeToggle />
             <ProfileMenu />
           </div>
@@ -186,4 +189,26 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       </span>
     );
   }
+}
+
+
+/** COST.md: cost_mode badge when degraded + memory backend, both from /health. */
+function HealthBadges() {
+  const { data } = useSWR<HealthData>("/health", fetcher, { refreshInterval: 15000 });
+  if (!data) return <span className="hidden text-xs text-dim sm:inline">Agentic AI · Continuous cloud SOC</span>;
+  const degraded = data.cost_mode === "degraded";
+  return (
+    <div className="flex items-center gap-2">
+      <span
+        title={degraded ? `Degraded: ${data.degraded_reason ?? ""} — deterministic reasoner in use` : `LLM: ${data.llm.provider}${data.llm.model ? ` (${data.llm.model})` : ""}`}
+        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
+          degraded ? "border-warning/30 bg-warning/10 text-warning" : "border-border bg-surface-2 text-muted"
+        }`}
+      >
+        <span className={`h-1.5 w-1.5 rounded-full ${degraded ? "bg-warning" : "bg-success"}`} />
+        {degraded ? "DEGRADED · deterministic" : `reasoner: ${data.llm.provider === "none" ? "deterministic" : data.llm.provider}`}
+      </span>
+      <MemoryBadge backend={data.memory.backend} source={data.memory.priors_source} />
+    </div>
+  );
 }

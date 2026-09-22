@@ -85,6 +85,16 @@ class Store:
                 "playbook": result.playbook,
                 "node_log": result.node_log,
                 "malicious_score": result.malicious_score,
+                "memory_prior": result.memory_prior,
+                "citations_ok": bool((result.report_json or {}).get("citations_ok", True)),
+                "cited_events": len(
+                    {
+                        r.event_id
+                        for h in result.hypotheses
+                        for r in (h.evidence_for + h.evidence_against)
+                    }
+                    | {t.evidence.event_id for t in result.timeline}
+                ),
             }
             s.merge(inv)
             if gold_label and s.get(GoldLabel, alert.alert_id) is None:
