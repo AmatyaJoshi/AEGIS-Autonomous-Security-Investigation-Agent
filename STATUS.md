@@ -123,7 +123,7 @@ walk-through on the Docker laptop).
 | 2 demo | `aegis demo` (15 s locally), Makefile, Dockerfiles, `docker-compose.demo.yml` (config validated), `docs/DEPLOY.md` | Demo command run end to end against the local snapshot; web `tsc` + `next build` clean | `make up`, then `make demo`, browser click-through of queue → case → approve → Memory panel (B8) |
 | 3 docs | README (autonomous SaaS, AI layer, Pulse boundary verbatim, 3 commands, both reasoners, limitations), `docs/DEVPOST.md`, RESULTS/COST/DECISIONS/TODO | — | — |
 
-Test suite: **114 passed, 1 skipped** (live Pulse). Gates: ruff, format, mypy strict, tsc, next build all
+Test suite: **113 passed, 1 skipped** (live Pulse). Gates: ruff, format, mypy strict, tsc, next build all
 clean. Pulse request-shape mismatch vs the brief (no bulk/upsert/count/analytics verbs in the docs) is
 recorded in DECISIONS.md and handled by composing documented verbs.
 
