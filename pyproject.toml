@@ -23,6 +23,11 @@ dependencies = [
     "pysigma-backend-splunk>=1.1",
     "pysigma-pipeline-sysmon>=1.0",
     "pysigma-pipeline-windows>=1.2",
+    # pysigma 1.5.x condition parsing breaks on pyparsing 3.3.3 (TypeError: 'str' object is not
+    # callable); a fresh install silently lost 337/377 SPL conversions. See STATUS.md B1.
+    "pyparsing<3.3.3",
+    # Triage model inference (aegis/models/triage.py) and `bench run --triage`; CPU wheel, no GPU.
+    "lightgbm>=4.3",
     "sqlalchemy>=2.0",
     "psycopg[binary]>=3.1",
     "python-dateutil>=2.9",

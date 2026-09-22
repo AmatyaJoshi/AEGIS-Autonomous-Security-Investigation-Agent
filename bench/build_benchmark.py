@@ -130,6 +130,27 @@ def _assign_splits(records: list[AlertRecord], seed: int) -> dict[str, str]:
     return split_of
 
 
+def write_frozen_manifest(frozen: dict[str, Any], path: Path) -> bool:
+    """Write the frozen manifest only when its content hash changed.
+
+    "Frozen" means frozen (CLAUDE.md): a rebuild that reproduces the same 420 alerts must not touch
+    the committed file (previously the ``created`` timestamp was bumped on every run). A rebuild
+    that changes the alert set refuses to overwrite and tells the caller to cut a new version file.
+    Returns True when the file was written.
+    """
+    if path.exists():
+        old = json.loads(path.read_text(encoding="utf-8"))
+        if old.get("manifest_hash") == frozen["manifest_hash"]:
+            return False
+        raise RuntimeError(
+            f"{path.name} is frozen with manifest_hash {str(old.get('manifest_hash', '?'))[:12]} "
+            f"but the rebuild produced {frozen['manifest_hash'][:12]}. Bump BENCH_VERSION and "
+            "add a RESULTS.md entry instead of overwriting (CLAUDE.md)."
+        )
+    path.write_text(json.dumps(frozen, indent=1), encoding="utf-8")
+    return True
+
+
 def build_benchmark(
     snapshot_dir: Path,
     out_dir: Path,
@@ -195,9 +216,7 @@ def build_benchmark(
     }
     frozen_dir = Path(__file__).parent / "manifests"
     frozen_dir.mkdir(parents=True, exist_ok=True)
-    (frozen_dir / f"benchmark_{BENCH_VERSION}.frozen.json").write_text(
-        json.dumps(frozen, indent=1), encoding="utf-8"
-    )
+    write_frozen_manifest(frozen, frozen_dir / f"benchmark_{BENCH_VERSION}.frozen.json")
     summary = {
         k: frozen[k]
         for k in (

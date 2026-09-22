@@ -208,6 +208,21 @@ def write_pack(records: list[SigmaRuleRecord], out_dir: Path) -> dict[str, Any]:
     return summary
 
 
+def conversion_floor_breach(summary: dict[str, Any], min_rate: float = 0.9) -> str | None:
+    """Return a human-readable reason when either backend converted fewer than ``min_rate`` of the
+    rules, else None. Guards against silent dependency drift (pyparsing 3.3.3 broke pysigma 1.5 and
+    dropped SPL to 40/377 with exit code 0)."""
+    total = int(summary.get("rules_total") or 0)
+    if total == 0:
+        return "no rules selected"
+    bad = []
+    for key in ("esql_ok", "spl_ok"):
+        ok = int(summary.get(key) or 0)
+        if ok / total < min_rate:
+            bad.append(f"{key}={ok}/{total} ({ok / total:.0%})")
+    return "; ".join(bad) or None
+
+
 def read_pack(out_dir: Path) -> list[SigmaRuleRecord]:
     path = out_dir / "sigma_pack.jsonl"
     with path.open(encoding="utf-8") as f:

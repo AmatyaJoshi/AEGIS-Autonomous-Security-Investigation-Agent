@@ -13,3 +13,16 @@
   changes; the next commit that touches numbers also commits `bench/results/<date>_<sha>_*.json`.
 - Frozen manifest is reproducible (content-identical to 13 Sep except `created`); `bench build` will
   be changed to refuse rewriting an unchanged manifest rather than bumping the timestamp.
+
+## 2026-09-22 — Phase 0 fixes (B1–B3), Frist24 working process adopted
+- Process: same as Frist24 — verify here with venv/npm, Docker + Ollama on the user's second laptop,
+  commit per step locally, never push without being asked, ask only when blocking.
+- B1: `pyparsing<3.3.3` pinned in core deps (a constraint on an existing transitive dep, not a new
+  dependency). `lab rules` now exits 2 when either backend converts < 90% of rules
+  (`--min-conversion`, default 0.9; the healthy pack is 97%/100%).
+- B2: `lightgbm` added to core deps rather than a `[train]` extra because `aegis/models/triage.py`
+  (inference, used by `bench run --triage` and the graph fast-path) imports it; CPU wheel, ~3 MB.
+  `scikit-learn` turned out not to be imported anywhere — not added.
+- B3: `bench build` writes the frozen manifest only when `manifest_hash` changes; an unchanged
+  rebuild leaves the committed file byte-identical, a changed one raises and asks for a new
+  BENCH_VERSION + RESULTS.md entry.

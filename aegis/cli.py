@@ -399,6 +399,9 @@ def lab_scenarios(
 @lab_app.command("rules")
 def lab_rules(
     no_download: bool = typer.Option(False, "--no-download"),
+    min_conversion: float = typer.Option(
+        0.9, "--min-conversion", help="fail (exit 2) if ES|QL or SPL conversion rate drops below"
+    ),
 ) -> None:
     """Download the Sigma bundle, curate the pack and convert to ES|QL + SPL."""
     from lab.rules.convert import build_pack
@@ -418,6 +421,13 @@ def lab_rules(
     else:
         summary = build_pack(settings.data.raw / "sigma", settings.data.rules)
     console.print_json(json.dumps(summary))
+    from lab.rules.convert import conversion_floor_breach
+
+    breach = conversion_floor_breach(summary, min_rate=min_conversion)
+    if breach:
+        console.print(f"[red]Sigma conversion below floor ({min_conversion:.0%}): {breach}[/]")
+        console.print("[red]Check pysigma/pyparsing versions (STATUS.md B1).[/]")
+        raise typer.Exit(2)
 
 
 @lab_app.command("load")
